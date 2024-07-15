@@ -133,8 +133,9 @@ public class EndlessTerrain : MonoBehaviour
 			float factorX = ((float)_chunkSize / (float)resolution) + _position.x;
 			float factorY = ((float)_chunkSize / (float)resolution) + _position.y;
 
-			float scale = 800;
-            
+			float scale = 800f;
+			float max = 0, min = 100;
+
 			for (int x = 0; x < resolution; x++)
 			{
 				for (int y = 0; y < resolution; y++)
@@ -144,14 +145,33 @@ public class EndlessTerrain : MonoBehaviour
 
 					// float sample = Mathf.PerlinNoise(xCoord * 0.005f, zCoord * 0.005f);
 					float sample = Mathf.PerlinNoise(
-						((resolution * _relativePosition.x) + x) / scale,
-						((resolution * _relativePosition.y) + y) / scale
+						(((resolution - 1) * _relativePosition.x) + x) / scale,
+						(((resolution - 1) * _relativePosition.y) + y) / scale
 					);
 
-					heights[y, x] = sample;  // Troca z e x para corrigir a rotação do terreno
+					sample *= (Mathf.PerlinNoise(
+						((((resolution - 1) * _relativePosition.x) + x) + 1000) / scale,
+						((((resolution - 1) * _relativePosition.y) + y) + 1000) / scale
+					) + .5f);
+                    
+					float novoX = (resolution * _relativePosition.x) + x;
+					float novoY = (resolution * _relativePosition.y) + y;
+					
+					// sample = sample / (130 - 10 * ((_relativePosition.x + _relativePosition.y) % 10));
+
+					// sample = (256 * sample - 16 * ((_relativePosition.x + _relativePosition.y) % 16)) / 256f;
+					// sample = ((_relativePosition.x + _relativePosition.y) % 2 == 0 ? 0f : 0.5f);
+					// sample = sample * ((16 * ((_relativePosition.x + _relativePosition.y) % 16)) + 256) / 512f;
+     
+					// Ultimo
+					// sample *= (Mathf.Abs((novoX + novoY + 827269 * _relativePosition.x + 89189189 * _relativePosition.x + 131313 * (((long)novoX) ^ ((long)novoY)) + 424242 * (((long)_relativePosition.x) | ((long)_relativePosition.y))) % 2048 - 1024) / 1024);
+                    
+                    
+                    
+					heights[y, x] = sample ;  // Troca z e x para corrigir a rotação do terren
 				}
 			}
-
+			
 			return heights;
 		}
 		
@@ -169,7 +189,7 @@ public class EndlessTerrain : MonoBehaviour
 			
 			_baseTerrain.terrainData.SetHeights(0, 0, GeneratePerlinNoiseHeightmap(_baseTerrain.terrainData.heightmapResolution));
 
-			AddTrees(_baseTerrain);
+			// AddTrees(_baseTerrain);
 			
 			SetVisible(true);
 		}
