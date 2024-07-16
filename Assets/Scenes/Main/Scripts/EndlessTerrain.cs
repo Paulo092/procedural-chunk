@@ -189,7 +189,7 @@ public class EndlessTerrain : MonoBehaviour
 			
 			_baseTerrain.terrainData.SetHeights(0, 0, GeneratePerlinNoiseHeightmap(_baseTerrain.terrainData.heightmapResolution));
 
-			// AddTrees(_baseTerrain);
+			AddTrees(_baseTerrain);
 			
 			SetVisible(true);
 		}
@@ -198,20 +198,23 @@ public class EndlessTerrain : MonoBehaviour
 		{
 			TerrainData terrainData = terrain.terrainData;
 
-			// Cria um novo TreePrototype
 			TreePrototype treePrototype = new TreePrototype();
 			treePrototype.prefab = treePrefab;
 
-			// Adiciona o TreePrototype ao TerrainData
 			terrainData.treePrototypes = new TreePrototype[] { treePrototype };
 
-			Vector3 terrainSize = _baseTerrain.terrainData.size;
+			float terrainWidth = terrain.terrainData.size.x;
+			float terrainLength = terrain.terrainData.size.z;
 			
-			// Adiciona instâncias de árvores ao terreno
-			for (int i = 0; i < 100; i++) // Adiciona 100 árvores como exemplo
+			for (int i = 0; i < 100; i++)
 			{
 				TreeInstance treeInstance = new TreeInstance();
-				treeInstance.position = new Vector3(Random.Range(0f, terrainSize.x), 0, Random.Range(0f, terrainSize.z));
+				
+				float x = Random.Range(0f, terrainWidth) / terrainWidth;
+				float z = Random.Range(0f, terrainLength) / terrainLength;
+				float y = terrain.SampleHeight(new Vector3(x * terrainWidth, 0, z * terrainLength)) / terrain.terrainData.size.y;
+
+				treeInstance.position = new Vector3(x, y, z);
 				treeInstance.prototypeIndex = 0;
 				treeInstance.widthScale = 1;
 				treeInstance.heightScale = 1;
