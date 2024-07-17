@@ -199,7 +199,7 @@ public class EndlessTerrain : MonoBehaviour
 			_baseTerrain.terrainData.SetHeights(0, 0, GeneratePerlinNoiseHeightmap(_baseTerrain.terrainData.heightmapResolution, seed));
 			
 			spawnStructure(structurePrefab);
-			//	AddTrees(_baseTerrain);
+			AddTrees(_baseTerrain);
 			
 			SetVisible(true);
 		}
@@ -215,6 +215,7 @@ public class EndlessTerrain : MonoBehaviour
 			TerrainData terrainData = terrain.terrainData;
 
 			TreePrototype treePrototype = new TreePrototype();
+
 			treePrototype.prefab = treePrefab;
 
 			terrainData.treePrototypes = new TreePrototype[] { treePrototype };
@@ -222,7 +223,7 @@ public class EndlessTerrain : MonoBehaviour
 			float terrainWidth = terrain.terrainData.size.x;
 			float terrainLength = terrain.terrainData.size.z;
 			
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 30; i++)
 			{
 				TreeInstance treeInstance = new TreeInstance();
 				
