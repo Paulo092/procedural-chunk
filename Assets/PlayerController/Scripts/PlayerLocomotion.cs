@@ -130,17 +130,17 @@ namespace TE
                 HandleRotation(delta);
             }
         }
-
+ 
         public void HandleRollingAndSprinting(float delta)
         {
             if (animatorHandler.anim.GetBool("isInteracting"))
                 return;
-
+ 
             if (inputHandler.rollFlag)
             {
                 moveDirection = cameraObject.forward * inputHandler.vertical;
                 moveDirection += cameraObject.right * inputHandler.horizontal;
-
+ 
                 if(inputHandler.moveAmount > 0)
                 {
                     animatorHandler.PlayTargetAnimation("Rolling", true);
@@ -165,7 +165,7 @@ namespace TE
 
             if(playerManager.isInAir)
             {
-                rigidbody.AddForce(-Vector3.up * fallingSpeed);
+                rigidbody.AddForce(-Vector3.up *  fallingSpeed);
                 rigidbody.AddForce(moveDirection * fallingSpeed / 10f);
             }
 
