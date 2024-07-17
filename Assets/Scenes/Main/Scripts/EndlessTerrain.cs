@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 using System.Collections.Generic;
+using System.Collections;
+using Input = UnityEngine.Windows.Input;
 using Random = UnityEngine.Random;
 
 public class EndlessTerrain : MonoBehaviour
@@ -21,7 +23,10 @@ public class EndlessTerrain : MonoBehaviour
 	private const float MaxViewDst = 450;
 	private int _chunksVisibleInViewDst;
 	private LocalPool _terrainPool;
-	
+
+	public int seed = 12345678;
+	public GameObject structurePrefab;
+		
 	private void Start() {
 		_chunkSize = 100 - 1;
 		_chunksVisibleInViewDst = Mathf.RoundToInt(MaxViewDst / _chunkSize);
@@ -33,6 +38,7 @@ public class EndlessTerrain : MonoBehaviour
 	{
 		Vector3 viwerPositionReference = viewer.position;
 		_viewerPosition = new Vector2(viwerPositionReference.x, viwerPositionReference.z);
+
 		UpdateVisibleChunks();
 	}
 		
@@ -63,7 +69,7 @@ public class EndlessTerrain : MonoBehaviour
 				if(_terrainChunkDictionary.ContainsKey(viewedChunkCoord)) {
 					_farLands.Add(new ChunkInfo(viewedChunkCoord, _terrainChunkDictionary[viewedChunkCoord]));
 				} else {
-					TerrainChunk terrainChunk = _terrainPool.GetPooledObject(viewedChunkCoord, _chunkSize);
+					TerrainChunk terrainChunk = _terrainPool.GetPooledObject(viewedChunkCoord, _chunkSize, seed, structurePrefab);
 					
 					_terrainChunkDictionary.Add(viewedChunkCoord, terrainChunk);
 					_farLands.Add(new ChunkInfo(viewedChunkCoord, terrainChunk));
@@ -126,12 +132,15 @@ public class EndlessTerrain : MonoBehaviour
 			SetVisible(false);
 		}
 
-		float[,] GeneratePerlinNoiseHeightmap(int resolution)
+		float[,] GeneratePerlinNoiseHeightmap(int resolution, int seed)
 		{
 			float[,] heights = new float[resolution, resolution];
 
 			float factorX = ((float)_chunkSize / (float)resolution) + _position.x;
 			float factorY = ((float)_chunkSize / (float)resolution) + _position.y;
+
+			float seedFactor = (seed / _chunkSize * resolution) / 100;
+			float seedFactor2 = (seedFactor * seed) / 1000;
 
 			float scale = 800f;
 			float max = 0, min = 100;
@@ -145,13 +154,13 @@ public class EndlessTerrain : MonoBehaviour
 
 					// float sample = Mathf.PerlinNoise(xCoord * 0.005f, zCoord * 0.005f);
 					float sample = Mathf.PerlinNoise(
-						(((resolution - 1) * _relativePosition.x) + x) / scale,
-						(((resolution - 1) * _relativePosition.y) + y) / scale
+						(((resolution - 1) * _relativePosition.x) + x + seedFactor) / scale,
+						(((resolution - 1) * _relativePosition.y) + y + seedFactor) / scale
 					);
 
 					sample *= (Mathf.PerlinNoise(
-						((((resolution - 1) * _relativePosition.x) + x) + 1000) / scale,
-						((((resolution - 1) * _relativePosition.y) + y) + 1000) / scale
+						((((resolution - 1) * _relativePosition.x) + x + seedFactor2) + 1000) / scale,
+						((((resolution - 1) * _relativePosition.y) + y + seedFactor2) + 1000) / scale
 					) + .5f);
                     
 					float novoX = (resolution * _relativePosition.x) + x;
@@ -175,7 +184,7 @@ public class EndlessTerrain : MonoBehaviour
 			return heights;
 		}
 		
-		public void Setup(Vector2 coord, int size, Transform parent)
+		public void Setup(Vector2 coord, int size, Transform parent, int seed, GameObject structurePrefab)
 		{
 			this._relativePosition = coord;
 			
@@ -187,11 +196,18 @@ public class EndlessTerrain : MonoBehaviour
 			_meshObject.transform.localScale = Vector3.one * size / 10f;
 			_meshObject.transform.parent = parent;
 			
-			_baseTerrain.terrainData.SetHeights(0, 0, GeneratePerlinNoiseHeightmap(_baseTerrain.terrainData.heightmapResolution));
-
-			AddTrees(_baseTerrain);
+			_baseTerrain.terrainData.SetHeights(0, 0, GeneratePerlinNoiseHeightmap(_baseTerrain.terrainData.heightmapResolution, seed));
+			
+			spawnStructure(structurePrefab);
+			//	AddTrees(_baseTerrain);
 			
 			SetVisible(true);
+		}
+
+		void spawnStructure(GameObject structurePrefab)
+		{
+			float y = _baseTerrain.terrainData.GetHeight(0, 0);
+			Instantiate(structurePrefab, new Vector3(_relativePosition.x * _chunkSize, y, _relativePosition.y * _chunkSize), Quaternion.identity);
 		}
 		
 		void AddTrees(Terrain terrain)
@@ -308,7 +324,7 @@ public class EndlessTerrain : MonoBehaviour
 	        obj.Die();
         }
     
-        public TerrainChunk GetPooledObject(Vector2 coord, int size)
+        public TerrainChunk GetPooledObject(Vector2 coord, int size, int seed, GameObject structurePrefab)
         {
             if(_activeObjects >= MaxPoolSize)
             {
@@ -319,7 +335,7 @@ public class EndlessTerrain : MonoBehaviour
             }
     
             TerrainChunk pooledObject = _pool.Get();
-            pooledObject.Setup(coord, size, _parent.transform);
+            pooledObject.Setup(coord, size, _parent.transform, seed, structurePrefab);
             
             return pooledObject;
         }
