@@ -97,6 +97,7 @@ public class EndlessTerrain : MonoBehaviour
 
 		private Vector2 _position, _relativePosition;
 		private Terrain _baseTerrain;
+		private TerrainCollider terrainCollider;
 
 		// Provisorio
 		private GameObject treePrefab;
@@ -107,7 +108,9 @@ public class EndlessTerrain : MonoBehaviour
 			// Cria um novo objeto Terrain
 			_meshObject = new GameObject("Terrain");
 			Terrain terrain = _meshObject.AddComponent<Terrain>();
-			TerrainCollider terrainCollider = _meshObject.AddComponent<TerrainCollider>();
+			terrainCollider = _meshObject.AddComponent<TerrainCollider>();
+
+			terrainCollider.providesContacts = true;
 
 			// Cria e configura o TerrainData
 			TerrainData terrainData = new TerrainData();
@@ -163,6 +166,12 @@ public class EndlessTerrain : MonoBehaviour
 						((((resolution - 1) * _relativePosition.y) + y + seedFactor2) + 1000) / scale
 					) + .5f);
                     
+					sample *= (Mathf.PerlinNoise(
+						((((resolution - 1) * _relativePosition.x) + x) + 42000) / scale * 1.5f,
+						((((resolution - 1) * _relativePosition.y) + y) + -42000) / scale * 1.5f
+					));
+					
+					
 					float novoX = (resolution * _relativePosition.x) + x;
 					float novoY = (resolution * _relativePosition.y) + y;
 					
@@ -212,6 +221,7 @@ public class EndlessTerrain : MonoBehaviour
 		
 		void AddTrees(Terrain terrain)
 		{
+			terrainCollider.providesContacts = true;
 			TerrainData terrainData = terrain.terrainData;
 
 			TreePrototype treePrototype = new TreePrototype();
@@ -223,7 +233,7 @@ public class EndlessTerrain : MonoBehaviour
 			float terrainWidth = terrain.terrainData.size.x;
 			float terrainLength = terrain.terrainData.size.z;
 			
-			for (int i = 0; i < 30; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				TreeInstance treeInstance = new TreeInstance();
 				
