@@ -1108,7 +1108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2261981023075723826}
   m_Layer: 0
-  m_Name: untitled
+  m_Name: Gorila
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
