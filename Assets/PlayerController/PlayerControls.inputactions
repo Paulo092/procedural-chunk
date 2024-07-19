@@ -107,7 +107,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RB",
+                    "name": "NormalAttack",
                     "type": "Button",
                     "id": "b1581dda-89f6-4707-99a0-e64dd9b244de",
                     "expectedControlType": "Button",
@@ -116,9 +116,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RT",
+                    "name": "LightAttack",
                     "type": "Button",
                     "id": "9db3958d-67cc-4427-bfa6-0ff1a18fdabf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HeavyAttack",
+                    "type": "Button",
+                    "id": "6f40e82d-ed5a-4397-94dc-686c07a641ee",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -144,7 +153,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RB",
+                    "action": "NormalAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -155,7 +164,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RT",
+                    "action": "LightAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "70576e90-b2f8-4632-8337-6e111ac3abb1",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HeavyAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

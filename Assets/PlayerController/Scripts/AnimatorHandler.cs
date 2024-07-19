@@ -21,7 +21,7 @@ namespace TE
             inputHandler = GetComponentInParent<InputHandler>();
             playerLocomotion = GetComponentInParent<PlayerLocomotion>();
             vertical = Animator.StringToHash("Vertical");
-            horizontal = Animator.StringToHash("Horizontal");
+            horizontal = Animator.StringToHash("Horizontal");           
         }
 
         public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement, bool isSprinting) 
@@ -104,7 +104,7 @@ namespace TE
             canRotate = false;
         }
 
-        private void OnAnimatorMove()
+        /*private void OnAnimatorMove()
         {
             if (playerManager.isInteracting == false)
                 return;
@@ -115,6 +115,6 @@ namespace TE
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
             playerLocomotion.rigidbody.velocity = velocity;
-        }
+        }*/
     }
 }

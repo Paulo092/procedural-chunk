@@ -130,17 +130,17 @@ namespace TE
                 HandleRotation(delta);
             }
         }
-
+ 
         public void HandleRollingAndSprinting(float delta)
         {
             if (animatorHandler.anim.GetBool("isInteracting"))
                 return;
-
+ 
             if (inputHandler.rollFlag)
             {
                 moveDirection = cameraObject.forward * inputHandler.vertical;
                 moveDirection += cameraObject.right * inputHandler.horizontal;
-
+ 
                 if(inputHandler.moveAmount > 0)
                 {
                     animatorHandler.PlayTargetAnimation("Rolling", true);
@@ -165,7 +165,7 @@ namespace TE
 
             if(playerManager.isInAir)
             {
-                rigidbody.AddForce(-Vector3.up * fallingSpeed);
+                rigidbody.AddForce(-Vector3.up *  fallingSpeed);
                 rigidbody.AddForce(moveDirection * fallingSpeed / 10f);
             }
 
@@ -193,7 +193,7 @@ namespace TE
                     }
                     else
                     {
-                        animatorHandler.PlayTargetAnimation("Locomotion", false);
+                        animatorHandler.PlayTargetAnimation("Empty", false);
                         inAirTimer = 0;
                     }
 
@@ -221,16 +221,14 @@ namespace TE
                 }
             }
 
-            if (playerManager.isGrounded)
+            if(playerManager.isInteracting || inputHandler.moveAmount > 0)
             {
-                if(playerManager.isInteracting || inputHandler.moveAmount > 0)
-                {
-                    myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, Time.deltaTime);
-                }
-                else
-                {
-                    myTransform.position = targetPosition;
-                }
+                myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, Time.deltaTime / 0.1f);
+
+            }
+            else
+            {
+                myTransform.position = targetPosition;
             }
             
         }
