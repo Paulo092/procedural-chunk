@@ -100,6 +100,7 @@ public class EndlessTerrain : MonoBehaviour
 		private TerrainCollider terrainCollider;
 
 		// Provisorio
+		// private GameObject treePrefab;
 		private GameObject treePrefab;
 		
 		// Provisorio
