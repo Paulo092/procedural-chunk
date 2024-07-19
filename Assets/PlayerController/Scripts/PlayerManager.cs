@@ -21,14 +21,13 @@ namespace TE
         public bool isGrounded;
 
 
-        /*private void Awake()
+        private void Awake()
         {
-            cameraHandler = CameraHandler.singleton;
-        }*/
+            cameraHandler = FindObjectOfType<CameraHandler>();
+        }
 
         void Start()
         {
-            cameraHandler = FindObjectOfType<CameraHandler>();
             inputHandler = GetComponent<InputHandler>();
             anim = GetComponentInChildren<Animator>();
             playerLocomotion = GetComponent<PlayerLocomotion>();
@@ -60,8 +59,9 @@ namespace TE
         {
             inputHandler.rollFlag = false;
             inputHandler.sprintFlag = false;
-            inputHandler.rb_Input = false;
-            inputHandler.rt_Input = false;
+            inputHandler.normalAttack_Input = false;
+            inputHandler.lightAttack_Input = false;
+            inputHandler.heavyAttack_Input = false;
 
             if (isInAir)
             {

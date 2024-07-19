@@ -14,8 +14,9 @@ namespace TE
         public float mouseY;
 
         public bool b_Input;
-        public bool rb_Input;
-        public bool rt_Input;
+        public bool normalAttack_Input;
+        public bool lightAttack_Input;
+        public bool heavyAttack_Input;
 
         public bool rollFlag;
         public bool sprintFlag;
@@ -89,14 +90,19 @@ namespace TE
 
         private void HandleAttackInput(float delta)
         {
-            inputActions.PlayerActions.RB.performed += i => rb_Input = true;
-            inputActions.PlayerActions.RT.performed += i => rt_Input = true;
+            inputActions.PlayerActions.NormalAttack.performed += i => normalAttack_Input = true;
+            inputActions.PlayerActions.LightAttack.performed += i => lightAttack_Input = true;
+            inputActions.PlayerActions.HeavyAttack.performed += i => heavyAttack_Input = true;
 
-            if (rb_Input)
+            if (normalAttack_Input)
+            {
+                playerAttacker.HandleNormalAttack(playerInventory.rightWeapon);
+            }
+            if (lightAttack_Input)
             {
                 playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
             }
-            if (rt_Input)
+            if (heavyAttack_Input)
             {
                 playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
             }

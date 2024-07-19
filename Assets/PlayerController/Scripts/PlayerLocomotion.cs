@@ -230,18 +230,6 @@ namespace TE
             {
                 myTransform.position = targetPosition;
             }
-
-            if (playerManager.isGrounded)
-            {
-                if(playerManager.isInteracting || inputHandler.moveAmount > 0)
-                {
-                    myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, Time.deltaTime);
-                }
-                else
-                {
-                    myTransform.position = targetPosition;
-                }
-            }
             
         }
 

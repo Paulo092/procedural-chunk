@@ -13,14 +13,18 @@ namespace TE
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
         }
 
+        public void HandleNormalAttack(WeaponItem weapon)
+        {
+            animatorHandler.PlayTargetAnimation(weapon.OH_Normal_Attack, true);
+        }
         public void HandleLightAttack(WeaponItem weapon)
         {
-            animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_1, true);
+            animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack, true);
         }
 
         public void HandleHeavyAttack(WeaponItem weapon)
         {
-            animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack_1 , true);
+            animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack, true);
         }
     }
 }
