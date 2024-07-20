@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf7ca0b2686b68c4988f8d76cd768cd5, type: 3}
+  m_Name: PlainLands
+  m_EditorClassIdentifier: 
+  universeName: 
+  defaultBiome:
+    biomeName: Default
+    temperature: {x: 0, y: 0}
+    humidity: {x: 0, y: 0}
+    trees: []
+    grass: []
+    biomeTextures: []
+  biomeList:
+  - biomeName: Plains
+    temperature: {x: 0, y: 0.5}
+    humidity: {x: 0.5, y: 1}
+    trees: []
+    grass: []
+    biomeTextures:
+    - layer: 0
+      texture: {fileID: 2800000, guid: ec7bab56bfdc3d147b9e1fda8c12082d, type: 3}
+      altitude: {x: 0.22027245, y: 0.49654657}
+  - biomeName: MudValley
+    temperature: {x: 0.5, y: 1}
+    humidity: {x: 0, y: 0.5}
+    trees: []
+    grass: []
+    biomeTextures:
+    - layer: 1
+      texture: {fileID: 2800000, guid: c8748b2da9e969c4ba1bc7c5fb221595, type: 3}
+      altitude: {x: 0.22027245, y: 0.49654657}

@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.Pool;
 using System.Collections.Generic;
 using System.Collections;
+using System.ComponentModel;
+using UnityEngine.Serialization;
 using Input = UnityEngine.Windows.Input;
 using Random = UnityEngine.Random;
 
@@ -13,6 +15,7 @@ public class EndlessTerrain : MonoBehaviour
 	public GameObject treePrefab;
 	
 	public Transform viewer;
+	public Universe universeData;
 	
 	private static Vector2 _viewerPosition;
 	private static int _chunkSize;
@@ -26,12 +29,15 @@ public class EndlessTerrain : MonoBehaviour
 
 	public int seed = 12345678;
 	public GameObject structurePrefab;
+
+	[Header("Terrains Setup")] 
+	public Material baseTerrainMaterial;
 		
 	private void Start() {
 		_chunkSize = 100 - 1;
 		_chunksVisibleInViewDst = Mathf.RoundToInt(MaxViewDst / _chunkSize);
 
-		_terrainPool = new LocalPool(this.gameObject, terrainTexture, treePrefab);
+		_terrainPool = new LocalPool(this.gameObject, terrainTexture, treePrefab, universeData, baseTerrainMaterial);
 	}
 
 	void Update()
@@ -69,7 +75,7 @@ public class EndlessTerrain : MonoBehaviour
 				if(_terrainChunkDictionary.ContainsKey(viewedChunkCoord)) {
 					_farLands.Add(new ChunkInfo(viewedChunkCoord, _terrainChunkDictionary[viewedChunkCoord]));
 				} else {
-					TerrainChunk terrainChunk = _terrainPool.GetPooledObject(viewedChunkCoord, _chunkSize, seed, structurePrefab);
+					TerrainChunk terrainChunk = _terrainPool.GetPooledObject(viewedChunkCoord, _chunkSize, seed, structurePrefab, universeData);
 					
 					_terrainChunkDictionary.Add(viewedChunkCoord, terrainChunk);
 					_farLands.Add(new ChunkInfo(viewedChunkCoord, terrainChunk));
@@ -98,6 +104,7 @@ public class EndlessTerrain : MonoBehaviour
 		private Vector2 _position, _relativePosition;
 		private Terrain _baseTerrain;
 		private TerrainCollider terrainCollider;
+		private Universe _universeData;
 
 		// Provisorio
 		// private GameObject treePrefab;
@@ -105,12 +112,15 @@ public class EndlessTerrain : MonoBehaviour
 		
 		// Provisorio
 		// public TerrainChunk() {
-		public TerrainChunk(Material terrainTexture, GameObject treePrefab) {
+		public TerrainChunk(Material terrainTexture, GameObject treePrefab, Universe universeData, Material baseTerrainMaterial)
+		{
+			this._universeData = universeData;
+			
 			// Cria um novo objeto Terrain
 			_meshObject = new GameObject("Terrain");
 			Terrain terrain = _meshObject.AddComponent<Terrain>();
 			terrainCollider = _meshObject.AddComponent<TerrainCollider>();
-
+			
 			terrainCollider.providesContacts = true;
 
 			// Cria e configura o TerrainData
@@ -124,16 +134,58 @@ public class EndlessTerrain : MonoBehaviour
 			terrainCollider.terrainData = terrainData;
 			
 			// Provisorio
-			terrain.materialTemplate = terrainTexture;
+			// terrain.materialTemplate = terrainTexture;
 			this.treePrefab = treePrefab;
 			
 			// _meshObject = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			// _meshObject.AddComponent<MeshCollider>();
 
+			terrain.materialTemplate = baseTerrainMaterial;
+			
 			_baseTerrain = terrain;
 			_baseTerrain.gameObject.layer = LayerMask.NameToLayer("Ground");
 			
+			SetupTextures(_baseTerrain);
+
+			
 			SetVisible(false);
+		}
+
+		void SetupTextures(Terrain terrain)
+		{
+			TerrainLayer[] terrainLayers = new TerrainLayer[_universeData.biomeList.Length];
+			int index = 0;
+
+			Biome[] biomes = _universeData.biomeList;
+
+			foreach (var biome in biomes)
+			{
+				foreach (var biomeTexture in biome.biomeTextures)
+				{
+					terrainLayers[index] = new TerrainLayer();
+					terrainLayers[index].name = "Texture" + biome.biomeName + "_GU$" + index;
+					terrainLayers[index].diffuseTexture = biomeTexture.texture;
+					biomeTexture.layer = index;
+	
+					index++;
+				}
+			}
+			
+			// for (int biomeIndex = 0; biomeIndex < biomes.Length; biomeIndex++)
+			// {
+			// 	terrainLayers[biomeIndex] = new TerrainLayer();
+			// 	terrainLayers[biomeIndex].name = "Texture " + biomes[biomeIndex].biomeName;
+			// 	terrainLayers[biomeIndex].diffuseTexture = biomes[biomeIndex].biomeTextures[0].texture;
+			// 	biomes[biomeIndex].biomeTextures[0].layer = index
+			// 	
+			// }
+			
+			// foreach (var biome in _universeData.biomeList)
+			// {
+			// 	terrainLayers[index++].diffuseTexture = biome.biomeTexture;
+			// }
+
+			terrain.terrainData.terrainLayers = terrainLayers;
 		}
 
 		float[,] GeneratePerlinNoiseHeightmap(int resolution, int seed)
@@ -210,10 +262,58 @@ public class EndlessTerrain : MonoBehaviour
 			
 			spawnStructure(structurePrefab);
 			AddTrees(_baseTerrain);
+			AddTextures(_baseTerrain);
 			
 			SetVisible(true);
 		}
 
+		void AddTextures(Terrain terrain)
+		{
+			// Obtenha as dimensões do terreno
+			int width = terrain.terrainData.alphamapWidth;
+			int height = terrain.terrainData.alphamapHeight;
+
+			// Obtenha o mapa de textura do terreno
+			// float[,,] alphaMap = terrain.terrainData.GetAlphamaps(0, 0, width, height);
+
+			// Inicialize o mapa de splat (alfa) para definir as áreas das texturas
+			float[,,] alphaMap = new float[terrain.terrainData.alphamapWidth, terrain.terrainData.alphamapHeight, terrain.terrainData.terrainLayers.Length];
+			float scale = 800f;
+			int resolution = terrain.terrainData.alphamapResolution;
+			
+			// Defina a intensidade da pintura
+			for (int y = 0; y < width; y++)
+			{
+				for (int x = 0; x < height; x++)
+				{
+					
+					
+					float temperature = Mathf.PerlinNoise(
+						(((resolution - 1) * _relativePosition.x) + x) / scale,
+						(((resolution - 1) * _relativePosition.y) + y) / scale
+					);
+					
+					float humidity = Mathf.PerlinNoise(
+						(((resolution - 1) * _relativePosition.x) + x) / (scale / 2),
+						(((resolution - 1) * _relativePosition.y) + y) / (scale / 2)
+					);
+
+					Biome currentBiome = _universeData.GetBiomeByParameters(temperature, humidity);
+					int biomeLayer = currentBiome.biomeTextures[0].layer;
+					
+					// int biomeLayer = 1;
+					
+					float distance = Vector2.Distance(new Vector2(x, y), new Vector2(width / 2, height / 2));
+					float normalizedDistance = 1f - Mathf.Clamp01(distance / 10f);
+					// alphaMap[x, y, 0] = Mathf.Lerp(alphaMap[x, y, 0], 1f * normalizedDistance, Time.deltaTime);
+					alphaMap[y, x, biomeLayer] = 1;
+				}
+			}
+
+			// Defina o mapa de textura atualizado no terreno
+			terrain.terrainData.SetAlphamaps(0, 0, alphaMap);
+		}
+		
 		void spawnStructure(GameObject structurePrefab)
 		{
 			float y = _baseTerrain.terrainData.GetHeight(0, 0);
@@ -294,14 +394,19 @@ public class EndlessTerrain : MonoBehaviour
         // public LocalPool(GameObject parent)
         private Material terrainTexture;
         private GameObject treePrefab;
+
+        private Universe _universeData;
+        private Material _baseTerrainMaterial;
         
-        public LocalPool(GameObject parent, Material terrainTexture, GameObject treePrefab)
+        public LocalPool(GameObject parent, Material terrainTexture, GameObject treePrefab, Universe universeData, Material baseTerrainMaterial)
         {
 	        // Provisorio
 	        this.terrainTexture = terrainTexture;
 	        this.treePrefab = treePrefab;
 	        
 	        this._parent = parent;
+	        this._universeData = universeData;
+	        this._baseTerrainMaterial = baseTerrainMaterial;
             
             _pool = new ObjectPool<TerrainChunk>(
                 CreatePooledItem,
@@ -317,7 +422,7 @@ public class EndlessTerrain : MonoBehaviour
         {
 	        // Provisorio
             // return new TerrainChunk();
-            return new TerrainChunk(terrainTexture, treePrefab);
+            return new TerrainChunk(terrainTexture, treePrefab, _universeData, _baseTerrainMaterial);
         }
     
         private static void OnReturnedToPool(TerrainChunk obj)
@@ -336,14 +441,14 @@ public class EndlessTerrain : MonoBehaviour
 	        obj.Die();
         }
     
-        public TerrainChunk GetPooledObject(Vector2 coord, int size, int seed, GameObject structurePrefab)
+        public TerrainChunk GetPooledObject(Vector2 coord, int size, int seed, GameObject structurePrefab, Universe universeData)
         {
             if(_activeObjects >= MaxPoolSize)
             {
                 // Debug.LogWarning("Max pool size reached. Cannot spawn new objects.");
                 // Provisorio
                 // return new TerrainChunk();
-                return new TerrainChunk(terrainTexture, treePrefab);
+                return new TerrainChunk(terrainTexture, treePrefab, universeData, _baseTerrainMaterial);
             }
     
             TerrainChunk pooledObject = _pool.Get();
