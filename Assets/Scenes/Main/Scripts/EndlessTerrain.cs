@@ -161,6 +161,7 @@ public class EndlessTerrain : MonoBehaviour
 					terrainLayers[index] = new TerrainLayer();
 					terrainLayers[index].name = "Texture" + biome.biomeName + "_GU$" + index;
 					terrainLayers[index].diffuseTexture = biomeTexture.texture;
+					terrainLayers[index].tileSize = new Vector2(50f, 50f);
 					biomeTexture.layer = index;
 	
 					index++;
