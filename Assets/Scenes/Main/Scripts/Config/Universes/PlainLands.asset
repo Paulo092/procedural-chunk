@@ -19,7 +19,10 @@ MonoBehaviour:
     humidity: {x: 0, y: 0}
     trees: []
     grass: []
-    biomeTextures: []
+    biomeTextures:
+    - layer: 0
+      texture: {fileID: 2800000, guid: 9f92a1df145a03f4e8cc6de30c1f413a, type: 3}
+      altitude: {x: 0, y: 0}
   biomeList:
   - biomeName: Plains
     temperature: {x: 0, y: 0.5}
@@ -38,4 +41,22 @@ MonoBehaviour:
     biomeTextures:
     - layer: 1
       texture: {fileID: 2800000, guid: c8748b2da9e969c4ba1bc7c5fb221595, type: 3}
+      altitude: {x: 0.22027245, y: 0.49654657}
+  - biomeName: DarkGround
+    temperature: {x: 0, y: 0.49999997}
+    humidity: {x: 0, y: 0.5}
+    trees: []
+    grass: []
+    biomeTextures:
+    - layer: 2
+      texture: {fileID: 2800000, guid: 3d2d1e0a5d613ec41bd2b90a7d0ecec6, type: 3}
+      altitude: {x: 0.22027245, y: 0.49654657}
+  - biomeName: Desert
+    temperature: {x: 0.5000001, y: 1}
+    humidity: {x: 0.5, y: 1}
+    trees: []
+    grass: []
+    biomeTextures:
+    - layer: 3
+      texture: {fileID: 2800000, guid: 20aa0f234461fbc46ae6fe91f504e2f6, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
