@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Pool;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ public class EndlessTerrain : MonoBehaviour
 	private LocalPool _terrainPool;
 	private int _chunksVisibleInViewDst;
 	private const float MaxViewDst = 450;
+
+	private Vector2 _lastChunk;
 	
 	#endregion
 
@@ -45,20 +48,27 @@ public class EndlessTerrain : MonoBehaviour
 		_chunksVisibleInViewDst = Mathf.RoundToInt(MaxViewDst / _chunkSize);
 
 		_terrainPool = new LocalPool(initialPoolSize, maxPoolSize, this.gameObject, universeData, baseTerrainMaterial);
+		_lastChunk = new Vector2(0, 0);
 		
-		InvokeRepeating("UpdateVisibleChunks", 3f, 1f);
+		InvokeRepeating("UpdateVisibleChunks", 0f, 1f);
 	}
 
 	void Update()
 	{
 		Vector3 viwerPositionReference = playerReference.position;
 		_viewerPosition = new Vector2(viwerPositionReference.x, viwerPositionReference.z);
-
 		// UpdateVisibleChunks();
 	}
 		
-	void UpdateVisibleChunks() {
-
+	void UpdateVisibleChunks()
+	{
+		// Vector2 currentChunk = _viewerPosition / _chunkSize;
+		// 		currentChunk.x = Mathf.RoundToInt(currentChunk.x);
+		// 		currentChunk.y = Mathf.RoundToInt(currentChunk.y);
+		// 		
+		// if (_lastChunk == currentChunk) return;
+		// else _lastChunk = currentChunk;
+		
 		for(int i = 0; i < _loadedLands.Count; i++) {
 			if (!_loadedLands[i].Chunk.IsNearby())
 			{
@@ -115,6 +125,7 @@ public class EndlessTerrain : MonoBehaviour
 
 		private Vector2 _position, _relativePosition;
 		private Terrain _baseTerrain;
+		private TerrainData _baseTerrainData;
 		private Universe _universeData;
 		
 		private List<GameObject> _instantiatedObjects = new List<GameObject>();
@@ -132,9 +143,11 @@ public class EndlessTerrain : MonoBehaviour
 			TerrainData terrainData = new TerrainData();
 			terrainData.heightmapResolution = 512;
 			terrainData.size = new Vector3(_chunkSize, 100, _chunkSize);
+
+			_baseTerrainData = terrainData;
 			
-			terrain.terrainData = terrainData;
-			terrainCollider.terrainData = terrainData;
+			terrain.terrainData = _baseTerrainData;
+			terrainCollider.terrainData = _baseTerrainData;
 			
 			// terrain.materialTemplate = terrainTexture;
 			
@@ -171,7 +184,7 @@ public class EndlessTerrain : MonoBehaviour
 			terrain.terrainData.terrainLayers = terrainLayers;
 		}
 
-		float[,] GeneratePerlinNoiseHeightmap(int resolution, int seed)
+		async void GeneratePerlinNoiseHeightmapAsync(int resolution, int seed)
 		{
 			float[,] heights = new float[resolution, resolution];
 
@@ -180,50 +193,153 @@ public class EndlessTerrain : MonoBehaviour
 
 			float scale = 800f;
 
-			for (int x = 0; x < resolution; x++)
+			var result = await Task.Run(() =>
 			{
-				for (int y = 0; y < resolution; y++)
+				for (int x = 0; x < resolution; x++)
 				{
-					// float xCoord = (float)x / (float)resolution * size + offsetX;
-					// float zCoord = (float)z / (float)resolution * size + offsetZ;
+					for (int y = 0; y < resolution; y++)
+					{
+						// float xCoord = (float)x / (float)resolution * size + offsetX;
+						// float zCoord = (float)z / (float)resolution * size + offsetZ;
 
-					// float sample = Mathf.PerlinNoise(xCoord * 0.005f, zCoord * 0.005f);
-					float sample = Mathf.PerlinNoise(
-						(((resolution - 1) * _relativePosition.x) + x + seedFactor) / scale,
-						(((resolution - 1) * _relativePosition.y) + y + seedFactor) / scale
-					);
+						// float sample = Mathf.PerlinNoise(xCoord * 0.005f, zCoord * 0.005f);
+						float sample = Mathf.PerlinNoise(
+							(((resolution - 1) * _relativePosition.x) + x + seedFactor) / scale,
+							(((resolution - 1) * _relativePosition.y) + y + seedFactor) / scale
+						);
 
-					sample *= (Mathf.PerlinNoise(
-						((((resolution - 1) * _relativePosition.x) + x + seedFactor2) + 1000) / scale,
-						((((resolution - 1) * _relativePosition.y) + y + seedFactor2) + 1000) / scale
-					) + .5f);
+						sample *= (Mathf.PerlinNoise(
+							((((resolution - 1) * _relativePosition.x) + x + seedFactor2) + 1000) / scale,
+							((((resolution - 1) * _relativePosition.y) + y + seedFactor2) + 1000) / scale
+						) + .5f);
                     
-					sample *= (Mathf.PerlinNoise(
-						((((resolution - 1) * _relativePosition.x) + x) + 42000) / scale * 1.5f,
-						((((resolution - 1) * _relativePosition.y) + y) + -42000) / scale * 1.5f
-					));
+						sample *= (Mathf.PerlinNoise(
+							((((resolution - 1) * _relativePosition.x) + x) + 42000) / scale * 1.5f,
+							((((resolution - 1) * _relativePosition.y) + y) + -42000) / scale * 1.5f
+						));
 					
 					
-					// float novoX = (resolution * _relativePosition.x) + x;
-					// float novoY = (resolution * _relativePosition.y) + y;
+						// float novoX = (resolution * _relativePosition.x) + x;
+						// float novoY = (resolution * _relativePosition.y) + y;
 					
-					// sample = sample / (130 - 10 * ((_relativePosition.x + _relativePosition.y) % 10));
+						// sample = sample / (130 - 10 * ((_relativePosition.x + _relativePosition.y) % 10));
 
-					// sample = (256 * sample - 16 * ((_relativePosition.x + _relativePosition.y) % 16)) / 256f;
-					// sample = ((_relativePosition.x + _relativePosition.y) % 2 == 0 ? 0f : 0.5f);
-					// sample = sample * ((16 * ((_relativePosition.x + _relativePosition.y) % 16)) + 256) / 512f;
+						// sample = (256 * sample - 16 * ((_relativePosition.x + _relativePosition.y) % 16)) / 256f;
+						// sample = ((_relativePosition.x + _relativePosition.y) % 2 == 0 ? 0f : 0.5f);
+						// sample = sample * ((16 * ((_relativePosition.x + _relativePosition.y) % 16)) + 256) / 512f;
      
-					// Ultimo
-					// sample *= (Mathf.Abs((novoX + novoY + 827269 * _relativePosition.x + 89189189 * _relativePosition.x + 131313 * (((long)novoX) ^ ((long)novoY)) + 424242 * (((long)_relativePosition.x) | ((long)_relativePosition.y))) % 2048 - 1024) / 1024);
+						// Ultimo
+						// sample *= (Mathf.Abs((novoX + novoY + 827269 * _relativePosition.x + 89189189 * _relativePosition.x + 131313 * (((long)novoX) ^ ((long)novoY)) + 424242 * (((long)_relativePosition.x) | ((long)_relativePosition.y))) % 2048 - 1024) / 1024);
                     
                     
                     
-					heights[y, x] = sample ;  // Troca z e x para corrigir a rotação do terren
+						heights[y, x] = sample ;  // Troca z e x para corrigir a rotação do terren
+					}
 				}
-			}
+
+				return heights;
+			});
 			
-			return heights;
+			// for (int x = 0; x < resolution; x++)
+			// {
+			// 	for (int y = 0; y < resolution; y++)
+			// 	{
+			// 		// float xCoord = (float)x / (float)resolution * size + offsetX;
+			// 		// float zCoord = (float)z / (float)resolution * size + offsetZ;
+			//
+			// 		// float sample = Mathf.PerlinNoise(xCoord * 0.005f, zCoord * 0.005f);
+			// 		float sample = Mathf.PerlinNoise(
+			// 			(((resolution - 1) * _relativePosition.x) + x + seedFactor) / scale,
+			// 			(((resolution - 1) * _relativePosition.y) + y + seedFactor) / scale
+			// 		);
+			//
+			// 		sample *= (Mathf.PerlinNoise(
+			// 			((((resolution - 1) * _relativePosition.x) + x + seedFactor2) + 1000) / scale,
+			// 			((((resolution - 1) * _relativePosition.y) + y + seedFactor2) + 1000) / scale
+			// 		) + .5f);
+   //                  
+			// 		sample *= (Mathf.PerlinNoise(
+			// 			((((resolution - 1) * _relativePosition.x) + x) + 42000) / scale * 1.5f,
+			// 			((((resolution - 1) * _relativePosition.y) + y) + -42000) / scale * 1.5f
+			// 		));
+			// 		
+			// 		
+			// 		// float novoX = (resolution * _relativePosition.x) + x;
+			// 		// float novoY = (resolution * _relativePosition.y) + y;
+			// 		
+			// 		// sample = sample / (130 - 10 * ((_relativePosition.x + _relativePosition.y) % 10));
+			//
+			// 		// sample = (256 * sample - 16 * ((_relativePosition.x + _relativePosition.y) % 16)) / 256f;
+			// 		// sample = ((_relativePosition.x + _relativePosition.y) % 2 == 0 ? 0f : 0.5f);
+			// 		// sample = sample * ((16 * ((_relativePosition.x + _relativePosition.y) % 16)) + 256) / 512f;
+   //   
+			// 		// Ultimo
+			// 		// sample *= (Mathf.Abs((novoX + novoY + 827269 * _relativePosition.x + 89189189 * _relativePosition.x + 131313 * (((long)novoX) ^ ((long)novoY)) + 424242 * (((long)_relativePosition.x) | ((long)_relativePosition.y))) % 2048 - 1024) / 1024);
+   //                  
+   //                  
+   //                  
+			// 		heights[y, x] = sample ;  // Troca z e x para corrigir a rotação do terren
+			// 	}
+			// }
+			
+			_baseTerrain.terrainData.SetHeights(0, 0, result);
 		}
+		
+		// float[,] GeneratePerlinNoiseHeightmap(int resolution, int seed)
+		// {
+		// 	float[,] heights = new float[resolution, resolution];
+		//
+		// 	float seedFactor = (seed / (float)_chunkSize * resolution) / 100;
+		// 	float seedFactor2 = (seedFactor * seed) / 1000;
+		//
+		// 	float scale = 800f;
+		//
+		// 	for (int x = 0; x < resolution; x++)
+		// 	{
+		// 		for (int y = 0; y < resolution; y++)
+		// 		{
+		// 			// float xCoord = (float)x / (float)resolution * size + offsetX;
+		// 			// float zCoord = (float)z / (float)resolution * size + offsetZ;
+		//
+		// 			// float sample = Mathf.PerlinNoise(xCoord * 0.005f, zCoord * 0.005f);
+		// 			float sample = Mathf.PerlinNoise(
+		// 				(((resolution - 1) * _relativePosition.x) + x + seedFactor) / scale,
+		// 				(((resolution - 1) * _relativePosition.y) + y + seedFactor) / scale
+		// 			);
+		//
+		// 			sample *= (Mathf.PerlinNoise(
+		// 				((((resolution - 1) * _relativePosition.x) + x + seedFactor2) + 1000) / scale,
+		// 				((((resolution - 1) * _relativePosition.y) + y + seedFactor2) + 1000) / scale
+		// 			) + .5f);
+  //                   
+		// 			sample *= (Mathf.PerlinNoise(
+		// 				((((resolution - 1) * _relativePosition.x) + x) + 42000) / scale * 1.5f,
+		// 				((((resolution - 1) * _relativePosition.y) + y) + -42000) / scale * 1.5f
+		// 			));
+		// 			
+		// 			
+		// 			// float novoX = (resolution * _relativePosition.x) + x;
+		// 			// float novoY = (resolution * _relativePosition.y) + y;
+		// 			
+		// 			// sample = sample / (130 - 10 * ((_relativePosition.x + _relativePosition.y) % 10));
+		//
+		// 			// sample = (256 * sample - 16 * ((_relativePosition.x + _relativePosition.y) % 16)) / 256f;
+		// 			// sample = ((_relativePosition.x + _relativePosition.y) % 2 == 0 ? 0f : 0.5f);
+		// 			// sample = sample * ((16 * ((_relativePosition.x + _relativePosition.y) % 16)) + 256) / 512f;
+  //    
+		// 			// Ultimo
+		// 			// sample *= (Mathf.Abs((novoX + novoY + 827269 * _relativePosition.x + 89189189 * _relativePosition.x + 131313 * (((long)novoX) ^ ((long)novoY)) + 424242 * (((long)_relativePosition.x) | ((long)_relativePosition.y))) % 2048 - 1024) / 1024);
+  //                   
+  //                   
+  //                   
+		// 			heights[y, x] = sample ;  // Troca z e x para corrigir a rotação do terren
+		// 		}
+		// 	}
+		// 	
+		// 	_baseTerrain.terrainData.SetHeights(0, 0, heights);
+		// 	
+		// 	return heights;
+		// }
 		
 		public void Setup(Vector2 coord, int size, Transform parent, int seed)
 		{
@@ -237,92 +353,153 @@ public class EndlessTerrain : MonoBehaviour
 			_meshObject.transform.localScale = Vector3.one * size / 10f;
 			_meshObject.transform.parent = parent;
 			
-			_baseTerrain.terrainData.SetHeights(0, 0, GeneratePerlinNoiseHeightmap(_baseTerrain.terrainData.heightmapResolution, seed));
+			
+			// _baseTerrain.terrainData.SetHeights(0, 0, GeneratePerlinNoiseHeightmap(_baseTerrain.terrainData.heightmapResolution, seed));
 			
 			// SpawnStructure(structurePrefab);
 			// AddTrees(_baseTerrain);
-			BiomesTexturesSetup(_baseTerrain);
+
+			GeneratePerlinNoiseHeightmapAsync(_baseTerrain.terrainData.heightmapResolution, seed);
+			
+			int alphamapWidth = _baseTerrainData.alphamapWidth,
+				alphamapHeight = _baseTerrainData.alphamapHeight,
+				alphamapResolution = _baseTerrainData.alphamapHeight,
+				alphamapLayersCount = _baseTerrainData.terrainLayers.Length;
+			
+			BiomesTexturesSetupAsync(
+				alphamapWidth,
+				alphamapHeight,
+				alphamapResolution,
+				alphamapLayersCount
+			);
+			
+			// BiomesTexturesSetup(_baseTerrain);
 			// PlaceTree(_baseTerrain, new Vector2(_meshObject.transform.position.x, _meshObject.transform.position.y), treePrefab);
 			
 			SetVisible(true);
 		}
-
-		void BiomesTexturesSetup(Terrain terrain)
+		
+		async void BiomesTexturesSetupAsync(
+			int alphamapWidth,
+			int alphamapHeight,
+			int alphamapResolution,
+			int alphamapLayersCount
+		)
 		{
-			TerrainData terrainData = terrain.terrainData;
 			
-			int width = terrainData.alphamapWidth,
-				height = terrainData.alphamapHeight,
-				resolution = terrainData.alphamapResolution;
+			int width = alphamapWidth,
+				height = alphamapHeight,
+				resolution = alphamapResolution;
 			
 			float noiseScale = 8000f;
-			float[,,] alphaMap = new float[
-				terrainData.alphamapWidth, 
-				terrainData.alphamapHeight, 
-				terrainData.terrainLayers.Length
-			];
-			
-			for (int y = 0; y < width; y++)
+			var result = await Task.Run(() =>
 			{
-				float currentGlobalCoordinateY = ((resolution - 1) * _relativePosition.y) + y;
+				float[,,] alphaMap = new float[
+					alphamapWidth, 
+					alphamapHeight, 
+					alphamapLayersCount
+				];
+
+				Vector2 step = new Vector2(1f, 1f);
 				
-				for (int x = 0; x < height; x++)
+				for (int y = 0; y < width; y++)
 				{
-					float currentGlobalCoordinateX  = ((resolution - 1) * _relativePosition.x) + x;
-					
-					float temperature = Mathf.PerlinNoise(
-						currentGlobalCoordinateX / noiseScale,
-						currentGlobalCoordinateY / noiseScale
-					);
-					
-					float humidity = Mathf.PerlinNoise(
-						currentGlobalCoordinateX / (noiseScale * 1.8f),
-						currentGlobalCoordinateY / (noiseScale * 1.8f)
-					);
+					float currentGlobalCoordinateY = ((resolution - 1) * _relativePosition.y) + y;
 
-					Biome currentBiome = _universeData.GetBiomeByParameters(temperature, humidity);
-					int biomeLayer = currentBiome.biomeTextures[0].layer;
-					
-					alphaMap[y, x, biomeLayer] = 1;
-					
-					// --- Tree pacing ---
-
-					if (currentBiome.biomeTrees.Length > 0 && Random.Range(0f, 1f) <= currentBiome.biomeTrees[0].density / 1000)
+					for (int x = 0; x < height; x++)
 					{
-						float xToSpawn = (_relativePosition.x * _chunkSize) + (x * ((float)_chunkSize / resolution));
-						float yToSpawn = (_relativePosition.y * _chunkSize) + (y * ((float)_chunkSize / resolution));
+						float currentGlobalCoordinateX  = ((resolution - 1) * _relativePosition.x) + x;
 
-						// float xToSpawn = (_relativePosition.x * _chunkSize) + x * (resolution / _chunkSize);
-						// float yToSpawn = (_relativePosition.y * _chunkSize) + y * (resolution / _chunkSize);
-						// float xToSpawn = (_relativePosition.x * _chunkSize) + Random.Range(0f, _chunkSize);
-						// float yToSpawn = (_relativePosition.y * _chunkSize) + Random.Range(0f, _chunkSize);
-						
-						_instantiatedObjects.Add(
-							Instantiate(
-								currentBiome.biomeTrees[0].treePrefab,
-								new Vector3(
-									xToSpawn, 
-									terrainData.GetHeight(x, y),
-									yToSpawn
-								),
-								Quaternion.Euler(0, Random.Range(0f, 180f), 0)
-							)
+						float temperature = Mathf.PerlinNoise(
+							currentGlobalCoordinateX / noiseScale,
+							currentGlobalCoordinateY / noiseScale
 						);
+
+						float humidity = Mathf.PerlinNoise(
+							currentGlobalCoordinateX / (noiseScale * 1.8f),
+							currentGlobalCoordinateY / (noiseScale * 1.8f)
+						);
+
+						Biome currentBiome = _universeData.GetBiomeByParameters(temperature, humidity);
+						int biomeLayer = currentBiome.biomeTextures[0].layer;
+
+						alphaMap[y, x, biomeLayer] = 1;
+
+						// --- Tree pacing ---
 						
-						// PlaceTree(
-						// 	terrain,
-						// 	new Vector2(
-						// 		_meshObject.transform.position.x + (currentGlobalCoordinateX / resolution * _chunkSize), 
-						// 		_meshObject.transform.position.z + (currentGlobalCoordinateY / resolution * _chunkSize)
-						// 		// currentGlobalCoordinateY),
-						// 		),
-						// 	currentBiome.biomeTrees[0].treePrefab
+						float treeDisposition = Mathf.PerlinNoise(
+							currentGlobalCoordinateX * step.x,
+							currentGlobalCoordinateY * step.y						
+						);
+
+						step.x += treeDisposition * 100;
+						step.y += treeDisposition * 100;
+
+						if (currentBiome.biomeTrees.Length > 0 && treeDisposition <= currentBiome.biomeTrees[0].density)
+						{
+						 float xToSpawn = (_relativePosition.x * _chunkSize) + (x * ((float)_chunkSize / resolution));
+						 float yToSpawn = (_relativePosition.y * _chunkSize) + (y * ((float)_chunkSize / resolution));
+						
+						 // float xToSpawn = (_relativePosition.x * _chunkSize) + x * (resolution / _chunkSize);
+						 // float yToSpawn = (_relativePosition.y * _chunkSize) + y * (resolution / _chunkSize);
+						 // float xToSpawn = (_relativePosition.x * _chunkSize) + Random.Range(0f, _chunkSize);
+						 // float yToSpawn = (_relativePosition.y * _chunkSize) + Random.Range(0f, _chunkSize);
+
+						 // _instantiatedObjects.Add(
+							 // (InstantiateAsync(
+								//  currentBiome.biomeTrees[0].treePrefab, new Vector3(
+								// 	 xToSpawn,
+								// 	 // _baseTerrainData.GetHeight(x, y),
+								// 	 GetHeightByCoordinate(alphamapResolution, x, y),
+								// 	 yToSpawn
+								//  ),
+								//  Quaternion.identity
+							 // ).Result)[0]
 						// );
+							 
+						  // Instantiate(
+						  //  currentBiome.biomeTrees[0].treePrefab,
+						  //  new Vector3(
+							 //   xToSpawn,
+							 //   // _baseTerrainData.GetHeight(x, y),
+							 //   GetHeightByCoordinate(alphamapResolution, x, y),
+							 //   yToSpawn
+						  //  ),
+						  //  Quaternion.identity
+						  // )
+						}
 					}
 				}
-			}
+				
+				return alphaMap;
+			});
 
-			terrain.terrainData.SetAlphamaps(0, 0, alphaMap);
+			_baseTerrainData.SetAlphamaps(0, 0, result);
+		}
+
+		float GetHeightByCoordinate(int resolution, int x, int y)
+		{
+			float seedFactor = (123 / (float)_chunkSize * resolution) / 100;
+			float seedFactor2 = (seedFactor * 123) / 1000;
+
+			float scale = 800f;
+			
+			float sample = Mathf.PerlinNoise(
+				(((resolution - 1) * _relativePosition.x) + x + seedFactor) / scale,
+				(((resolution - 1) * _relativePosition.y) + y + seedFactor) / scale
+			);
+
+			sample *= (Mathf.PerlinNoise(
+				((((resolution - 1) * _relativePosition.x) + x + seedFactor2) + 1000) / scale,
+				((((resolution - 1) * _relativePosition.y) + y + seedFactor2) + 1000) / scale
+			) + .5f);
+                    
+			sample *= (Mathf.PerlinNoise(
+				((((resolution - 1) * _relativePosition.x) + x) + 42000) / scale * 1.5f,
+				((((resolution - 1) * _relativePosition.y) + y) + -42000) / scale * 1.5f
+			));
+
+			return sample;
 		}
 		
 		public void SetVisible(bool visible) {
