@@ -33,7 +33,7 @@ public class EndlessTerrain : MonoBehaviour
 		_chunkSize = 100 - 1;
 		_chunksVisibleInViewDst = Mathf.RoundToInt(MaxViewDst / _chunkSize);
 
-		_terrainPool = new LocalPool(this.gameObject, treePrefab, universeData, baseTerrainMaterial);
+		_terrainPool = new LocalPool(this.gameObject, universeData, baseTerrainMaterial);
 	}
 
 	void Update()
@@ -99,25 +99,22 @@ public class EndlessTerrain : MonoBehaviour
 
 		private Vector2 _position, _relativePosition;
 		private Terrain _baseTerrain;
-		private TerrainCollider _terrainCollider;
 		private Universe _universeData;
-
-		// Provisorio
-		// private GameObject treePrefab;
-		private GameObject treePrefab;
+		
+		private List<GameObject> instantiatedObjects = new List<GameObject>();
 		
 		// Provisorio
 		// public TerrainChunk() {
-		public TerrainChunk(GameObject treePrefab, Universe universeData, Material baseTerrainMaterial)
+		public TerrainChunk(Universe universeData, Material baseTerrainMaterial)
 		{
 			this._universeData = universeData;
 			
 			// Cria um novo objeto Terrain
 			_meshObject = new GameObject("Terrain");
 			Terrain terrain = _meshObject.AddComponent<Terrain>();
-			_terrainCollider = _meshObject.AddComponent<TerrainCollider>();
+			TerrainCollider terrainCollider = _meshObject.AddComponent<TerrainCollider>();
 			
-			_terrainCollider.providesContacts = true;
+			terrainCollider.providesContacts = true;
 
 			// Cria e configura o TerrainData
 			TerrainData terrainData = new TerrainData();
@@ -127,11 +124,9 @@ public class EndlessTerrain : MonoBehaviour
 
 			// Associa o TerrainData ao Terrain e ao TerrainCollider
 			terrain.terrainData = terrainData;
-			_terrainCollider.terrainData = terrainData;
+			terrainCollider.terrainData = terrainData;
 			
-			// Provisorio
 			// terrain.materialTemplate = terrainTexture;
-			this.treePrefab = treePrefab;
 			
 			// _meshObject = GameObject.CreatePrimitive(PrimitiveType.Plane);
 			// _meshObject.AddComponent<MeshCollider>();
@@ -189,7 +184,7 @@ public class EndlessTerrain : MonoBehaviour
 		{
 			float[,] heights = new float[resolution, resolution];
 
-			float seedFactor = (seed / _chunkSize * resolution) / 100;
+			float seedFactor = (seed / (float)_chunkSize * resolution) / 100;
 			float seedFactor2 = (seedFactor * seed) / 1000;
 
 			float scale = 800f;
@@ -253,7 +248,7 @@ public class EndlessTerrain : MonoBehaviour
 			
 			_baseTerrain.terrainData.SetHeights(0, 0, GeneratePerlinNoiseHeightmap(_baseTerrain.terrainData.heightmapResolution, seed));
 			
-			SpawnStructure(structurePrefab);
+			// SpawnStructure(structurePrefab);
 			// AddTrees(_baseTerrain);
 			BiomesTexturesSetup(_baseTerrain);
 			// PlaceTree(_baseTerrain, new Vector2(_meshObject.transform.position.x, _meshObject.transform.position.y), treePrefab);
@@ -261,28 +256,6 @@ public class EndlessTerrain : MonoBehaviour
 			SetVisible(true);
 		}
 
-		void PlaceTree(Terrain terrain, Vector2 globalCoordinate, GameObject treePrefab)
-		{
-
-			// Instantiate(
-			// 	treePrefab,
-			// 	new Vector3(0,0, 0),
-			// 	Quaternion.identity
-			// );
-			
-			
-			
-			Instantiate(
-				treePrefab,
-				new Vector3(
-					globalCoordinate.x,
-					terrain.terrainData.GetHeight((int)globalCoordinate.x, (int)globalCoordinate.y),
-					globalCoordinate.y
-				),
-				Quaternion.identity
-			);
-		}
-		
 		void BiomesTexturesSetup(Terrain terrain)
 		{
 			TerrainData terrainData = terrain.terrainData;
@@ -325,22 +298,24 @@ public class EndlessTerrain : MonoBehaviour
 
 					if (currentBiome.biomeTrees.Length > 0 && Random.Range(0f, 1f) <= currentBiome.biomeTrees[0].density / 1000)
 					{
-						float xToSpawn = (_relativePosition.x * _chunkSize) + (x * ((float)_chunkSize / (float)resolution));
-						float yToSpawn = (_relativePosition.y * _chunkSize) + (y * ((float)_chunkSize / (float)resolution));
+						float xToSpawn = (_relativePosition.x * _chunkSize) + (x * ((float)_chunkSize / resolution));
+						float yToSpawn = (_relativePosition.y * _chunkSize) + (y * ((float)_chunkSize / resolution));
 
 						// float xToSpawn = (_relativePosition.x * _chunkSize) + x * (resolution / _chunkSize);
 						// float yToSpawn = (_relativePosition.y * _chunkSize) + y * (resolution / _chunkSize);
 						// float xToSpawn = (_relativePosition.x * _chunkSize) + Random.Range(0f, _chunkSize);
 						// float yToSpawn = (_relativePosition.y * _chunkSize) + Random.Range(0f, _chunkSize);
 						
-						Instantiate(
-							treePrefab,
-							new Vector3(
-								xToSpawn, 
-								terrainData.GetHeight(x, y),
-								yToSpawn
-							),
-							Quaternion.identity
+						instantiatedObjects.Add(
+							Instantiate(
+								currentBiome.biomeTrees[0].treePrefab,
+								new Vector3(
+									xToSpawn, 
+									terrainData.GetHeight(x, y),
+									yToSpawn
+								),
+								Quaternion.Euler(0, Random.Range(0f, 180f), 0)
+							)
 						);
 						
 						// PlaceTree(
@@ -364,42 +339,19 @@ public class EndlessTerrain : MonoBehaviour
 			float y = _baseTerrain.terrainData.GetHeight(0, 0);
 			Instantiate(structurePrefab, new Vector3(_relativePosition.x * _chunkSize, y, _relativePosition.y * _chunkSize), Quaternion.identity);
 		}
-		
-		void AddTrees(Terrain terrain)
-		{
-			_terrainCollider.providesContacts = true;
-			TerrainData terrainData = terrain.terrainData;
-
-			TreePrototype treePrototype = new TreePrototype();
-
-			treePrototype.prefab = treePrefab;
-
-			terrainData.treePrototypes = new TreePrototype[] { treePrototype };
-
-			float terrainWidth = terrain.terrainData.size.x;
-			float terrainLength = terrain.terrainData.size.z;
-			
-			for (int i = 0; i < 10; i++)
-			{
-				TreeInstance treeInstance = new TreeInstance();
-				
-				float x = Random.Range(0f, terrainWidth) / terrainWidth;
-				float z = Random.Range(0f, terrainLength) / terrainLength;
-				float y = terrain.SampleHeight(new Vector3(x * terrainWidth, 0, z * terrainLength)) / terrain.terrainData.size.y;
-
-				treeInstance.position = new Vector3(x, y, z);
-				treeInstance.prototypeIndex = 0;
-				treeInstance.widthScale = 1;
-				treeInstance.heightScale = 1;
-				treeInstance.color = Color.white;
-				treeInstance.lightmapColor = Color.white;
-
-				terrain.AddTreeInstance(treeInstance);
-			}
-		}
 
 		public void SetVisible(bool visible) {
 			_meshObject.SetActive(visible);
+
+			if (!visible)
+			{
+				foreach (var instantiatedObject in instantiatedObjects)
+				{
+					Destroy(instantiatedObject);
+				}
+				
+				instantiatedObjects.Clear();
+			}
 		}
 
 		public Boolean IsNearby()
@@ -437,16 +389,12 @@ public class EndlessTerrain : MonoBehaviour
     
         // Provisorio
         // public LocalPool(GameObject parent)
-        private GameObject treePrefab;
 
         private Universe _universeData;
         private Material _baseTerrainMaterial;
         
-        public LocalPool(GameObject parent, GameObject treePrefab, Universe universeData, Material baseTerrainMaterial)
+        public LocalPool(GameObject parent, Universe universeData, Material baseTerrainMaterial)
         {
-	        // Provisorio
-	        this.treePrefab = treePrefab;
-	        
 	        this._parent = parent;
 	        this._universeData = universeData;
 	        this._baseTerrainMaterial = baseTerrainMaterial;
@@ -465,7 +413,7 @@ public class EndlessTerrain : MonoBehaviour
         {
 	        // Provisorio
             // return new TerrainChunk();
-            return new TerrainChunk(treePrefab, _universeData, _baseTerrainMaterial);
+            return new TerrainChunk(_universeData, _baseTerrainMaterial);
         }
     
         private static void OnReturnedToPool(TerrainChunk obj)
@@ -491,7 +439,7 @@ public class EndlessTerrain : MonoBehaviour
                 // Debug.LogWarning("Max pool size reached. Cannot spawn new objects.");
                 // Provisorio
                 // return new TerrainChunk();
-                return new TerrainChunk(treePrefab, universeData, _baseTerrainMaterial);
+                return new TerrainChunk(universeData, _baseTerrainMaterial);
             }
     
             TerrainChunk pooledObject = _pool.Get();
