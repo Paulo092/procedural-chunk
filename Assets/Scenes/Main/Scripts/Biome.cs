@@ -10,8 +10,13 @@ public class Biome
     [MinMaxSlider(0,1)]
     public Vector2 humidity = new Vector2(0f,0f);
 
+    [Header("Terrain Parameters")] 
+    [Range(0f, 1f)]
+    public float smoothness;
+
     [Header("Population")] 
-    public GameObject[] trees;
+    public BiomeTree[] biomeTrees;
+    
     public Texture2D[] grass;
     public BiomeTexture[] biomeTextures;
 
@@ -31,5 +36,13 @@ public class Biome
         public Texture2D texture;
         [MinMaxSlider(0,1)]
         public Vector2 altitude = new Vector2(0f,0f);
+    }
+
+    [System.Serializable]
+    public class BiomeTree
+    {
+        public GameObject treePrefab;
+        [Range(0f, 1f)] 
+        public float density;
     }
 }
