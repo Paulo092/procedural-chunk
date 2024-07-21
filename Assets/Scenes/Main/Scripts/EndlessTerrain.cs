@@ -50,14 +50,14 @@ public class EndlessTerrain : MonoBehaviour
 		_terrainPool = new LocalPool(initialPoolSize, maxPoolSize, this.gameObject, universeData, baseTerrainMaterial);
 		_lastChunk = new Vector2(0, 0);
 		
-		InvokeRepeating("UpdateVisibleChunks", 0f, 1f);
+		// InvokeRepeating("UpdateVisibleChunks", 0f, 1f);
 	}
 
 	void Update()
 	{
 		Vector3 viwerPositionReference = playerReference.position;
 		_viewerPosition = new Vector2(viwerPositionReference.x, viwerPositionReference.z);
-		// UpdateVisibleChunks();
+		UpdateVisibleChunks();
 	}
 		
 	void UpdateVisibleChunks()
@@ -119,6 +119,27 @@ public class EndlessTerrain : MonoBehaviour
 		}
 	}
 
+	private class ObjectSpawnInfo
+	{
+		public GameObject Prefab;
+		public Vector3 SpawnCoordinate;
+		public Quaternion Rotation;
+		public Vector2Int CoordinateInTerrain;
+
+		public ObjectSpawnInfo(
+			GameObject prefab,
+			Vector3 spawnCoordinate,
+			Quaternion rotation,
+			Vector2Int coordinateInTerrain
+		)
+		{
+			Prefab = prefab;
+			SpawnCoordinate = spawnCoordinate;
+			Rotation = rotation;
+			CoordinateInTerrain = coordinateInTerrain;
+		}
+	}
+	
 	private class TerrainChunk
 	{
 		private readonly GameObject _meshObject;
@@ -340,10 +361,13 @@ public class EndlessTerrain : MonoBehaviour
 		// 	
 		// 	return heights;
 		// }
+
+		private int _seed;
 		
 		public void Setup(Vector2 coord, int size, Transform parent, int seed)
 		{
 			this._relativePosition = coord;
+			this._seed = seed;
 			
 			_position = coord * size;
 			
@@ -359,18 +383,20 @@ public class EndlessTerrain : MonoBehaviour
 			// SpawnStructure(structurePrefab);
 			// AddTrees(_baseTerrain);
 
-			GeneratePerlinNoiseHeightmapAsync(_baseTerrain.terrainData.heightmapResolution, seed);
-			
+			GeneratePerlinNoiseHeightmapAsync(_baseTerrain.terrainData.heightmapResolution, _seed);
+
 			int alphamapWidth = _baseTerrainData.alphamapWidth,
 				alphamapHeight = _baseTerrainData.alphamapHeight,
 				alphamapResolution = _baseTerrainData.alphamapHeight,
-				alphamapLayersCount = _baseTerrainData.terrainLayers.Length;
+				alphamapLayersCount = _baseTerrainData.terrainLayers.Length,
+				heightmapResolution = _baseTerrainData.heightmapResolution;
 			
 			BiomesTexturesSetupAsync(
 				alphamapWidth,
 				alphamapHeight,
 				alphamapResolution,
-				alphamapLayersCount
+				alphamapLayersCount,
+				heightmapResolution
 			);
 			
 			// BiomesTexturesSetup(_baseTerrain);
@@ -383,7 +409,8 @@ public class EndlessTerrain : MonoBehaviour
 			int alphamapWidth,
 			int alphamapHeight,
 			int alphamapResolution,
-			int alphamapLayersCount
+			int alphamapLayersCount,
+			int heightMapResolution
 		)
 		{
 			
@@ -392,6 +419,8 @@ public class EndlessTerrain : MonoBehaviour
 				resolution = alphamapResolution;
 			
 			float noiseScale = 8000f;
+
+			
 			var result = await Task.Run(() =>
 			{
 				float[,,] alphaMap = new float[
@@ -399,6 +428,8 @@ public class EndlessTerrain : MonoBehaviour
 					alphamapHeight, 
 					alphamapLayersCount
 				];
+				
+				List<ObjectSpawnInfo> treesToSpawn = new();
 
 				Vector2 step = new Vector2(1f, 1f);
 				
@@ -435,11 +466,25 @@ public class EndlessTerrain : MonoBehaviour
 						step.x += treeDisposition * 100;
 						step.y += treeDisposition * 100;
 
-						if (currentBiome.biomeTrees.Length > 0 && treeDisposition <= currentBiome.biomeTrees[0].density)
+						if (currentBiome.biomeTrees.Length > 0 && treeDisposition <= currentBiome.biomeTrees[0].density / 10)
 						{
-						 float xToSpawn = (_relativePosition.x * _chunkSize) + (x * ((float)_chunkSize / resolution));
-						 float yToSpawn = (_relativePosition.y * _chunkSize) + (y * ((float)_chunkSize / resolution));
-						
+							float xToSpawn = (_relativePosition.x * _chunkSize) + (x * ((float)_chunkSize / resolution));
+							float yToSpawn = (_relativePosition.y * _chunkSize) + (y * ((float)_chunkSize / resolution));
+							
+							treesToSpawn.Add(new ObjectSpawnInfo(
+									currentBiome.biomeTrees[0].treePrefab,
+									new Vector3(
+										xToSpawn,
+										// _baseTerrainData.GetHeight(x, y),
+										// GetHeightByCoordinate(heightMapResolution, x, y),
+										0,
+										yToSpawn
+									),
+									Quaternion.identity,
+									new Vector2Int(x, y)
+								)
+							);
+						 
 						 // float xToSpawn = (_relativePosition.x * _chunkSize) + x * (resolution / _chunkSize);
 						 // float yToSpawn = (_relativePosition.y * _chunkSize) + y * (resolution / _chunkSize);
 						 // float xToSpawn = (_relativePosition.x * _chunkSize) + Random.Range(0f, _chunkSize);
@@ -471,16 +516,30 @@ public class EndlessTerrain : MonoBehaviour
 					}
 				}
 				
-				return alphaMap;
+				return (alphaMap, treesToSpawn);
 			});
 
-			_baseTerrainData.SetAlphamaps(0, 0, result);
+			foreach (var tree in result.treesToSpawn)
+			{
+				tree.SpawnCoordinate.y =
+					_baseTerrainData.GetHeight(tree.CoordinateInTerrain.x, tree.CoordinateInTerrain.y);
+				
+				_instantiatedObjects.Add(
+					Instantiate(
+						tree.Prefab,
+						tree.SpawnCoordinate,
+						tree.Rotation
+					)
+				);
+			}
+			
+			_baseTerrainData.SetAlphamaps(0, 0, result.alphaMap);
 		}
 
 		float GetHeightByCoordinate(int resolution, int x, int y)
 		{
-			float seedFactor = (123 / (float)_chunkSize * resolution) / 100;
-			float seedFactor2 = (seedFactor * 123) / 1000;
+			float seedFactor = (_seed / (float)_chunkSize * resolution) / 100;
+			float seedFactor2 = (seedFactor * _seed) / 1000;
 
 			float scale = 800f;
 			
