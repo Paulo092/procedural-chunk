@@ -6,55 +6,68 @@ using Random = UnityEngine.Random;
 
 public class EndlessTerrain : MonoBehaviour
 {
-	// Provisorio
-	public Material terrainTexture;
-	public GameObject treePrefab;
+	#region Fields
 	
-	public Transform viewer;
+	[Header("Basic Setup")] 
+	public Transform playerReference;
 	public Universe universeData;
+	public Material baseTerrainMaterial;
 	
+	[Header("Generation Options")] 
+	public int chunkSize = 100;
+	public bool randomSeed;
+	public int seed = 12345678;
+	
+	[Header("Pool Config")]
+	public int initialPoolSize = 100;
+	public int maxPoolSize = 1000;
+	
+	#endregion
+
+	#region Properties
+
 	private static Vector2 _viewerPosition;
 	private static int _chunkSize;
 	
-	private readonly Dictionary<Vector2, TerrainChunk> _terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
-	private readonly List<ChunkInfo> _farLands = new List<ChunkInfo>();
+	private readonly List<ChunkInfo> _loadedLands = new();
+	private readonly Dictionary<Vector2, TerrainChunk> _terrainChunkDictionary = new();
 	
-	private const float MaxViewDst = 450;
-	private int _chunksVisibleInViewDst;
 	private LocalPool _terrainPool;
+	private int _chunksVisibleInViewDst;
+	private const float MaxViewDst = 450;
+	
+	#endregion
 
-	public int seed = 12345678;
-	public GameObject structurePrefab;
-
-	[Header("Terrains Setup")] 
-	public Material baseTerrainMaterial;
-		
+	#region Manager
+	
 	private void Start() {
-		_chunkSize = 100 - 1;
+		_chunkSize = chunkSize - 1;
 		_chunksVisibleInViewDst = Mathf.RoundToInt(MaxViewDst / _chunkSize);
 
-		_terrainPool = new LocalPool(this.gameObject, universeData, baseTerrainMaterial);
+		_terrainPool = new LocalPool(initialPoolSize, maxPoolSize, this.gameObject, universeData, baseTerrainMaterial);
+		
+		InvokeRepeating("UpdateVisibleChunks", 3f, 1f);
 	}
 
 	void Update()
 	{
-		Vector3 viwerPositionReference = viewer.position;
+		Vector3 viwerPositionReference = playerReference.position;
 		_viewerPosition = new Vector2(viwerPositionReference.x, viwerPositionReference.z);
 
-		UpdateVisibleChunks();
+		// UpdateVisibleChunks();
 	}
 		
 	void UpdateVisibleChunks() {
 
-		for(int i = 0; i < _farLands.Count; i++) {
-			if (!_farLands[i].Chunk.IsNearby())
+		for(int i = 0; i < _loadedLands.Count; i++) {
+			if (!_loadedLands[i].Chunk.IsNearby())
 			{
-				_terrainPool.ReleaseObject(_farLands[i].Chunk);
-				_terrainChunkDictionary.Remove(_farLands[i].Coord);
+				_terrainPool.ReleaseObject(_loadedLands[i].Chunk);
+				_terrainChunkDictionary.Remove(_loadedLands[i].Coord);
 			}
 		}
 		
-		_farLands.Clear();
+		_loadedLands.Clear();
 			
 		int currentChunkCoordX = Mathf.RoundToInt(_viewerPosition.x / _chunkSize);
 		int currentChunkCoordY = Mathf.RoundToInt(_viewerPosition.y / _chunkSize);
@@ -65,20 +78,24 @@ public class EndlessTerrain : MonoBehaviour
 
 				float maxViewDistanceInChunks = MaxViewDst / _chunkSize;
 				if (Vector2.Distance(viewedChunkCoord,
-					    new Vector2(viewer.transform.position.x, viewer.transform.position.z) / _chunkSize) >
+					    new Vector2(playerReference.transform.position.x, playerReference.transform.position.z) / _chunkSize) >
 				    maxViewDistanceInChunks) continue;
 				
 				if(_terrainChunkDictionary.ContainsKey(viewedChunkCoord)) {
-					_farLands.Add(new ChunkInfo(viewedChunkCoord, _terrainChunkDictionary[viewedChunkCoord]));
+					_loadedLands.Add(new ChunkInfo(viewedChunkCoord, _terrainChunkDictionary[viewedChunkCoord]));
 				} else {
-					TerrainChunk terrainChunk = _terrainPool.GetPooledObject(viewedChunkCoord, _chunkSize, seed, structurePrefab, universeData);
+					TerrainChunk terrainChunk = _terrainPool.GetPooledObject(viewedChunkCoord, _chunkSize, seed, universeData);
 					
 					_terrainChunkDictionary.Add(viewedChunkCoord, terrainChunk);
-					_farLands.Add(new ChunkInfo(viewedChunkCoord, terrainChunk));
+					_loadedLands.Add(new ChunkInfo(viewedChunkCoord, terrainChunk));
 				}
 			}
 		}
 	}
+	
+	#endregion
+
+	#region ChunkClass
 
 	private class ChunkInfo
 	{
@@ -94,51 +111,39 @@ public class EndlessTerrain : MonoBehaviour
 
 	private class TerrainChunk
 	{
-
 		private readonly GameObject _meshObject;
 
 		private Vector2 _position, _relativePosition;
 		private Terrain _baseTerrain;
 		private Universe _universeData;
 		
-		private List<GameObject> instantiatedObjects = new List<GameObject>();
+		private List<GameObject> _instantiatedObjects = new List<GameObject>();
 		
-		// Provisorio
-		// public TerrainChunk() {
 		public TerrainChunk(Universe universeData, Material baseTerrainMaterial)
 		{
 			this._universeData = universeData;
 			
-			// Cria um novo objeto Terrain
 			_meshObject = new GameObject("Terrain");
 			Terrain terrain = _meshObject.AddComponent<Terrain>();
 			TerrainCollider terrainCollider = _meshObject.AddComponent<TerrainCollider>();
 			
 			terrainCollider.providesContacts = true;
-
-			// Cria e configura o TerrainData
+			
 			TerrainData terrainData = new TerrainData();
 			terrainData.heightmapResolution = 512;
 			terrainData.size = new Vector3(_chunkSize, 100, _chunkSize);
-			// terrainData.SetHeights(0, 0, GeneratePerlinNoiseHeightmap(terrainData.heightmapResolution));
-
-			// Associa o TerrainData ao Terrain e ao TerrainCollider
+			
 			terrain.terrainData = terrainData;
 			terrainCollider.terrainData = terrainData;
 			
 			// terrain.materialTemplate = terrainTexture;
 			
-			// _meshObject = GameObject.CreatePrimitive(PrimitiveType.Plane);
-			// _meshObject.AddComponent<MeshCollider>();
-
 			terrain.materialTemplate = baseTerrainMaterial;
 			
 			_baseTerrain = terrain;
 			_baseTerrain.gameObject.layer = LayerMask.NameToLayer("Ground");
 			
 			SetupTextures(_baseTerrain);
-
-			
 			SetVisible(false);
 		}
 
@@ -162,20 +167,6 @@ public class EndlessTerrain : MonoBehaviour
 					index++;
 				}
 			}
-			
-			// for (int biomeIndex = 0; biomeIndex < biomes.Length; biomeIndex++)
-			// {
-			// 	terrainLayers[biomeIndex] = new TerrainLayer();
-			// 	terrainLayers[biomeIndex].name = "Texture " + biomes[biomeIndex].biomeName;
-			// 	terrainLayers[biomeIndex].diffuseTexture = biomes[biomeIndex].biomeTextures[0].texture;
-			// 	biomes[biomeIndex].biomeTextures[0].layer = index
-			// 	
-			// }
-			
-			// foreach (var biome in _universeData.biomeList)
-			// {
-			// 	terrainLayers[index++].diffuseTexture = biome.biomeTexture;
-			// }
 
 			terrain.terrainData.terrainLayers = terrainLayers;
 		}
@@ -234,7 +225,7 @@ public class EndlessTerrain : MonoBehaviour
 			return heights;
 		}
 		
-		public void Setup(Vector2 coord, int size, Transform parent, int seed, GameObject structurePrefab)
+		public void Setup(Vector2 coord, int size, Transform parent, int seed)
 		{
 			this._relativePosition = coord;
 			
@@ -306,7 +297,7 @@ public class EndlessTerrain : MonoBehaviour
 						// float xToSpawn = (_relativePosition.x * _chunkSize) + Random.Range(0f, _chunkSize);
 						// float yToSpawn = (_relativePosition.y * _chunkSize) + Random.Range(0f, _chunkSize);
 						
-						instantiatedObjects.Add(
+						_instantiatedObjects.Add(
 							Instantiate(
 								currentBiome.biomeTrees[0].treePrefab,
 								new Vector3(
@@ -334,23 +325,17 @@ public class EndlessTerrain : MonoBehaviour
 			terrain.terrainData.SetAlphamaps(0, 0, alphaMap);
 		}
 		
-		void SpawnStructure(GameObject structurePrefab)
-		{
-			float y = _baseTerrain.terrainData.GetHeight(0, 0);
-			Instantiate(structurePrefab, new Vector3(_relativePosition.x * _chunkSize, y, _relativePosition.y * _chunkSize), Quaternion.identity);
-		}
-
 		public void SetVisible(bool visible) {
 			_meshObject.SetActive(visible);
 
 			if (!visible)
 			{
-				foreach (var instantiatedObject in instantiatedObjects)
+				foreach (GameObject instantiatedObject in _instantiatedObjects)
 				{
 					Destroy(instantiatedObject);
 				}
 				
-				instantiatedObjects.Clear();
+				_instantiatedObjects.Clear();
 			}
 		}
 
@@ -375,29 +360,29 @@ public class EndlessTerrain : MonoBehaviour
 			Destroy(_meshObject);
 		}
 	}
-	
+
+	#endregion
+
+	#region PoolClass
+
 	private class LocalPool
     {
-    
-        private const int InitialPoolSize = 100;
-        private const int MaxPoolSize = 1000;
-    
-        private readonly ObjectPool<TerrainChunk> _pool;
         public GameObject Prefab;
-	    private readonly GameObject _parent;
-        private int _activeObjects;
-    
-        // Provisorio
-        // public LocalPool(GameObject parent)
-
-        private Universe _universeData;
-        private Material _baseTerrainMaterial;
         
-        public LocalPool(GameObject parent, Universe universeData, Material baseTerrainMaterial)
+	    private int _activeObjects; 
+        
+	    private readonly ObjectPool<TerrainChunk> _pool;
+        private readonly Material _baseTerrainMaterial;
+        private readonly Universe _universeData;
+	    private readonly GameObject _parent;
+	    private readonly int _maxPoolSize;
+        
+        public LocalPool(int initialPoolSize, int maxPoolSize, GameObject parent, Universe universeData, Material baseTerrainMaterial)
         {
 	        this._parent = parent;
 	        this._universeData = universeData;
 	        this._baseTerrainMaterial = baseTerrainMaterial;
+	        this._maxPoolSize = maxPoolSize;
             
             _pool = new ObjectPool<TerrainChunk>(
                 CreatePooledItem,
@@ -405,14 +390,12 @@ public class EndlessTerrain : MonoBehaviour
                 OnReturnedToPool,
                 OnDestroyPoolObject,
                 true, 
-                InitialPoolSize, 
-                MaxPoolSize);
+                initialPoolSize, 
+                maxPoolSize);
         }
         
         private TerrainChunk CreatePooledItem()
         {
-	        // Provisorio
-            // return new TerrainChunk();
             return new TerrainChunk(_universeData, _baseTerrainMaterial);
         }
     
@@ -432,18 +415,15 @@ public class EndlessTerrain : MonoBehaviour
 	        obj.Die();
         }
     
-        public TerrainChunk GetPooledObject(Vector2 coord, int size, int seed, GameObject structurePrefab, Universe universeData)
+        public TerrainChunk GetPooledObject(Vector2 coord, int size, int seed, Universe universeData)
         {
-            if(_activeObjects >= MaxPoolSize)
+            if(_activeObjects >= _maxPoolSize)
             {
-                // Debug.LogWarning("Max pool size reached. Cannot spawn new objects.");
-                // Provisorio
-                // return new TerrainChunk();
                 return new TerrainChunk(universeData, _baseTerrainMaterial);
             }
     
             TerrainChunk pooledObject = _pool.Get();
-            pooledObject.Setup(coord, size, _parent.transform, seed, structurePrefab);
+            pooledObject.Setup(coord, size, _parent.transform, seed);
             
             return pooledObject;
         }
@@ -454,4 +434,6 @@ public class EndlessTerrain : MonoBehaviour
             _pool.Release(obj);
         }
     }
+
+	#endregion
 }
