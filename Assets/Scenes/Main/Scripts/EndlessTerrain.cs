@@ -461,14 +461,22 @@ public class EndlessTerrain : MonoBehaviour
 
 						alphaMap[y, x, biomeLayer] = 1;
 						
-						#region  Tree Place
+						#region Choose Tree Coordinates
 
-						// --- Tree pacing ---
-
-						if (x != 0 && y != 0 && x % 100 == 0 && y % 100 == 0)
+						
+						if (x != 0 && y != 0 && x % 70 == 0 && y % 70 == 0)
 						{
-							float xToSpawn = (_relativePosition.x * _chunkSize) + (x * ((float)_chunkSize / resolution));
-							float yToSpawn = (_relativePosition.y * _chunkSize) + (y * ((float)_chunkSize / resolution));
+							Random rand = new Random();
+							float prob = rand.Next(1, 101) / 100f;
+							bool canPlace = prob <= currentBiome.treeDensity;
+
+							if (!canPlace) continue;
+							
+							int xOffsetInTerrain = rand.Next(0, 100);
+							int yOffsetInTerrain = rand.Next(0, 100);
+							
+							float xToSpawn = (_relativePosition.x * _chunkSize) + ((x + xOffsetInTerrain) * ((float)_chunkSize / resolution));
+							float yToSpawn = (_relativePosition.y * _chunkSize) + ((y + yOffsetInTerrain) * ((float)_chunkSize / resolution));
 
 							Biome.BiomeTree chosenTree = currentBiome.GetTree();
 
@@ -482,57 +490,12 @@ public class EndlessTerrain : MonoBehaviour
 											yToSpawn
 										),
 										Quaternion.identity,
-										new Vector2Int(x, y)
+										new Vector2Int(x + xOffsetInTerrain, y + yOffsetInTerrain)
 									)
 								);
 							}
 						}
 						
-						bool cond = xTreeControl == 2 && yTreeControl == 2;
-						
-						if (false)
-						{
-							// float treeDisposition = Mathf.PerlinNoise(
-							// 	currentGlobalCoordinateX * step.x,
-							// 	currentGlobalCoordinateY * step.y						
-							// );
-
-							// step.x += treeDisposition / 100;
-							// step.y += treeDisposition / 100;
-
-						
-							Random rand = new Random();
-							float randomValue = rand.Next(0, 101) / 100f;
-						
-							if (currentBiome.biomeTrees.Length > 0 && randomValue <= currentBiome.treeDensity)
-							{
-								float xToSpawn = (_relativePosition.x * _chunkSize) + (x * ((float)_chunkSize / resolution));
-								float yToSpawn = (_relativePosition.y * _chunkSize) + (y * ((float)_chunkSize / resolution));
-
-								Biome.BiomeTree chosenTree = currentBiome.GetTree();
-							
-								treesToSpawn.Add(new ObjectSpawnInfo(
-										// currentBiome.biomeTrees[0].treePrefab,
-										chosenTree.treePrefab,
-										new Vector3(
-											xToSpawn,
-											// _baseTerrainData.GetHeight(x, y),
-											// GetHeightByCoordinate(heightMapResolution, x, y),
-											0,
-											yToSpawn
-										),
-										Quaternion.identity,
-										new Vector2Int(x, y)
-									)
-								);
-							}
-
-							xTreeControl = 0;
-							yTreeControl = 0;
-
-						}
-						
-						// treePlaceControl++;
 						#endregion
 					}
 				}
@@ -544,7 +507,7 @@ public class EndlessTerrain : MonoBehaviour
 			{
 				// tree.SpawnCoordinate.y =
 				// 	_baseTerrainData.GetHeight(tree.CoordinateInTerrain.x, tree.CoordinateInTerrain.y);
-
+				
 				tree.SpawnCoordinate.y = GetHeightByCoordinate(
 					_baseTerrainData.alphamapResolution,
 					tree.CoordinateInTerrain.x,

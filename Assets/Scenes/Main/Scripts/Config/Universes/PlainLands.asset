@@ -36,7 +36,10 @@ MonoBehaviour:
     biomeTrees:
     - treePrefab: {fileID: 4005493237873637530, guid: 315b0b2d2ce80d34f9b17f87175f96c4,
         type: 3}
-      density: 0.7
+      pickRate: 0.5
+    - treePrefab: {fileID: 6840614351361730612, guid: 10bde9a81e4060c4f8c2695640b7b84a,
+        type: 3}
+      pickRate: 0.5
     grass: []
     biomeTextures:
     - layer: 0
@@ -63,7 +66,7 @@ MonoBehaviour:
     biomeTrees:
     - treePrefab: {fileID: 1268516079989756, guid: fcb7aed2d311dcf44a0ea46557988064,
         type: 3}
-      density: 0.1
+      pickRate: 1
     grass: []
     biomeTextures:
     - layer: 2
