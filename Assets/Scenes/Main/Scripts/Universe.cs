@@ -8,6 +8,14 @@ public class Universe : ScriptableObject
     public Biome defaultBiome;
     public Biome[] biomeList;
 
+    public void SetupBiomes()
+    {
+        foreach (var biome in biomeList)
+        {
+            biome.PreProcess();
+        }
+    }
+    
     public Biome GetBiomeByParameters(float temperature, float humidity)
     {
         foreach (var biome in biomeList)

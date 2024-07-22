@@ -18,6 +18,8 @@ MonoBehaviour:
     temperature: {x: 0, y: 0}
     humidity: {x: 0, y: 0}
     smoothness: 0
+    treeDensity: 0
+    grassDensity: 0
     biomeTrees: []
     grass: []
     biomeTextures:
@@ -29,6 +31,8 @@ MonoBehaviour:
     temperature: {x: 0, y: 0.5}
     humidity: {x: 0.5, y: 1}
     smoothness: 0
+    treeDensity: 1
+    grassDensity: 0
     biomeTrees:
     - treePrefab: {fileID: 4005493237873637530, guid: 315b0b2d2ce80d34f9b17f87175f96c4,
         type: 3}
@@ -42,6 +46,8 @@ MonoBehaviour:
     temperature: {x: 0.5, y: 1}
     humidity: {x: 0, y: 0.5}
     smoothness: 0
+    treeDensity: 0
+    grassDensity: 0
     biomeTrees: []
     grass: []
     biomeTextures:
@@ -52,10 +58,12 @@ MonoBehaviour:
     temperature: {x: 0.5000001, y: 1}
     humidity: {x: 0.5, y: 1}
     smoothness: 0
+    treeDensity: 0.1
+    grassDensity: 0
     biomeTrees:
     - treePrefab: {fileID: 1268516079989756, guid: fcb7aed2d311dcf44a0ea46557988064,
         type: 3}
-      density: 0.5
+      density: 0.1
     grass: []
     biomeTextures:
     - layer: 2
