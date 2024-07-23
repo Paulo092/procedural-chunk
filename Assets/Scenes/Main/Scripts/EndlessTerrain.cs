@@ -134,7 +134,7 @@ public class EndlessTerrain : MonoBehaviour
 	
 	private class TerrainChunk
 	{
-		private readonly GameObject _meshObject;
+		private readonly GameObject _meshObject, _vegetationParentReference, _structureParentReference;
 
 		private Vector2 _position, _relativePosition;
 		private Terrain _baseTerrain;
@@ -169,6 +169,12 @@ public class EndlessTerrain : MonoBehaviour
 			
 			_baseTerrain = terrain;
 			_baseTerrain.gameObject.layer = LayerMask.NameToLayer("Ground");
+
+			_vegetationParentReference = new GameObject("Vegetation");
+			_vegetationParentReference.transform.parent = _meshObject.transform;
+			
+			_structureParentReference = new GameObject("Structure");
+			_structureParentReference.transform.parent = _meshObject.transform;
 			
 			SetupTextures(_baseTerrain);
 			SetVisible(false);
@@ -183,7 +189,7 @@ public class EndlessTerrain : MonoBehaviour
 			Vector3 positionV3 = new Vector3(_position.x,0,_position.y);
 
 			// _meshObject.transform.position = positionV3;
-			_meshObject.transform.position = positionV3 + new Vector3(-.01f * coord.x, 0, -.01f * coord.y);
+			_meshObject.transform.position = positionV3 + new Vector3(-.05f * coord.x, 0, -.05f * coord.y);
 			
 			_meshObject.transform.localScale = Vector3.one * size / 10f;
 			_meshObject.transform.parent = parent;
@@ -348,34 +354,9 @@ public class EndlessTerrain : MonoBehaviour
 						}
 						
 						#endregion
-						
-						// /*
-						// #region Place Structure
-						//
-						// Random structureRand = new Random((int)(_relativePosition.x * _relativePosition.y * _seed));
-						// float chanceToHaveAStructure = .1f;
-						//
-						// float xToSpawnS = (_relativePosition.x * _chunkSize) + (x * ((float)_chunkSize / resolution));
-						// float yToSpawnS = (_relativePosition.y * _chunkSize) + (y * ((float)_chunkSize / resolution));
-						// float hToSpawnS = GetHeightByCoordinate(
-						// 	resolution,
-						// 	x,
-						// 	y
-						// ) * terrainHeight;
-						//
-						// if ((structureRand.Next(1, 101) / 100f) < chanceToHaveAStructure)
-						// {
-						// 	structureSpawnPosition = new Vector3(xToSpawnS, hToSpawnS, yToSpawnS);
-						// 	structureToSpawn = _universeData.structureList[0].prefab;
-						// }
-						//
-						// #endregion
-
-						// */
 					}
 				}
 				
-				// return (alphaMap, treesToSpawn, structureToSpawn, structureSpawnPosition);
 				return (alphaMap, treesToSpawn);
 			});
 
@@ -387,7 +368,7 @@ public class EndlessTerrain : MonoBehaviour
 					tree.Rotation
 				);
 
-				spawnedTree.transform.parent = this._meshObject.transform;
+				spawnedTree.transform.parent = _vegetationParentReference.transform;
 				
 				_instantiatedObjects.Add(spawnedTree);
 			}
@@ -416,9 +397,16 @@ public class EndlessTerrain : MonoBehaviour
 			{
 				Vector3 structureSpawnPosition = new Vector3(xToSpawnS, hToSpawnS, yToSpawnS);
 				GameObject structureToSpawn = _universeData.structureList[0].prefab;
-				
+
+				GameObject instantiatedStructure = Instantiate(
+					structureToSpawn, 
+					structureSpawnPosition, 
+					Quaternion.identity
+				);
+				instantiatedStructure.transform.parent = _structureParentReference.transform;
+                
 				_instantiatedObjects.Add(
-				Instantiate(structureToSpawn, structureSpawnPosition, Quaternion.identity)
+					instantiatedStructure
 				);
 			}
 			
