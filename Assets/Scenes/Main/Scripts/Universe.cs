@@ -4,9 +4,9 @@ using UnityEngine;
 public class Universe : ScriptableObject
 {
     public string universeName;
-    public Biome defaultBiome;
     public Biome[] biomeList;
     public Structure[] structureList;
+    public Enemy[] enemies;
     
     public void SetupBiomes()
     {
@@ -39,5 +39,16 @@ public class Universe : ScriptableObject
         public GameObject prefab;
         [Range(0f, 1f)]
         public float pickRate;
+    }
+    
+    [System.Serializable]
+    public class Enemy
+    {
+        public string name;
+        public GameObject prefab;
+        [Range(0f, 1f)]
+        public float pickRate;
+        public bool isHorde;
+        public int hordeSize;
     }
 }

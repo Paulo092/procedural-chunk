@@ -20,8 +20,11 @@ public class EndlessTerrain : MonoBehaviour
 	public int seed = 12345678;	
 	
 	[Header("Enemy Spawn Options")] 
-	public int enemySpawnRadius = 100;
+	public int enemySpawnRadiusInChunk = 3;
 	public int maxAmountOfEnemies = 10;
+	public int minDistanceToPlayer = 1;
+	public List<GameObject> enemiesSpawned;
+	public float enemySpawnFrequency = 10f;
 	
 	[Header("Pool Config")]
 	public int initialPoolSize = 100;
@@ -51,8 +54,10 @@ public class EndlessTerrain : MonoBehaviour
 		_chunkSize = chunkSize - 1;
 		_chunksVisibleInViewDst = Mathf.RoundToInt(MaxViewDst / _chunkSize);
 		universeData.SetupBiomes();
+		enemiesSpawned = new();
 
-		_terrainPool = new LocalPool(initialPoolSize, maxPoolSize, this.gameObject, universeData, baseTerrainMaterial);
+		_terrainPool = new LocalPool(initialPoolSize, maxPoolSize, this.gameObject, universeData, baseTerrainMaterial, seed);
+		InvokeRepeating("EnemySpawn", enemySpawnFrequency, enemySpawnFrequency);
 	}
 
 	void Update()
@@ -61,8 +66,45 @@ public class EndlessTerrain : MonoBehaviour
 		_viewerPosition = new Vector2(viwerPositionReference.x, viwerPositionReference.z);
 
 		UpdateVisibleChunks();
+		// ValidateEnemies();
 	}
+
+	void ValidateEnemies()
+	{
+		foreach (var enemy in enemiesSpawned)
+		{
+			if (Vector3.Distance(enemy.transform.position, playerReference.transform.position) > MaxViewDst)
+			{
+				Destroy(enemy);
+				enemiesSpawned.Remove(enemy);
+			}
+		}
+	}
+
+	void EnemySpawn()
+	{
+		if (enemiesSpawned.Count >= maxAmountOfEnemies) return;
 		
+		Random rand = new Random();
+		
+		int xChunk = (int) (playerReference.position.x / _chunkSize) + rand.Next(-1, 2);
+		int yChunk = (int) (playerReference.position.z / _chunkSize) + rand.Next(-1, 2);
+
+		// int xChunk = (int) xToSpawn / _chunkSize;
+		// int yChunk = (int) zToSpawn / _chunkSize;
+
+		TerrainChunk selectedTerrain = _terrainChunkDictionary[new Vector2(xChunk, yChunk)];
+
+		Vector3 positionToSpawn = selectedTerrain.GetRandomGlobalPosition();
+		
+		enemiesSpawned.Add(
+		Instantiate(universeData.enemies[0].prefab, positionToSpawn, Quaternion.identity)
+		);
+		
+		
+		Debug.Log("Try to spawn enemy in chunk: [" + xChunk + ", " + yChunk + "]");
+	}
+	
 	void UpdateVisibleChunks()
 	{
 		for(int i = 0; i < _loadedLands.Count; i++) {
@@ -90,7 +132,7 @@ public class EndlessTerrain : MonoBehaviour
 				if(_terrainChunkDictionary.ContainsKey(viewedChunkCoord)) {
 					_loadedLands.Add(new ChunkInfo(viewedChunkCoord, _terrainChunkDictionary[viewedChunkCoord]));
 				} else {
-					TerrainChunk terrainChunk = _terrainPool.GetPooledObject(viewedChunkCoord, _chunkSize, seed, universeData);
+					TerrainChunk terrainChunk = _terrainPool.GetPooledObject(viewedChunkCoord, _chunkSize, universeData);
 					
 					_terrainChunkDictionary.Add(viewedChunkCoord, terrainChunk);
 					_loadedLands.Add(new ChunkInfo(viewedChunkCoord, terrainChunk));
@@ -120,19 +162,16 @@ public class EndlessTerrain : MonoBehaviour
 		public GameObject Prefab;
 		public Vector3 SpawnCoordinate;
 		public Quaternion Rotation;
-		public Vector2Int CoordinateInTerrain;
 
 		public ObjectSpawnInfo(
 			GameObject prefab,
 			Vector3 spawnCoordinate,
-			Quaternion rotation,
-			Vector2Int coordinateInTerrain
+			Quaternion rotation
 		)
 		{
 			Prefab = prefab;
 			SpawnCoordinate = spawnCoordinate;
 			Rotation = rotation;
-			CoordinateInTerrain = coordinateInTerrain;
 		}
 	}
 	
@@ -142,15 +181,16 @@ public class EndlessTerrain : MonoBehaviour
 
 		private Vector2 _position, _relativePosition;
 		private Terrain _baseTerrain;
-		private TerrainData _baseTerrainData;
+		public TerrainData BaseTerrainData;
 		private Universe _universeData;
 		private int _seed;
 		
 		private List<GameObject> _instantiatedObjects = new List<GameObject>();
 		
-		public TerrainChunk(Universe universeData, Material baseTerrainMaterial)
+		public TerrainChunk(Universe universeData, Material baseTerrainMaterial, int seed)
 		{
 			this._universeData = universeData;
+			this._seed = seed;
 			
 			_meshObject = new GameObject("Terrain");
 			Terrain terrain = _meshObject.AddComponent<Terrain>();
@@ -159,13 +199,13 @@ public class EndlessTerrain : MonoBehaviour
 			terrainCollider.providesContacts = true;
 			
 			TerrainData terrainData = new TerrainData();
-			terrainData.heightmapResolution = 511;
+			terrainData.heightmapResolution = 513;
 			terrainData.size = new Vector3(_chunkSize, 100, _chunkSize);
 
-			_baseTerrainData = terrainData;
+			BaseTerrainData = terrainData;
 			
-			terrain.terrainData = _baseTerrainData;
-			terrainCollider.terrainData = _baseTerrainData;
+			terrain.terrainData = BaseTerrainData;
+			terrainCollider.terrainData = BaseTerrainData;
 			
 			// terrain.materialTemplate = terrainTexture;
 			
@@ -181,14 +221,31 @@ public class EndlessTerrain : MonoBehaviour
 			_structureParentReference.transform.parent = _meshObject.transform;
 			
 			SetupTextures(_baseTerrain);
+
+			Random preRand = new Random(_seed);
+
+			Debug.Log(_seed);
+			
+			Random rand = new Random(preRand.Next(10000, 100000));
+
+			_seedTemperatureOffset = rand.Next(1000, 1000000);
+			_seedHumidityOffset = rand.Next(1000, 1000000);
+			_seedHeightModifier = rand.Next(1000, 1000000);
+
+			_treeRand = new Random((int) (_seed * _relativePosition.x * _relativePosition.y));
+			
 			SetVisible(false);
 		}
+		
+		private int _seedTemperatureOffset;
+		private int _seedHumidityOffset;
+		private int _seedHeightModifier;
+		private Random _treeRand;
 
-		public void Setup(Vector2 coord, int size, Transform parent, int seed)
+		public void Setup(Vector2 coord, int size, Transform parent)
 		{
 			_relativePosition = coord;
 			_position = coord * size;
-			_seed = seed;
 			
 			Vector3 positionV3 = new Vector3(_position.x,0,_position.y);
 
@@ -202,13 +259,13 @@ public class EndlessTerrain : MonoBehaviour
 				_baseTerrain.terrainData.heightmapResolution
 			);
 
-			int alphamapWidth = _baseTerrainData.alphamapWidth,
-				alphamapHeight = _baseTerrainData.alphamapHeight,
-				alphamapResolution = _baseTerrainData.alphamapHeight,
-				alphamapLayersCount = _baseTerrainData.terrainLayers.Length,
-				heightmapResolution = _baseTerrainData.heightmapResolution;
+			int alphamapWidth = BaseTerrainData.alphamapWidth,
+				alphamapHeight = BaseTerrainData.alphamapHeight,
+				alphamapResolution = BaseTerrainData.alphamapHeight,
+				alphamapLayersCount = BaseTerrainData.terrainLayers.Length,
+				heightmapResolution = BaseTerrainData.heightmapResolution;
 			
-			Vector3 terrainSize = _baseTerrainData.size;
+			Vector3 terrainSize = BaseTerrainData.size;
 			
 			BiomesTexturesAndTreesSetupAsync(
 				alphamapWidth,
@@ -278,7 +335,7 @@ public class EndlessTerrain : MonoBehaviour
 			int width = alphamapWidth,
 				height = alphamapHeight,
 				resolution = alphamapResolution,
-				terrainHeight = (int) _baseTerrainData.size.y;
+				terrainHeight = (int) BaseTerrainData.size.y;
 			
 			float noiseScale = 8000f;
 			
@@ -301,13 +358,13 @@ public class EndlessTerrain : MonoBehaviour
 						float currentGlobalCoordinateX  = ((resolution - 1) * _relativePosition.x) + x;
 
 						float temperature = Mathf.PerlinNoise(
-							currentGlobalCoordinateX / noiseScale,
-							currentGlobalCoordinateY / noiseScale
+							(currentGlobalCoordinateX + _seedTemperatureOffset) / noiseScale,
+							(currentGlobalCoordinateY + _seedTemperatureOffset) / noiseScale
 						);
 
 						float humidity = Mathf.PerlinNoise(
-							currentGlobalCoordinateX / (noiseScale * 1.8f),
-							currentGlobalCoordinateY / (noiseScale * 1.8f)
+							(currentGlobalCoordinateX + _seedHumidityOffset) / (noiseScale * 1.8f),
+							(currentGlobalCoordinateY + _seedHumidityOffset) / (noiseScale * 1.8f)
 						);
 
 						Biome currentBiome = _universeData.GetBiomeByParameters(temperature, humidity);
@@ -355,8 +412,7 @@ public class EndlessTerrain : MonoBehaviour
 											// 0,
 											yToSpawn
 										),
-										Quaternion.identity,
-										new Vector2Int(x + xOffsetInTerrain, y + yOffsetInTerrain)
+										Quaternion.identity
 									)
 								);
 							}
@@ -387,7 +443,7 @@ public class EndlessTerrain : MonoBehaviour
 				_instantiatedObjects.Add(spawnedTree);
 			}
 			
-			_baseTerrainData.SetAlphamaps(0, 0, result.alphaMap);
+			BaseTerrainData.SetAlphamaps(0, 0, result.alphaMap);
 		}
         
 		private void StructurePlacingSetup(int resolution, float terrainHeight)
@@ -405,7 +461,7 @@ public class EndlessTerrain : MonoBehaviour
 				resolution,
 				xLocal,
 				yLocal
-			) * terrainHeight;
+			) * terrainHeight + 5f;
 
 			if ((structureRand.Next(1, 101) / 100f) < chanceToHaveAStructure)
 			{
@@ -426,7 +482,7 @@ public class EndlessTerrain : MonoBehaviour
 			
 		}
 		
-		float GetHeightByCoordinate(int resolution, int x, int y)
+		public float GetHeightByCoordinate(int resolution, int x, int y)
 		{
 			float seedFactor = (_seed / (float)_chunkSize * resolution) / 100;
 			float seedFactor2 = (seedFactor * _seed) / 1000;
@@ -449,6 +505,24 @@ public class EndlessTerrain : MonoBehaviour
 			));
 						
 			return sample;
+		}
+
+		public Vector3 GetRandomGlobalPosition()
+		{
+			Random rand = new Random();
+			Vector2 localPosition = new Vector2(
+				rand.Next(0, BaseTerrainData.heightmapResolution),
+				rand.Next(0, BaseTerrainData.heightmapResolution)
+			);
+
+			Vector3 globalPosition = new Vector3(
+				(_relativePosition.x * _chunkSize) + (localPosition.x * ((float)_chunkSize / BaseTerrainData.alphamapResolution)),
+				(GetHeightByCoordinate(BaseTerrainData.heightmapResolution, (int)localPosition.x,
+					(int)localPosition.y) * BaseTerrainData.size.y) + 5f,
+				(_relativePosition.y * _chunkSize) + (localPosition.y * ((float)_chunkSize / BaseTerrainData.alphamapResolution))
+			);
+
+			return globalPosition;
 		}
 		
 		public void SetVisible(bool visible) {
@@ -502,13 +576,15 @@ public class EndlessTerrain : MonoBehaviour
         private readonly Universe _universeData;
 	    private readonly GameObject _parent;
 	    private readonly int _maxPoolSize;
+	    private readonly int _seed;
         
-        public LocalPool(int initialPoolSize, int maxPoolSize, GameObject parent, Universe universeData, Material baseTerrainMaterial)
+        public LocalPool(int initialPoolSize, int maxPoolSize, GameObject parent, Universe universeData, Material baseTerrainMaterial, int seed)
         {
 	        this._parent = parent;
 	        this._universeData = universeData;
 	        this._baseTerrainMaterial = baseTerrainMaterial;
 	        this._maxPoolSize = maxPoolSize;
+	        this._seed = seed;
             
             _pool = new ObjectPool<TerrainChunk>(
                 CreatePooledItem,
@@ -522,7 +598,7 @@ public class EndlessTerrain : MonoBehaviour
         
         private TerrainChunk CreatePooledItem()
         {
-            return new TerrainChunk(_universeData, _baseTerrainMaterial);
+            return new TerrainChunk(_universeData, _baseTerrainMaterial, _seed);
         }
     
         private static void OnReturnedToPool(TerrainChunk obj)
@@ -541,15 +617,15 @@ public class EndlessTerrain : MonoBehaviour
 	        obj.Die();
         }
     
-        public TerrainChunk GetPooledObject(Vector2 coord, int size, int seed, Universe universeData)
+        public TerrainChunk GetPooledObject(Vector2 coord, int size, Universe universeData)
         {
             if(_activeObjects >= _maxPoolSize)
             {
-                return new TerrainChunk(universeData, _baseTerrainMaterial);
+                return new TerrainChunk(universeData, _baseTerrainMaterial, _seed);
             }
     
             TerrainChunk pooledObject = _pool.Get();
-            pooledObject.Setup(coord, size, _parent.transform, seed);
+            pooledObject.Setup(coord, size, _parent.transform);
             
             return pooledObject;
         }

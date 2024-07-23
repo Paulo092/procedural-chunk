@@ -12,20 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf7ca0b2686b68c4988f8d76cd768cd5, type: 3}
   m_Name: PlainLands
   m_EditorClassIdentifier: 
-  universeName: 
-  defaultBiome:
-    biomeName: Default
-    temperature: {x: 0, y: 0}
-    humidity: {x: 0, y: 0}
-    smoothness: 0
-    treeDensity: 0
-    grassDensity: 0
-    biomeTrees: []
-    grass: []
-    biomeTextures:
-    - layer: 0
-      texture: {fileID: 2800000, guid: 9f92a1df145a03f4e8cc6de30c1f413a, type: 3}
-      altitude: {x: 0, y: 0}
+  universeName: Plain Lands
   biomeList:
   - biomeName: Plains
     temperature: {x: 0, y: 0.5}
@@ -106,3 +93,10 @@ MonoBehaviour:
   - prefab: {fileID: 7769178140504453192, guid: 1c88119d1a3874e438131446524e31ee,
       type: 3}
     pickRate: 1
+  enemies:
+  - name: "Bol\xE3o"
+    prefab: {fileID: 1465472300660920438, guid: d6f2c2f4c1199c34fba39f0fdc1dad82,
+      type: 3}
+    pickRate: 0
+    isHorde: 0
+    hordeSize: 0
