@@ -230,7 +230,7 @@ public class EndlessTerrain : MonoBehaviour
 
 			_seedTemperatureOffset = rand.Next(1000, 1000000);
 			_seedHumidityOffset = rand.Next(1000, 1000000);
-			_seedHeightModifier = rand.Next(1000, 1000000);
+			_seedHeightModifier = rand.Next(1000, 100000);
 
 			_treeRand = new Random((int) (_seed * _relativePosition.x * _relativePosition.y));
 			
@@ -484,8 +484,8 @@ public class EndlessTerrain : MonoBehaviour
 		
 		public float GetHeightByCoordinate(int resolution, int x, int y)
 		{
-			float seedFactor = (_seed / (float)_chunkSize * resolution) / 100;
-			float seedFactor2 = (seedFactor * _seed) / 1000;
+			float seedFactor = (_seedHeightModifier / (float)_chunkSize * resolution) / 100;
+			float seedFactor2 = (seedFactor * _seedHeightModifier) / 1000;
 
 			float scale = 800f;
 

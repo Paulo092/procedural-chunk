@@ -428,7 +428,7 @@ MonoBehaviour:
   baseTerrainMaterial: {fileID: 2100000, guid: 63ec8a956a8d6eb4ba15abc592877876, type: 2}
   chunkSize: 100
   randomSeed: 0
-  seed: 2435
+  seed: 235413
   enemySpawnRadiusInChunk: 3
   maxAmountOfEnemies: 10
   minDistanceToPlayer: 1
