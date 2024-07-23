@@ -36,14 +36,29 @@ MonoBehaviour:
     biomeTrees:
     - treePrefab: {fileID: 4005493237873637530, guid: 315b0b2d2ce80d34f9b17f87175f96c4,
         type: 3}
-      pickRate: 0.5
-    - treePrefab: {fileID: 6840614351361730612, guid: 10bde9a81e4060c4f8c2695640b7b84a,
+      pickRate: 1
+    - treePrefab: {fileID: 6943846617489224956, guid: 262c20fd70368b8448f18654c706c24d,
         type: 3}
       pickRate: 0.5
     grass: []
     biomeTextures:
     - layer: 0
-      texture: {fileID: 2800000, guid: ec7bab56bfdc3d147b9e1fda8c12082d, type: 3}
+      texture: {fileID: 2800000, guid: 3d7e23f397bd4e347bc2a33df00d0897, type: 3}
+      altitude: {x: 0.22027245, y: 0.49654657}
+  - biomeName: Pines
+    temperature: {x: 0, y: 0.2854406}
+    humidity: {x: 0.234355, y: 0.59642386}
+    smoothness: 0
+    treeDensity: 0.1
+    grassDensity: 0
+    biomeTrees:
+    - treePrefab: {fileID: 512235484156817850, guid: 4f3dfdc00e2a2854aba60d7a7a74a129,
+        type: 3}
+      pickRate: 1
+    grass: []
+    biomeTextures:
+    - layer: 1
+      texture: {fileID: 2800000, guid: df73a5b6a8127ff40a8c6840516304de, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
   - biomeName: MudValley
     temperature: {x: 0.5, y: 1}
@@ -54,7 +69,7 @@ MonoBehaviour:
     biomeTrees: []
     grass: []
     biomeTextures:
-    - layer: 1
+    - layer: 2
       texture: {fileID: 2800000, guid: c8748b2da9e969c4ba1bc7c5fb221595, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
   - biomeName: Desert
@@ -69,8 +84,23 @@ MonoBehaviour:
       pickRate: 1
     grass: []
     biomeTextures:
-    - layer: 2
+    - layer: 3
       texture: {fileID: 2800000, guid: 20aa0f234461fbc46ae6fe91f504e2f6, type: 3}
+      altitude: {x: 0.22027245, y: 0.49654657}
+  - biomeName: DistortedLand
+    temperature: {x: 0, y: 0.74521065}
+    humidity: {x: 0.29565775, y: 0.9284801}
+    smoothness: 0
+    treeDensity: 0.5
+    grassDensity: 0
+    biomeTrees:
+    - treePrefab: {fileID: 6943846617489224956, guid: 262c20fd70368b8448f18654c706c24d,
+        type: 3}
+      pickRate: 1
+    grass: []
+    biomeTextures:
+    - layer: 4
+      texture: {fileID: 2800000, guid: a6ee5260deb44d247ae90120ee36766b, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
   structureList:
   - prefab: {fileID: 7769178140504453192, guid: 1c88119d1a3874e438131446524e31ee,

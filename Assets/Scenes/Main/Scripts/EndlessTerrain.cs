@@ -17,7 +17,11 @@ public class EndlessTerrain : MonoBehaviour
 	[Header("Generation Options")] 
 	public int chunkSize = 100;
 	public bool randomSeed;
-	public int seed = 12345678;
+	public int seed = 12345678;	
+	
+	[Header("Enemy Spawn Options")] 
+	public int enemySpawnRadius = 100;
+	public int maxAmountOfEnemies = 10;
 	
 	[Header("Pool Config")]
 	public int initialPoolSize = 100;
@@ -155,7 +159,7 @@ public class EndlessTerrain : MonoBehaviour
 			terrainCollider.providesContacts = true;
 			
 			TerrainData terrainData = new TerrainData();
-			terrainData.heightmapResolution = 512;
+			terrainData.heightmapResolution = 511;
 			terrainData.size = new Vector3(_chunkSize, 100, _chunkSize);
 
 			_baseTerrainData = terrainData;
@@ -210,7 +214,8 @@ public class EndlessTerrain : MonoBehaviour
 				alphamapWidth,
 				alphamapHeight,
 				alphamapResolution,
-				alphamapLayersCount
+				alphamapLayersCount,
+				heightmapResolution
 			);
 
 			StructurePlacingSetup(heightmapResolution, terrainSize.y);
@@ -266,10 +271,10 @@ public class EndlessTerrain : MonoBehaviour
 			int alphamapWidth,
 			int alphamapHeight,
 			int alphamapResolution,
-			int alphamapLayersCount
+			int alphamapLayersCount,
+			int heightmapResolution
 		)
 		{
-
 			int width = alphamapWidth,
 				height = alphamapHeight,
 				resolution = alphamapResolution,
@@ -280,8 +285,8 @@ public class EndlessTerrain : MonoBehaviour
 			var result = await Task.Run(() =>
 			{
 				float[,,] alphaMap = new float[
-					alphamapWidth, 
-					alphamapHeight, 
+					alphamapWidth,
+					alphamapHeight,
 					alphamapLayersCount
 				];
 				
@@ -307,7 +312,7 @@ public class EndlessTerrain : MonoBehaviour
 
 						Biome currentBiome = _universeData.GetBiomeByParameters(temperature, humidity);
 						int biomeLayer = currentBiome.biomeTextures[0].layer;
-
+						
 						alphaMap[y, x, biomeLayer] = 1;
 						
 						#region Choose Tree Coordinates
@@ -329,21 +334,25 @@ public class EndlessTerrain : MonoBehaviour
 							float xToSpawn = (_relativePosition.x * _chunkSize) + ((x + xOffsetInTerrain) * ((float)_chunkSize / resolution));
 							float yToSpawn = (_relativePosition.y * _chunkSize) + ((y + yOffsetInTerrain) * ((float)_chunkSize / resolution));
 
+							// Debug.Log(heightmapResolution);
+							
 							Biome.BiomeTree chosenTree = currentBiome.GetTree();
 
 							if (chosenTree != null)
 							{
 								float hToSpawn = GetHeightByCoordinate(
-									resolution,
+									heightmapResolution,
 									x + xOffsetInTerrain,
 									y + yOffsetInTerrain
 								) * terrainHeight;
+								hToSpawn -= 1f;
 								
 								treesToSpawn.Add(new ObjectSpawnInfo(
 										chosenTree.treePrefab,
 										new Vector3(
 											xToSpawn,
 											hToSpawn,
+											// 0,
 											yToSpawn
 										),
 										Quaternion.identity,
@@ -362,6 +371,11 @@ public class EndlessTerrain : MonoBehaviour
 
 			foreach (var tree in result.treesToSpawn)
 			{
+				// tree.SpawnCoordinate.y = _baseTerrainData.GetHeight(
+				// 	tree.CoordinateInTerrain.x, 
+				// 	tree.CoordinateInTerrain.y
+				// );
+				
 				GameObject spawnedTree = Instantiate(
 					tree.Prefab,
 					tree.SpawnCoordinate,
@@ -375,7 +389,7 @@ public class EndlessTerrain : MonoBehaviour
 			
 			_baseTerrainData.SetAlphamaps(0, 0, result.alphaMap);
 		}
-
+        
 		private void StructurePlacingSetup(int resolution, float terrainHeight)
 		{
 			Random structureRand = new Random((int)(_relativePosition.x * _relativePosition.y * _seed));
