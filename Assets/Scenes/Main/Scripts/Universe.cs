@@ -3,11 +3,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "UniverseData", menuName = "Procedural World Generation/Universe Data")]
 public class Universe : ScriptableObject
 {
-    
     public string universeName;
     public Biome defaultBiome;
     public Biome[] biomeList;
-
+    public Structure[] structureList;
+    
     public void SetupBiomes()
     {
         foreach (var biome in biomeList)
@@ -31,5 +31,13 @@ public class Universe : ScriptableObject
             return biomeList[0];
 
         return null;
+    }
+    
+    [System.Serializable]
+    public class Structure
+    {
+        public GameObject prefab;
+        [Range(0f, 1f)]
+        public float pickRate;
     }
 }

@@ -72,3 +72,7 @@ MonoBehaviour:
     - layer: 2
       texture: {fileID: 2800000, guid: 20aa0f234461fbc46ae6fe91f504e2f6, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
+  structureList:
+  - prefab: {fileID: 7769178140504453192, guid: 1c88119d1a3874e438131446524e31ee,
+      type: 3}
+    pickRate: 1

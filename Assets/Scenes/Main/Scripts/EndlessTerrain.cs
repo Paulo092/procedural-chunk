@@ -182,7 +182,9 @@ public class EndlessTerrain : MonoBehaviour
 			
 			Vector3 positionV3 = new Vector3(_position.x,0,_position.y);
 
-			_meshObject.transform.position = positionV3;
+			// _meshObject.transform.position = positionV3;
+			_meshObject.transform.position = positionV3 + new Vector3(-.01f * coord.x, 0, -.01f * coord.y);
+			
 			_meshObject.transform.localScale = Vector3.one * size / 10f;
 			_meshObject.transform.parent = parent;
 
@@ -193,7 +195,10 @@ public class EndlessTerrain : MonoBehaviour
 			int alphamapWidth = _baseTerrainData.alphamapWidth,
 				alphamapHeight = _baseTerrainData.alphamapHeight,
 				alphamapResolution = _baseTerrainData.alphamapHeight,
-				alphamapLayersCount = _baseTerrainData.terrainLayers.Length;
+				alphamapLayersCount = _baseTerrainData.terrainLayers.Length,
+				heightmapResolution = _baseTerrainData.heightmapResolution;
+			
+			Vector3 terrainSize = _baseTerrainData.size;
 			
 			BiomesTexturesAndTreesSetupAsync(
 				alphamapWidth,
@@ -201,6 +206,8 @@ public class EndlessTerrain : MonoBehaviour
 				alphamapResolution,
 				alphamapLayersCount
 			);
+
+			StructurePlacingSetup(heightmapResolution, terrainSize.y);
 			
 			SetVisible(true);
 		}
@@ -263,7 +270,6 @@ public class EndlessTerrain : MonoBehaviour
 				terrainHeight = (int) _baseTerrainData.size.y;
 			
 			float noiseScale = 8000f;
-
 			
 			var result = await Task.Run(() =>
 			{
@@ -299,7 +305,6 @@ public class EndlessTerrain : MonoBehaviour
 						alphaMap[y, x, biomeLayer] = 1;
 						
 						#region Choose Tree Coordinates
-
 						
 						if (x != 0 && y != 0 && x % 70 == 0 && y % 70 == 0)
 						{
@@ -309,8 +314,11 @@ public class EndlessTerrain : MonoBehaviour
 
 							if (!canPlace) continue;
 							
-							int xOffsetInTerrain = rand.Next(0, 100);
-							int yOffsetInTerrain = rand.Next(0, 100);
+							int xOffsetInTerrain = rand.Next(0, 50);
+							int yOffsetInTerrain = rand.Next(0, 50);
+							
+							// int xOffsetInTerrain = 0;
+							// int yOffsetInTerrain = 0;
 							
 							float xToSpawn = (_relativePosition.x * _chunkSize) + ((x + xOffsetInTerrain) * ((float)_chunkSize / resolution));
 							float yToSpawn = (_relativePosition.y * _chunkSize) + ((y + yOffsetInTerrain) * ((float)_chunkSize / resolution));
@@ -340,20 +348,39 @@ public class EndlessTerrain : MonoBehaviour
 						}
 						
 						#endregion
+						
+						// /*
+						// #region Place Structure
+						//
+						// Random structureRand = new Random((int)(_relativePosition.x * _relativePosition.y * _seed));
+						// float chanceToHaveAStructure = .1f;
+						//
+						// float xToSpawnS = (_relativePosition.x * _chunkSize) + (x * ((float)_chunkSize / resolution));
+						// float yToSpawnS = (_relativePosition.y * _chunkSize) + (y * ((float)_chunkSize / resolution));
+						// float hToSpawnS = GetHeightByCoordinate(
+						// 	resolution,
+						// 	x,
+						// 	y
+						// ) * terrainHeight;
+						//
+						// if ((structureRand.Next(1, 101) / 100f) < chanceToHaveAStructure)
+						// {
+						// 	structureSpawnPosition = new Vector3(xToSpawnS, hToSpawnS, yToSpawnS);
+						// 	structureToSpawn = _universeData.structureList[0].prefab;
+						// }
+						//
+						// #endregion
+
+						// */
 					}
 				}
 				
+				// return (alphaMap, treesToSpawn, structureToSpawn, structureSpawnPosition);
 				return (alphaMap, treesToSpawn);
 			});
 
 			foreach (var tree in result.treesToSpawn)
 			{
-				// tree.SpawnCoordinate.y = GetHeightByCoordinate(
-				// 	_baseTerrainData.alphamapResolution,
-				// 	tree.CoordinateInTerrain.x,
-				// 	tree.CoordinateInTerrain.y
-				// ) * _baseTerrainData.size.y;
-
 				GameObject spawnedTree = Instantiate(
 					tree.Prefab,
 					tree.SpawnCoordinate,
@@ -368,10 +395,39 @@ public class EndlessTerrain : MonoBehaviour
 			_baseTerrainData.SetAlphamaps(0, 0, result.alphaMap);
 		}
 
+		private void StructurePlacingSetup(int resolution, float terrainHeight)
+		{
+			Random structureRand = new Random((int)(_relativePosition.x * _relativePosition.y * _seed));
+			float chanceToHaveAStructure = .1f;
+
+			Random rand = new Random();
+			int xLocal = rand.Next(0, resolution);
+			int yLocal = rand.Next(0, resolution);
+			
+			float xToSpawnS = (_relativePosition.x * _chunkSize) + (xLocal * ((float)_chunkSize / resolution));
+			float yToSpawnS = (_relativePosition.y * _chunkSize) + (yLocal * ((float)_chunkSize / resolution));
+			float hToSpawnS = GetHeightByCoordinate(
+				resolution,
+				xLocal,
+				yLocal
+			) * terrainHeight;
+
+			if ((structureRand.Next(1, 101) / 100f) < chanceToHaveAStructure)
+			{
+				Vector3 structureSpawnPosition = new Vector3(xToSpawnS, hToSpawnS, yToSpawnS);
+				GameObject structureToSpawn = _universeData.structureList[0].prefab;
+				
+				_instantiatedObjects.Add(
+				Instantiate(structureToSpawn, structureSpawnPosition, Quaternion.identity)
+				);
+			}
+			
+		}
+		
 		float GetHeightByCoordinate(int resolution, int x, int y)
 		{
-			float seedFactor = (321 / (float)_chunkSize * resolution) / 100;
-			float seedFactor2 = (seedFactor * 321) / 1000;
+			float seedFactor = (_seed / (float)_chunkSize * resolution) / 100;
+			float seedFactor2 = (seedFactor * _seed) / 1000;
 
 			float scale = 800f;
 
