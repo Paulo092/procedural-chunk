@@ -37,7 +37,7 @@ public class EndlessTerrain : MonoBehaviour
 	private int _chunksVisibleInViewDst;
 	private const float MaxViewDst = 450;
 
-	private Vector2 _lastChunk;
+	private Vector2 _lastVisitedChunk;
 	
 	#endregion
 
@@ -49,27 +49,18 @@ public class EndlessTerrain : MonoBehaviour
 		universeData.SetupBiomes();
 
 		_terrainPool = new LocalPool(initialPoolSize, maxPoolSize, this.gameObject, universeData, baseTerrainMaterial);
-		_lastChunk = new Vector2(0, 0);
-		
-		// InvokeRepeating("UpdateVisibleChunks", 0f, 1f);
 	}
 
 	void Update()
 	{
 		Vector3 viwerPositionReference = playerReference.position;
 		_viewerPosition = new Vector2(viwerPositionReference.x, viwerPositionReference.z);
+
 		UpdateVisibleChunks();
 	}
 		
 	void UpdateVisibleChunks()
 	{
-		// Vector2 currentChunk = _viewerPosition / _chunkSize;
-		// 		currentChunk.x = Mathf.RoundToInt(currentChunk.x);
-		// 		currentChunk.y = Mathf.RoundToInt(currentChunk.y);
-		// 		
-		// if (_lastChunk == currentChunk) return;
-		// else _lastChunk = currentChunk;
-		
 		for(int i = 0; i < _loadedLands.Count; i++) {
 			if (!_loadedLands[i].Chunk.IsNearby())
 			{
@@ -149,6 +140,7 @@ public class EndlessTerrain : MonoBehaviour
 		private Terrain _baseTerrain;
 		private TerrainData _baseTerrainData;
 		private Universe _universeData;
+		private int _seed;
 		
 		private List<GameObject> _instantiatedObjects = new List<GameObject>();
 		
@@ -182,6 +174,37 @@ public class EndlessTerrain : MonoBehaviour
 			SetVisible(false);
 		}
 
+		public void Setup(Vector2 coord, int size, Transform parent, int seed)
+		{
+			_relativePosition = coord;
+			_position = coord * size;
+			_seed = seed;
+			
+			Vector3 positionV3 = new Vector3(_position.x,0,_position.y);
+
+			_meshObject.transform.position = positionV3;
+			_meshObject.transform.localScale = Vector3.one * size / 10f;
+			_meshObject.transform.parent = parent;
+
+			GenerateHeightmapSetupAsync(
+				_baseTerrain.terrainData.heightmapResolution
+			);
+
+			int alphamapWidth = _baseTerrainData.alphamapWidth,
+				alphamapHeight = _baseTerrainData.alphamapHeight,
+				alphamapResolution = _baseTerrainData.alphamapHeight,
+				alphamapLayersCount = _baseTerrainData.terrainLayers.Length;
+			
+			BiomesTexturesAndTreesSetupAsync(
+				alphamapWidth,
+				alphamapHeight,
+				alphamapResolution,
+				alphamapLayersCount
+			);
+			
+			SetVisible(true);
+		}
+		
 		void SetupTextures(Terrain terrain)
 		{
 			TerrainLayer[] terrainLayers = new TerrainLayer[_universeData.biomeList.Length];
@@ -206,14 +229,9 @@ public class EndlessTerrain : MonoBehaviour
 			terrain.terrainData.terrainLayers = terrainLayers;
 		}
 
-		async void GeneratePerlinNoiseHeightmapAsync(int resolution, int seed)
+		async void GenerateHeightmapSetupAsync(int resolution)
 		{
 			float[,] heights = new float[resolution, resolution];
-
-			float seedFactor = (seed / (float)_chunkSize * resolution) / 100;
-			float seedFactor2 = (seedFactor * seed) / 1000;
-
-			float scale = 800f;
 
 			var result = await Task.Run(() =>
 			{
@@ -221,203 +239,28 @@ public class EndlessTerrain : MonoBehaviour
 				{
 					for (int y = 0; y < resolution; y++)
 					{
-						// float xCoord = (float)x / (float)resolution * size + offsetX;
-						// float zCoord = (float)z / (float)resolution * size + offsetZ;
-
-						// float sample = Mathf.PerlinNoise(xCoord * 0.005f, zCoord * 0.005f);
-						float sample = Mathf.PerlinNoise(
-							(((resolution - 1) * _relativePosition.x) + x + seedFactor) / scale,
-							(((resolution - 1) * _relativePosition.y) + y + seedFactor) / scale
-						);
-
-						sample *= (Mathf.PerlinNoise(
-							((((resolution - 1) * _relativePosition.x) + x + seedFactor2) + 1000) / scale,
-							((((resolution - 1) * _relativePosition.y) + y + seedFactor2) + 1000) / scale
-						) + .5f);
-                    
-						sample *= (Mathf.PerlinNoise(
-							((((resolution - 1) * _relativePosition.x) + x) + 42000) / scale * 1.5f,
-							((((resolution - 1) * _relativePosition.y) + y) + -42000) / scale * 1.5f
-						));
-					
-					
-						// float novoX = (resolution * _relativePosition.x) + x;
-						// float novoY = (resolution * _relativePosition.y) + y;
-					
-						// sample = sample / (130 - 10 * ((_relativePosition.x + _relativePosition.y) % 10));
-
-						// sample = (256 * sample - 16 * ((_relativePosition.x + _relativePosition.y) % 16)) / 256f;
-						// sample = ((_relativePosition.x + _relativePosition.y) % 2 == 0 ? 0f : 0.5f);
-						// sample = sample * ((16 * ((_relativePosition.x + _relativePosition.y) % 16)) + 256) / 512f;
-     
-						// Ultimo
-						// sample *= (Mathf.Abs((novoX + novoY + 827269 * _relativePosition.x + 89189189 * _relativePosition.x + 131313 * (((long)novoX) ^ ((long)novoY)) + 424242 * (((long)_relativePosition.x) | ((long)_relativePosition.y))) % 2048 - 1024) / 1024);
-                    
-                    
-                    
-						heights[y, x] = sample ;  // Troca z e x para corrigir a rotação do terren
+						heights[y, x] = GetHeightByCoordinate(resolution, x, y);
 					}
 				}
 
 				return heights;
 			});
 			
-			// for (int x = 0; x < resolution; x++)
-			// {
-			// 	for (int y = 0; y < resolution; y++)
-			// 	{
-			// 		// float xCoord = (float)x / (float)resolution * size + offsetX;
-			// 		// float zCoord = (float)z / (float)resolution * size + offsetZ;
-			//
-			// 		// float sample = Mathf.PerlinNoise(xCoord * 0.005f, zCoord * 0.005f);
-			// 		float sample = Mathf.PerlinNoise(
-			// 			(((resolution - 1) * _relativePosition.x) + x + seedFactor) / scale,
-			// 			(((resolution - 1) * _relativePosition.y) + y + seedFactor) / scale
-			// 		);
-			//
-			// 		sample *= (Mathf.PerlinNoise(
-			// 			((((resolution - 1) * _relativePosition.x) + x + seedFactor2) + 1000) / scale,
-			// 			((((resolution - 1) * _relativePosition.y) + y + seedFactor2) + 1000) / scale
-			// 		) + .5f);
-   //                  
-			// 		sample *= (Mathf.PerlinNoise(
-			// 			((((resolution - 1) * _relativePosition.x) + x) + 42000) / scale * 1.5f,
-			// 			((((resolution - 1) * _relativePosition.y) + y) + -42000) / scale * 1.5f
-			// 		));
-			// 		
-			// 		
-			// 		// float novoX = (resolution * _relativePosition.x) + x;
-			// 		// float novoY = (resolution * _relativePosition.y) + y;
-			// 		
-			// 		// sample = sample / (130 - 10 * ((_relativePosition.x + _relativePosition.y) % 10));
-			//
-			// 		// sample = (256 * sample - 16 * ((_relativePosition.x + _relativePosition.y) % 16)) / 256f;
-			// 		// sample = ((_relativePosition.x + _relativePosition.y) % 2 == 0 ? 0f : 0.5f);
-			// 		// sample = sample * ((16 * ((_relativePosition.x + _relativePosition.y) % 16)) + 256) / 512f;
-   //   
-			// 		// Ultimo
-			// 		// sample *= (Mathf.Abs((novoX + novoY + 827269 * _relativePosition.x + 89189189 * _relativePosition.x + 131313 * (((long)novoX) ^ ((long)novoY)) + 424242 * (((long)_relativePosition.x) | ((long)_relativePosition.y))) % 2048 - 1024) / 1024);
-   //                  
-   //                  
-   //                  
-			// 		heights[y, x] = sample ;  // Troca z e x para corrigir a rotação do terren
-			// 	}
-			// }
-			
 			_baseTerrain.terrainData.SetHeights(0, 0, result);
 		}
 		
-		// float[,] GeneratePerlinNoiseHeightmap(int resolution, int seed)
-		// {
-		// 	float[,] heights = new float[resolution, resolution];
-		//
-		// 	float seedFactor = (seed / (float)_chunkSize * resolution) / 100;
-		// 	float seedFactor2 = (seedFactor * seed) / 1000;
-		//
-		// 	float scale = 800f;
-		//
-		// 	for (int x = 0; x < resolution; x++)
-		// 	{
-		// 		for (int y = 0; y < resolution; y++)
-		// 		{
-		// 			// float xCoord = (float)x / (float)resolution * size + offsetX;
-		// 			// float zCoord = (float)z / (float)resolution * size + offsetZ;
-		//
-		// 			// float sample = Mathf.PerlinNoise(xCoord * 0.005f, zCoord * 0.005f);
-		// 			float sample = Mathf.PerlinNoise(
-		// 				(((resolution - 1) * _relativePosition.x) + x + seedFactor) / scale,
-		// 				(((resolution - 1) * _relativePosition.y) + y + seedFactor) / scale
-		// 			);
-		//
-		// 			sample *= (Mathf.PerlinNoise(
-		// 				((((resolution - 1) * _relativePosition.x) + x + seedFactor2) + 1000) / scale,
-		// 				((((resolution - 1) * _relativePosition.y) + y + seedFactor2) + 1000) / scale
-		// 			) + .5f);
-  //                   
-		// 			sample *= (Mathf.PerlinNoise(
-		// 				((((resolution - 1) * _relativePosition.x) + x) + 42000) / scale * 1.5f,
-		// 				((((resolution - 1) * _relativePosition.y) + y) + -42000) / scale * 1.5f
-		// 			));
-		// 			
-		// 			
-		// 			// float novoX = (resolution * _relativePosition.x) + x;
-		// 			// float novoY = (resolution * _relativePosition.y) + y;
-		// 			
-		// 			// sample = sample / (130 - 10 * ((_relativePosition.x + _relativePosition.y) % 10));
-		//
-		// 			// sample = (256 * sample - 16 * ((_relativePosition.x + _relativePosition.y) % 16)) / 256f;
-		// 			// sample = ((_relativePosition.x + _relativePosition.y) % 2 == 0 ? 0f : 0.5f);
-		// 			// sample = sample * ((16 * ((_relativePosition.x + _relativePosition.y) % 16)) + 256) / 512f;
-  //    
-		// 			// Ultimo
-		// 			// sample *= (Mathf.Abs((novoX + novoY + 827269 * _relativePosition.x + 89189189 * _relativePosition.x + 131313 * (((long)novoX) ^ ((long)novoY)) + 424242 * (((long)_relativePosition.x) | ((long)_relativePosition.y))) % 2048 - 1024) / 1024);
-  //                   
-  //                   
-  //                   
-		// 			heights[y, x] = sample ;  // Troca z e x para corrigir a rotação do terren
-		// 		}
-		// 	}
-		// 	
-		// 	_baseTerrain.terrainData.SetHeights(0, 0, heights);
-		// 	
-		// 	return heights;
-		// }
-
-		private int _seed;
-		
-		public void Setup(Vector2 coord, int size, Transform parent, int seed)
-		{
-			this._relativePosition = coord;
-			this._seed = seed;
-			
-			_position = coord * size;
-			
-			Vector3 positionV3 = new Vector3(_position.x,0,_position.y);
-
-			_meshObject.transform.position = positionV3;
-			_meshObject.transform.localScale = Vector3.one * size / 10f;
-			_meshObject.transform.parent = parent;
-			
-			
-			// _baseTerrain.terrainData.SetHeights(0, 0, GeneratePerlinNoiseHeightmap(_baseTerrain.terrainData.heightmapResolution, seed));
-			
-			// SpawnStructure(structurePrefab);
-			// AddTrees(_baseTerrain);
-
-			GeneratePerlinNoiseHeightmapAsync(_baseTerrain.terrainData.heightmapResolution, _seed);
-
-			int alphamapWidth = _baseTerrainData.alphamapWidth,
-				alphamapHeight = _baseTerrainData.alphamapHeight,
-				alphamapResolution = _baseTerrainData.alphamapHeight,
-				alphamapLayersCount = _baseTerrainData.terrainLayers.Length,
-				heightmapResolution = _baseTerrainData.heightmapResolution;
-			
-			BiomesTexturesSetupAsync(
-				alphamapWidth,
-				alphamapHeight,
-				alphamapResolution,
-				alphamapLayersCount,
-				heightmapResolution
-			);
-			
-			// BiomesTexturesSetup(_baseTerrain);
-			// PlaceTree(_baseTerrain, new Vector2(_meshObject.transform.position.x, _meshObject.transform.position.y), treePrefab);
-			
-			SetVisible(true);
-		}
-		
-		async void BiomesTexturesSetupAsync(
+		async void BiomesTexturesAndTreesSetupAsync(
 			int alphamapWidth,
 			int alphamapHeight,
 			int alphamapResolution,
-			int alphamapLayersCount,
-			int heightMapResolution
+			int alphamapLayersCount
 		)
 		{
-			
+
 			int width = alphamapWidth,
 				height = alphamapHeight,
-				resolution = alphamapResolution;
+				resolution = alphamapResolution,
+				terrainHeight = (int) _baseTerrainData.size.y;
 			
 			float noiseScale = 8000f;
 
@@ -431,19 +274,13 @@ public class EndlessTerrain : MonoBehaviour
 				];
 				
 				List<ObjectSpawnInfo> treesToSpawn = new();
-
-				Vector2 step = new Vector2(1f, 1f);
-
-				int xTreeControl = 0, yTreeControl = 0;
 				
 				for (int y = 0; y < width; y++)
 				{
 					float currentGlobalCoordinateY = ((resolution - 1) * _relativePosition.y) + y;
-					yTreeControl++;
 
 					for (int x = 0; x < height; x++)
 					{
-						xTreeControl++;
 						float currentGlobalCoordinateX  = ((resolution - 1) * _relativePosition.x) + x;
 
 						float temperature = Mathf.PerlinNoise(
@@ -482,11 +319,17 @@ public class EndlessTerrain : MonoBehaviour
 
 							if (chosenTree != null)
 							{
+								float hToSpawn = GetHeightByCoordinate(
+									resolution,
+									x + xOffsetInTerrain,
+									y + yOffsetInTerrain
+								) * terrainHeight;
+								
 								treesToSpawn.Add(new ObjectSpawnInfo(
 										chosenTree.treePrefab,
 										new Vector3(
 											xToSpawn,
-											0,
+											hToSpawn,
 											yToSpawn
 										),
 										Quaternion.identity,
@@ -505,14 +348,11 @@ public class EndlessTerrain : MonoBehaviour
 
 			foreach (var tree in result.treesToSpawn)
 			{
-				// tree.SpawnCoordinate.y =
-				// 	_baseTerrainData.GetHeight(tree.CoordinateInTerrain.x, tree.CoordinateInTerrain.y);
-				
-				tree.SpawnCoordinate.y = GetHeightByCoordinate(
-					_baseTerrainData.alphamapResolution,
-					tree.CoordinateInTerrain.x,
-					tree.CoordinateInTerrain.y
-				) * _baseTerrainData.size.y;
+				// tree.SpawnCoordinate.y = GetHeightByCoordinate(
+				// 	_baseTerrainData.alphamapResolution,
+				// 	tree.CoordinateInTerrain.x,
+				// 	tree.CoordinateInTerrain.y
+				// ) * _baseTerrainData.size.y;
 
 				GameObject spawnedTree = Instantiate(
 					tree.Prefab,
