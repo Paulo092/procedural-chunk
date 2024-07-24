@@ -14,6 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   universeName: Plain Lands
   biomeList:
+  - biomeName: Neve
+    temperature: {x: 0, y: 0.4948913}
+    humidity: {x: 0.29565775, y: 0.67305225}
+    smoothness: 0
+    treeDensity: 0.5
+    grassDensity: 0
+    biomeTrees:
+    - treePrefab: {fileID: 4005493237873637530, guid: 315b0b2d2ce80d34f9b17f87175f96c4,
+        type: 3}
+      pickRate: 1
+    - treePrefab: {fileID: 512235484156817850, guid: 4f3dfdc00e2a2854aba60d7a7a74a129,
+        type: 3}
+      pickRate: 0.5
+    - treePrefab: {fileID: 6943846617489224956, guid: 262c20fd70368b8448f18654c706c24d,
+        type: 3}
+      pickRate: 0.1
+    grass: []
+    biomeTextures:
+    - layer: 0
+      texture: {fileID: 2800000, guid: 168ed7b3c5d0c8f438a62bbfbb32514a, type: 3}
+      altitude: {x: 0.22027245, y: 0.49654657}
   - biomeName: Plains
     temperature: {x: 0, y: 0.5}
     humidity: {x: 0.5, y: 1}
@@ -29,7 +50,7 @@ MonoBehaviour:
       pickRate: 0.5
     grass: []
     biomeTextures:
-    - layer: 0
+    - layer: 1
       texture: {fileID: 2800000, guid: 3d7e23f397bd4e347bc2a33df00d0897, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
   - biomeName: Pines
@@ -44,20 +65,8 @@ MonoBehaviour:
       pickRate: 1
     grass: []
     biomeTextures:
-    - layer: 1
-      texture: {fileID: 2800000, guid: df73a5b6a8127ff40a8c6840516304de, type: 3}
-      altitude: {x: 0.22027245, y: 0.49654657}
-  - biomeName: MudValley
-    temperature: {x: 0.5, y: 1}
-    humidity: {x: 0, y: 0.5}
-    smoothness: 0
-    treeDensity: 0
-    grassDensity: 0
-    biomeTrees: []
-    grass: []
-    biomeTextures:
     - layer: 2
-      texture: {fileID: 2800000, guid: c8748b2da9e969c4ba1bc7c5fb221595, type: 3}
+      texture: {fileID: 2800000, guid: df73a5b6a8127ff40a8c6840516304de, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
   - biomeName: Desert
     temperature: {x: 0.5000001, y: 1}
@@ -74,6 +83,18 @@ MonoBehaviour:
     - layer: 3
       texture: {fileID: 2800000, guid: 20aa0f234461fbc46ae6fe91f504e2f6, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
+  - biomeName: MudValley
+    temperature: {x: 0.36648124, y: 0.60500693}
+    humidity: {x: 0.71696794, y: 1}
+    smoothness: 0
+    treeDensity: 0
+    grassDensity: 0
+    biomeTrees: []
+    grass: []
+    biomeTextures:
+    - layer: 4
+      texture: {fileID: 2800000, guid: c8748b2da9e969c4ba1bc7c5fb221595, type: 3}
+      altitude: {x: 0.22027245, y: 0.49654657}
   - biomeName: DistortedLand
     temperature: {x: 0, y: 0.74521065}
     humidity: {x: 0.29565775, y: 0.9284801}
@@ -86,7 +107,7 @@ MonoBehaviour:
       pickRate: 1
     grass: []
     biomeTextures:
-    - layer: 4
+    - layer: 5
       texture: {fileID: 2800000, guid: a6ee5260deb44d247ae90120ee36766b, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
   structureList:
@@ -97,6 +118,12 @@ MonoBehaviour:
   - name: "Bol\xE3o"
     prefab: {fileID: 1465472300660920438, guid: d6f2c2f4c1199c34fba39f0fdc1dad82,
       type: 3}
-    pickRate: 0
+    pickRate: 0.1
+    isHorde: 0
+    hordeSize: 0
+  - name: "Bol\xE3o"
+    prefab: {fileID: 8851539636194568888, guid: 5f58abc14282c82498586dd11fab3d56,
+      type: 3}
+    pickRate: 1
     isHorde: 0
     hordeSize: 0

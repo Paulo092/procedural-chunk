@@ -54,6 +54,7 @@ public class EndlessTerrain : MonoBehaviour
 		_chunkSize = chunkSize - 1;
 		_chunksVisibleInViewDst = Mathf.RoundToInt(MaxViewDst / _chunkSize);
 		universeData.SetupBiomes();
+		universeData.EnemyProbabilitiesPreProcess();
 		enemiesSpawned = new();
 
 		_terrainPool = new LocalPool(initialPoolSize, maxPoolSize, this.gameObject, universeData, baseTerrainMaterial, seed);
@@ -98,7 +99,7 @@ public class EndlessTerrain : MonoBehaviour
 		Vector3 positionToSpawn = selectedTerrain.GetRandomGlobalPosition();
 		
 		enemiesSpawned.Add(
-		Instantiate(universeData.enemies[0].prefab, positionToSpawn, Quaternion.identity)
+		Instantiate(universeData.GetEnemy().prefab, positionToSpawn, Quaternion.identity)
 		);
 		
 		
@@ -224,12 +225,10 @@ public class EndlessTerrain : MonoBehaviour
 
 			Random preRand = new Random(_seed);
 
-			Debug.Log(_seed);
-			
 			Random rand = new Random(preRand.Next(10000, 100000));
 
-			_seedTemperatureOffset = rand.Next(1000, 1000000);
-			_seedHumidityOffset = rand.Next(1000, 1000000);
+			_seedTemperatureOffset = rand.Next(-1000000, 1000000);
+			_seedHumidityOffset = rand.Next(-1000000, 1000000);
 			_seedHeightModifier = rand.Next(1000, 100000);
 
 			_treeRand = new Random((int) (_seed * _relativePosition.x * _relativePosition.y));
@@ -363,8 +362,8 @@ public class EndlessTerrain : MonoBehaviour
 						);
 
 						float humidity = Mathf.PerlinNoise(
-							(currentGlobalCoordinateX + _seedHumidityOffset) / (noiseScale * 1.8f),
-							(currentGlobalCoordinateY + _seedHumidityOffset) / (noiseScale * 1.8f)
+							(currentGlobalCoordinateY + _seedHumidityOffset) / (noiseScale * 1.8f),
+							(currentGlobalCoordinateX + _seedHumidityOffset) / (noiseScale * 1.8f)
 						);
 
 						Biome currentBiome = _universeData.GetBiomeByParameters(temperature, humidity);
