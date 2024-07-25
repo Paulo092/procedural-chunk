@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Right Arm
+  m_Mask: 00000000000000000000000000000000000000000000000001000000000000000100000000000000000000000000000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Bip001_Root
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_SkirtBck
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_SkirtBck_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_SkirtBck_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_SkirtFrt
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_SkirtFrt_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_SkirtFrt_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_L/Bip001_UpperArm_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_L/Bip001_UpperArm_L/Bip001_Forearm_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_L/Bip001_UpperArm_L/Bip001_Forearm_L/Bip001_Forearm1_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_L/Bip001_UpperArm_L/Bip001_Forearm_L/Bip001_Forearm1_L/Bip001_Hand_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_L/Bip001_UpperArm_L/Bip001_Forearm_L/Bip001_Forearm1_L/Bip001_Hand_L/Bip001_Index_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_L/Bip001_UpperArm_L/Bip001_Forearm_L/Bip001_Forearm1_L/Bip001_Hand_L/Bip001_Middle_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_L/Bip001_UpperArm_L/Bip001_Forearm_L/Bip001_Forearm1_L/Bip001_Hand_L/Bip001_Pinky_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_L/Bip001_UpperArm_L/Bip001_Forearm_L/Bip001_Forearm1_L/Bip001_Hand_L/Bip001_Thumb_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_R/Bip001_UpperArm_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_R/Bip001_UpperArm_R/Bip001_Forearm_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_R/Bip001_UpperArm_R/Bip001_Forearm_R/Bip001_Forearm1_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_R/Bip001_UpperArm_R/Bip001_Forearm_R/Bip001_Forearm1_R/Bip001_Hand_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_R/Bip001_UpperArm_R/Bip001_Forearm_R/Bip001_Forearm1_R/Bip001_Hand_R/Bip001_HandAnchor_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_R/Bip001_UpperArm_R/Bip001_Forearm_R/Bip001_Forearm1_R/Bip001_Hand_R/Bip001_Index_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_R/Bip001_UpperArm_R/Bip001_Forearm_R/Bip001_Forearm1_R/Bip001_Hand_R/Bip001_Middle_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_R/Bip001_UpperArm_R/Bip001_Forearm_R/Bip001_Forearm1_R/Bip001_Hand_R/Bip001_Pinky_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Clavicle_R/Bip001_UpperArm_R/Bip001_Forearm_R/Bip001_Forearm1_R/Bip001_Hand_R/Bip001_Thumb_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Neck
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Neck/Bip001_Head
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Neck/Bip001_Head/Bip001_Ear_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Neck/Bip001_Head/Bip001_Ear_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Neck/Bip001_Head/Bip001_Hair_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Neck/Bip001_Head/Bip001_Hair_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Neck/Bip001_Head/Bip001_Ponytail
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Spine/Bip001_Neck/Bip001_Head/Bip001_Ponytail/Bip001_Ponytail1
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Thigh_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Thigh_L/Bip001_Calf_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Thigh_L/Bip001_Calf_L/Bip001_Foot_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Thigh_L/Bip001_Calf_L/Bip001_Foot_L/Bip001_ToeNub_L
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Thigh_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Thigh_R/Bip001_Calf_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Thigh_R/Bip001_Calf_R/Bip001_Foot_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_Pelvis/Bip001_Thigh_R/Bip001_Calf_R/Bip001_Foot_R/Bip001_ToeNub_R
+    m_Weight: 1
+  - m_Path: Bip001_Root/Bip001_SwordAnchor
+    m_Weight: 1
+  - m_Path: Mesh_Knight
+    m_Weight: 1

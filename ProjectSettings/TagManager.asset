@@ -13,7 +13,6 @@ TagManager:
   - 
   - Water
   - UI
-  - Ground
   - 
   - 
   - 
@@ -30,7 +29,8 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Environment
+  - GroundCheck
   - 
   - 
   - 
