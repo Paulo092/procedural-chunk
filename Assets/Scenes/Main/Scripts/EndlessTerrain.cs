@@ -3,7 +3,12 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Pool;
 using System.Collections.Generic;
+using System.Numerics;
+using UnityEngine.AI;
+using Quaternion = UnityEngine.Quaternion;
 using Random = System.Random;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class EndlessTerrain : MonoBehaviour
 {
@@ -57,6 +62,12 @@ public class EndlessTerrain : MonoBehaviour
 		universeData.EnemyProbabilitiesPreProcess();
 		enemiesSpawned = new();
 
+		if (randomSeed)
+		{
+			Random rand = new Random();
+			seed = rand.Next(1000, 1000000000);
+		}
+		
 		_terrainPool = new LocalPool(initialPoolSize, maxPoolSize, this.gameObject, universeData, baseTerrainMaterial, seed);
 		InvokeRepeating("EnemySpawn", enemySpawnFrequency, enemySpawnFrequency);
 	}
