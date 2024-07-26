@@ -51,11 +51,24 @@ namespace TE
             myTransform = transform;
             animatorHandler.Initialize();
 
-            playerManager.isGrounded = true;
-            ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
+            playerManager.isGrounded = CheckIfGrounded();
+
+            if (!playerManager.isGrounded)
+            {
+                // O personagem está no ar desde o início
+                playerManager.isInAir = true;
+            }
         }
 
-        #region Movement;
+        private bool CheckIfGrounded()
+        {
+            Vector3 origin = myTransform.position;
+            origin.y += groundDetectionRayStartPoint;
+
+            return Physics.Raycast(origin, -Vector3.up, groundDirectionRayDistance, ignoreForGroundCheck);
+        }
+
+        #region Movement
         Vector3 normalVector;
         Vector3 targetPosition;
 
@@ -79,11 +92,11 @@ namespace TE
 
             Quaternion tr = Quaternion.LookRotation(targetDir);
             Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, tr, rs * delta);
-            
+
             myTransform.rotation = targetRotation;
         }
 
-        public void HandleMovement(float delta) 
+        public void HandleMovement(float delta)
         {
             if (inputHandler.rollFlag)
                 return;
@@ -98,7 +111,7 @@ namespace TE
 
             float speed = movementSpeed;
 
-            if(inputHandler.sprintFlag && inputHandler.moveAmount > 0.5)
+            if (inputHandler.sprintFlag && inputHandler.moveAmount > 0.5)
             {
                 speed = sprintSpeed;
                 playerManager.isSprinting = true;
@@ -118,7 +131,6 @@ namespace TE
                     playerManager.isSprinting = false;
                 }
             }
-            
 
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             rigidbody.velocity = projectedVelocity;
@@ -130,18 +142,18 @@ namespace TE
                 HandleRotation(delta);
             }
         }
- 
+
         public void HandleRollingAndSprinting(float delta)
         {
             if (animatorHandler.anim.GetBool("isInteracting"))
                 return;
- 
+
             if (inputHandler.rollFlag)
             {
                 moveDirection = cameraObject.forward * inputHandler.vertical;
                 moveDirection += cameraObject.right * inputHandler.horizontal;
- 
-                if(inputHandler.moveAmount > 0)
+
+                if (inputHandler.moveAmount > 0)
                 {
                     animatorHandler.PlayTargetAnimation("Rolling", true);
                     moveDirection.y = 0;
@@ -151,32 +163,22 @@ namespace TE
             }
         }
 
-        public  void HandleFalling(float delta, Vector3 moveDirection)
+        public void HandleFalling(float delta, Vector3 moveDirection)
         {
-            playerManager.isGrounded = false;
-            RaycastHit hit;
-            Vector3 origin = myTransform.position;
-            origin.y += groundDetectionRayStartPoint;
-
-            if(Physics.Raycast(origin, myTransform.forward, out hit, 0.4f))
+            if (playerManager.isInAir)
             {
-                moveDirection = Vector3.zero;
-            }
-
-            if(playerManager.isInAir)
-            {
-                rigidbody.AddForce(-Vector3.up *  fallingSpeed);
+                rigidbody.AddForce(-Vector3.up * fallingSpeed);
                 rigidbody.AddForce(moveDirection * fallingSpeed / 10f);
             }
 
             Vector3 dir = moveDirection;
             dir.Normalize();
-            origin = origin + dir * groundDirectionRayDistance;
+            Vector3 origin = myTransform.position + dir * groundDirectionRayDistance;
 
             targetPosition = myTransform.position;
 
             Debug.DrawRay(origin, targetPosition - Vector3.up * minimumDistanceNeededToBeginFall, Color.red, 0.1f, false);
-            if(Physics.Raycast(origin, -Vector3.up, out hit, minimumDistanceNeededToBeginFall, ignoreForGroundCheck))
+            if (Physics.Raycast(origin, -Vector3.up, out RaycastHit hit, minimumDistanceNeededToBeginFall, ignoreForGroundCheck))
             {
                 normalVector = hit.normal;
                 Vector3 tp = hit.point;
@@ -185,7 +187,7 @@ namespace TE
 
                 if (playerManager.isInAir)
                 {
-                    if(inAirTimer > 0.5f)
+                    if (inAirTimer > 0.5f)
                     {
                         Debug.Log("You were in the air for " + inAirTimer);
                         animatorHandler.PlayTargetAnimation("Land", true);
@@ -207,9 +209,9 @@ namespace TE
                     playerManager.isGrounded = false;
                 }
 
-                if(playerManager.isInAir ==  false)
+                if (playerManager.isInAir == false)
                 {
-                    if(playerManager.isInteracting == false)
+                    if (playerManager.isInteracting == false)
                     {
                         animatorHandler.PlayTargetAnimation("Falling", true);
                     }
@@ -217,22 +219,19 @@ namespace TE
                     Vector3 vel = rigidbody.velocity;
                     vel.Normalize();
                     rigidbody.velocity = vel * (movementSpeed / 2);
-                    playerManager.isInAir = true; 
+                    playerManager.isInAir = true;
                 }
             }
 
-            if(playerManager.isInteracting || inputHandler.moveAmount > 0)
+            if (playerManager.isInteracting || inputHandler.moveAmount > 0)
             {
                 myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, Time.deltaTime / 0.1f);
-
             }
             else
             {
                 myTransform.position = targetPosition;
             }
-            
         }
-
         #endregion
     }
 }

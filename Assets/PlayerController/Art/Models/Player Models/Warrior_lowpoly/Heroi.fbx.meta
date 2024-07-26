@@ -1,0 +1,534 @@
+fileFormatVersion: 2
+guid: 57f3a458afcf44f46ac5f1607248b922
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'warrior_rigging_Spine_01SHJnt' has translation
+      animation that will be discarded.\n\t'warrior_rigging_Spine_02SHJnt' has translation
+      animation that will be discarded.\n\t'warrior_rigging_Spine_TopSHJnt' has translation
+      animation that will be discarded.\n\t'warrior_rigging_Head_JawSHJnt' has translation
+      animation that will be discarded.\n\t'warrior_rigging_Head_TopSHJnt' has translation
+      animation that will be discarded.\n\t'warrior_rigging_Head_TopSHJnt' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'warrior_rigging_l_Leg_BallSHJnt'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'warrior_rigging_r_Leg_BallSHJnt'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n"
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton:
+    - name: Heroi(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: grass
+      parentName: Heroi(Clone)
+      position: {x: 0.032576814, y: 0.40310508, z: 0.17040206}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Stage
+      parentName: Heroi(Clone)
+      position: {x: -0, y: -0.0550575, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_lowpoly:warrior3dmodel
+      parentName: Heroi(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging
+      parentName: Heroi(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_MAIN_Offset_Ctrl_RestPoseGrp
+      parentName: warrior_rigging
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_MAIN_Offset_Ctrl
+      parentName: warrior_rigging_MAIN_Offset_Ctrl_RestPoseGrp
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_MAIN_Ctrl_RestPoseGrp
+      parentName: warrior_rigging_MAIN_Offset_Ctrl
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_MAIN_Ctrl
+      parentName: warrior_rigging_MAIN_Ctrl_RestPoseGrp
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_MAIN_Inner_Ctrl_RestPoseGrp
+      parentName: warrior_rigging_MAIN_Ctrl
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_MAIN_Inner_Ctrl
+      parentName: warrior_rigging_MAIN_Inner_Ctrl_RestPoseGrp
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_ArmGrp
+      parentName: warrior_rigging_MAIN_Inner_Ctrl
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Arm_ScaleGrp
+      parentName: warrior_rigging_l_ArmGrp
+      position: {x: -0.15366146, y: 1.2673342, z: 0.11958354}
+      rotation: {x: 0.5176308, y: -0.48033926, z: 0.50482666, w: -0.49647012}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Arm_WristFk_CtrlGrp
+      parentName: warrior_rigging_l_Arm_ScaleGrp
+      position: {x: 0.2684275, y: -0.15446958, z: -0.24124554}
+      rotation: {x: -0.058337186, y: -0.5683469, z: 0.73882145, w: 0.35738134}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Arm_WristFk_Ctrl_RestPoseGrp
+      parentName: warrior_rigging_l_Arm_WristFk_CtrlGrp
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Arm_WristFk_Ctrl
+      parentName: warrior_rigging_l_Arm_WristFk_Ctrl_RestPoseGrp
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.37183106, y: 0.36442366, z: -0.046746556, w: 0.8524974}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Locator_sword
+      parentName: warrior_rigging_l_Arm_WristFk_Ctrl
+      position: {x: -0.0768085, y: -0.023425566, z: -0.0029187095}
+      rotation: {x: 0.20361511, y: 0.6863476, z: -0.6332742, w: -0.29399267}
+      scale: {x: 6, y: 6, z: 6}
+    - name: sword_lowpoly:sword
+      parentName: Locator_sword
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.16666667, y: 0.16666667, z: 0.16666667}
+    - name: warrior_rigging_SHJntGrp
+      parentName: warrior_rigging
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_ROOTSHJnt
+      parentName: warrior_rigging_SHJntGrp
+      position: {x: 0.00015891343, y: 0.8978411, z: -0.000050768256}
+      rotation: {x: -0.53122514, y: 0.5498657, z: -0.4703472, w: 0.44070533}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Spine_01SHJnt
+      parentName: warrior_rigging_ROOTSHJnt
+      position: {x: -0.1673723, y: 0.008416033, z: -0.0033043083}
+      rotation: {x: 0.067771696, y: -0.029332876, z: 0.0040688855, w: 0.9972613}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Spine_02SHJnt
+      parentName: warrior_rigging_Spine_01SHJnt
+      position: {x: -0.13641946, y: 0.011505537, z: -0.0031897852}
+      rotation: {x: 0.014166703, y: -0.00903237, z: -0.002848676, w: 0.9998548}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Spine_TopSHJnt
+      parentName: warrior_rigging_Spine_02SHJnt
+      position: {x: -0.08436117, y: 0.012343233, z: -0.00084376446}
+      rotation: {x: 0.0045502903, y: -0.00013638962, z: -0.019699054, w: 0.9997956}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Arm_ClavicleSHJnt
+      parentName: warrior_rigging_Spine_TopSHJnt
+      position: {x: -0.020603087, y: 0.03865351, z: -0.090965346}
+      rotation: {x: 0.5408975, y: -0.4536801, z: 0.4062226, w: 0.5801617}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Arm_ShoulderSHJnt
+      parentName: warrior_rigging_l_Arm_ClavicleSHJnt
+      position: {x: -0.08117655, y: -0.053226158, z: 0.0100942645}
+      rotation: {x: 0.045482833, y: 0.041352246, z: 0.1468786, w: 0.9872427}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Arm_ElbowSHJnt
+      parentName: warrior_rigging_l_Arm_ShoulderSHJnt
+      position: {x: -0.16591851, y: 3.410605e-15, z: -3.2285284e-14}
+      rotation: {x: -0.016172512, y: 0.023860842, z: -0.019993361, w: 0.9993846}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Arm_WristSHJnt
+      parentName: warrior_rigging_l_Arm_ElbowSHJnt
+      position: {x: -0.22002824, y: -1.26476605e-14, z: -1.4210854e-16}
+      rotation: {x: -0.4256346, y: 0.105246134, z: 0.08214913, w: 0.8949916}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_01_01SHJnt
+      parentName: warrior_rigging_l_Arm_WristSHJnt
+      position: {x: -0.079888016, y: 0.009519761, z: 0.048170686}
+      rotation: {x: 0.051023714, y: 0.12101811, z: 0.0014562447, w: 0.991337}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_01_02SHJnt
+      parentName: warrior_rigging_l_Finger_01_01SHJnt
+      position: {x: -0.043095376, y: 0.0007902733, z: -0.0034985992}
+      rotation: {x: 0.02130688, y: -0.039331265, z: 0.0099822525, w: 0.99894917}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_01_03SHJnt
+      parentName: warrior_rigging_l_Finger_01_02SHJnt
+      position: {x: -0.021895345, y: 6.0396133e-16, z: 2.842171e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_02_01SHJnt
+      parentName: warrior_rigging_l_Arm_WristSHJnt
+      position: {x: -0.094164684, y: 0.011373014, z: 0.01963942}
+      rotation: {x: 0.007772292, y: 0.093760855, z: -0.0028324334, w: 0.9955604}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_02_02SHJnt
+      parentName: warrior_rigging_l_Finger_02_01SHJnt
+      position: {x: -0.034376454, y: -7.105427e-17, z: 4.2632563e-16}
+      rotation: {x: 0.003698028, y: 0.00028937293, z: 0.020169757, w: 0.9997897}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_02_03SHJnt
+      parentName: warrior_rigging_l_Finger_02_02SHJnt
+      position: {x: -0.022386814, y: -1.4210854e-16, z: -5.684342e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_03_01SHJnt
+      parentName: warrior_rigging_l_Arm_WristSHJnt
+      position: {x: -0.09500958, y: 0.014521127, z: -0.007361648}
+      rotation: {x: -0.09357335, y: 0.09512044, z: 0.0042062905, w: 0.99104923}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_03_02SHJnt
+      parentName: warrior_rigging_l_Finger_03_01SHJnt
+      position: {x: -0.029060194, y: -3.907985e-16, z: -0.00020544764}
+      rotation: {x: 0.012066783, y: -0.0021529845, z: 0.022631863, w: 0.9996688}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_03_03SHJnt
+      parentName: warrior_rigging_l_Finger_03_02SHJnt
+      position: {x: -0.02263067, y: -2.842171e-16, z: 4.2632563e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_04_01SHJnt
+      parentName: warrior_rigging_l_Arm_WristSHJnt
+      position: {x: -0.092860475, y: 0.0031365752, z: -0.030724049}
+      rotation: {x: -0.09386661, y: 0.08958273, z: 0.009593205, w: 0.9914999}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_04_02SHJnt
+      parentName: warrior_rigging_l_Finger_04_01SHJnt
+      position: {x: -0.022613283, y: -3.1974422e-16, z: -2.842171e-16}
+      rotation: {x: 0.0000014081584, y: -0.0000028908225, z: 0.020014735, w: 0.99979967}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Finger_04_03SHJnt
+      parentName: warrior_rigging_l_Finger_04_02SHJnt
+      position: {x: -0.012276077, y: 5.684342e-16, z: -2.842171e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Thumb_01_01SHJnt
+      parentName: warrior_rigging_l_Arm_WristSHJnt
+      position: {x: -0.05014314, y: -0.048047595, z: 0.0633157}
+      rotation: {x: 0.70819354, y: 0.3390601, z: -0.09383379, w: 0.61212367}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Thumb_01_02SHJnt
+      parentName: warrior_rigging_l_Thumb_01_01SHJnt
+      position: {x: -0.018710848, y: 2.842171e-16, z: 0.0016342202}
+      rotation: {x: 0.05028954, y: 0.01746497, z: 0.019257654, w: 0.9983963}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Thumb_01_03SHJnt
+      parentName: warrior_rigging_l_Thumb_01_02SHJnt
+      position: {x: -0.016427448, y: -7.105427e-16, z: -6.3948843e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Arm_ClavicleSHJnt
+      parentName: warrior_rigging_Spine_TopSHJnt
+      position: {x: -0.020603087, y: 0.03865351, z: 0.090965346}
+      rotation: {x: -0.44934812, y: -0.60337794, z: -0.5200658, w: 0.4044168}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Arm_ShoulderSHJnt
+      parentName: warrior_rigging_r_Arm_ClavicleSHJnt
+      position: {x: 0.08117655, y: 0.053226158, z: -0.0100942645}
+      rotation: {x: 0.01717883, y: 0.0119588645, z: 0.16555284, w: 0.98597884}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Arm_ElbowSHJnt
+      parentName: warrior_rigging_r_Arm_ShoulderSHJnt
+      position: {x: 0.16591851, y: -2.1316282e-16, z: -4.8849814e-16}
+      rotation: {x: -0.009509626, y: 0.030827807, z: -0.02400894, w: 0.9991911}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Arm_WristSHJnt
+      parentName: warrior_rigging_r_Arm_ElbowSHJnt
+      position: {x: 0.22002824, y: 1.5702995e-14, z: -2.842171e-16}
+      rotation: {x: 0.15171006, y: -0.12808011, z: 0.13485749, w: 0.9707693}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_01_01SHJnt
+      parentName: warrior_rigging_r_Arm_WristSHJnt
+      position: {x: 0.079888016, y: -0.0095197605, z: -0.048170686}
+      rotation: {x: 0.1783527, y: 0.11829453, z: 0.017175233, w: 0.97667897}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_01_02SHJnt
+      parentName: warrior_rigging_r_Finger_01_01SHJnt
+      position: {x: 0.043095376, y: -0.0007902733, z: 0.0034985992}
+      rotation: {x: 0.0075246207, y: -0.03484647, z: 0.022874855, w: 0.99910253}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_01_03SHJnt
+      parentName: warrior_rigging_r_Finger_01_02SHJnt
+      position: {x: 0.021895345, y: 2.1316282e-16, z: -7.105427e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_02_01SHJnt
+      parentName: warrior_rigging_r_Arm_WristSHJnt
+      position: {x: 0.094164684, y: -0.011373014, z: -0.01963942}
+      rotation: {x: 0.032520726, y: 0.081970766, z: 0.00739078, w: 0.99607664}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_02_02SHJnt
+      parentName: warrior_rigging_r_Finger_02_01SHJnt
+      position: {x: 0.034376454, y: -1.0658141e-16, z: -4.2632563e-16}
+      rotation: {x: 0, y: 0.0072962646, z: -0, w: 0.9999734}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_02_03SHJnt
+      parentName: warrior_rigging_r_Finger_02_02SHJnt
+      position: {x: 0.022386814, y: 3.907985e-16, z: 1.4210854e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_03_01SHJnt
+      parentName: warrior_rigging_r_Arm_WristSHJnt
+      position: {x: 0.09500958, y: -0.014521127, z: 0.007361648}
+      rotation: {x: -0.0779998, y: 0.07634173, z: 0.011841679, w: 0.9939557}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_03_02SHJnt
+      parentName: warrior_rigging_r_Finger_03_01SHJnt
+      position: {x: 0.029060194, y: 7.105427e-17, z: 0.00020544764}
+      rotation: {x: 0, y: 0.02371843, z: -0, w: 0.9997187}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_03_03SHJnt
+      parentName: warrior_rigging_r_Finger_03_02SHJnt
+      position: {x: 0.02263067, y: -6.0396133e-16, z: -1.4210854e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_04_01SHJnt
+      parentName: warrior_rigging_r_Arm_WristSHJnt
+      position: {x: 0.092860475, y: -0.0031365755, z: 0.030724049}
+      rotation: {x: -0.019779626, y: 0.055737857, z: -0.002072119, w: 0.9982473}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_04_02SHJnt
+      parentName: warrior_rigging_r_Finger_04_01SHJnt
+      position: {x: 0.022613283, y: 4.6185276e-16, z: -3.5527135e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Finger_04_03SHJnt
+      parentName: warrior_rigging_r_Finger_04_02SHJnt
+      position: {x: 0.012276077, y: -6.0396133e-16, z: -1.4210854e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Thumb_01_01SHJnt
+      parentName: warrior_rigging_r_Arm_WristSHJnt
+      position: {x: 0.05014314, y: 0.048047595, z: -0.0633157}
+      rotation: {x: 0.60571814, y: 0.13685907, z: -0.43889812, w: 0.64941794}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Thumb_01_02SHJnt
+      parentName: warrior_rigging_r_Thumb_01_01SHJnt
+      position: {x: 0.018710848, y: 7.81597e-16, z: -0.0016342202}
+      rotation: {x: 0.00000014901151, y: 0.0021067099, z: 0.0000000074505753, w: 0.9999978}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Thumb_01_03SHJnt
+      parentName: warrior_rigging_r_Thumb_01_02SHJnt
+      position: {x: 0.016427448, y: 5.684342e-16, z: -1.0658141e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Neck_01SHJnt
+      parentName: warrior_rigging_Spine_TopSHJnt
+      position: {x: -0.09402995, y: 0.010073864, z: 0.00005628808}
+      rotation: {x: -0.29152465, y: -0.044854015, z: 0.049320497, w: 0.9542374}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Neck_TopSHJnt
+      parentName: warrior_rigging_Neck_01SHJnt
+      position: {x: -0.043986082, y: 0.00005390757, z: -0.00003108751}
+      rotation: {x: 0.020520296, y: 0.0011744614, z: -0.05712855, w: 0.99815524}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Head_JawSHJnt
+      parentName: warrior_rigging_Neck_TopSHJnt
+      position: {x: 0.0031501886, y: -0.07020902, z: 3.1530333e-16}
+      rotation: {x: 4.4408926e-16, y: 1.1096809e-16, z: 0.7071068, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Head_JawEndSHJnt
+      parentName: warrior_rigging_Head_JawSHJnt
+      position: {x: -0.028381182, y: -0.030640598, z: -5.3290704e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Head_TopSHJnt
+      parentName: warrior_rigging_Neck_TopSHJnt
+      position: {x: -0.25087437, y: -2.4868996e-16, z: 1.3766766e-16}
+      rotation: {x: 2.7755576e-17, y: 3.6082248e-16, z: 2.7755576e-17, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Eye_01SHJnt
+      parentName: warrior_rigging_Head_TopSHJnt
+      position: {x: 0.18969694, y: -0.052125886, z: -0.03635546}
+      rotation: {x: 0.0068857106, y: -0.0077638323, z: 0.7481091, w: 0.6634947}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Eye_01SHJnt
+      parentName: warrior_rigging_Head_TopSHJnt
+      position: {x: 0.18969694, y: -0.052125886, z: 0.03635546}
+      rotation: {x: 0.0068857106, y: -0.0077638323, z: 0.7481091, w: 0.6634947}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Leg_HipSHJnt
+      parentName: warrior_rigging_ROOTSHJnt
+      position: {x: 0.0033698236, y: -1.4210854e-16, z: -0.09585225}
+      rotation: {x: -0.0029252467, y: 0.7863829, z: -0.61553186, w: 0.052094646}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Leg_KneeSHJnt
+      parentName: warrior_rigging_l_Leg_HipSHJnt
+      position: {x: -0.35338604, y: 0, z: 2.9487523e-15}
+      rotation: {x: 0, y: -0.000005437528, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Leg_AnkleSHJnt
+      parentName: warrior_rigging_l_Leg_KneeSHJnt
+      position: {x: -0.45734656, y: -1.7763567e-16, z: 4.0500935e-15}
+      rotation: {x: -0.08168933, y: 0.03490627, z: -0.017202977, w: 0.9958978}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Leg_BallSHJnt
+      parentName: warrior_rigging_l_Leg_AnkleSHJnt
+      position: {x: -0.071889184, y: -1.5987211e-16, z: 0.13112554}
+      rotation: {x: 0.00006904868, y: 0.70964116, z: 0.00023802108, w: 0.70456326}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_l_Leg_ToeSHJnt
+      parentName: warrior_rigging_l_Leg_BallSHJnt
+      position: {x: -0.071889184, y: 3.5527136e-17, z: 3.080869e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Leg_HipSHJnt
+      parentName: warrior_rigging_ROOTSHJnt
+      position: {x: 0.0033698236, y: -3.5527136e-17, z: 0.09585225}
+      rotation: {x: -0.6702599, y: -0.10472884, z: -0.09737335, w: 0.72821844}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Leg_KneeSHJnt
+      parentName: warrior_rigging_r_Leg_HipSHJnt
+      position: {x: 0.35338604, y: -3.5527136e-17, z: -3.5527136e-17}
+      rotation: {x: 0, y: -0.045468092, z: -0, w: 0.9989658}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Leg_AnkleSHJnt
+      parentName: warrior_rigging_r_Leg_KneeSHJnt
+      position: {x: 0.45734656, y: 7.105427e-17, z: -2.2870594e-16}
+      rotation: {x: -0.15164332, y: 0.031403422, z: 0.12504838, w: 0.9799903}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Leg_BallSHJnt
+      parentName: warrior_rigging_r_Leg_AnkleSHJnt
+      position: {x: 0.071889184, y: 7.105427e-17, z: -0.13112554}
+      rotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_r_Leg_ToeSHJnt
+      parentName: warrior_rigging_r_Leg_BallSHJnt
+      position: {x: 0.071889184, y: 3.5527136e-17, z: 2.5453314e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Cloth_01_01SHJnt
+      parentName: warrior_rigging_ROOTSHJnt
+      position: {x: -0.09400008, y: -0.118439406, z: -0.023476442}
+      rotation: {x: -0.00067515444, y: 0.9974119, z: 0.07141271, w: 0.008325951}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Cloth_01_02SHJnt
+      parentName: warrior_rigging_Cloth_01_01SHJnt
+      position: {x: -0.07988933, y: -0.01896707, z: -3.1974422e-16}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Cloth_01_03SHJnt
+      parentName: warrior_rigging_Cloth_01_02SHJnt
+      position: {x: -0.094466224, y: 7.105427e-17, z: -4.973799e-16}
+      rotation: {x: 0, y: -0, z: -0.023437891, w: 0.99972534}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Cloth_01_04SHJnt
+      parentName: warrior_rigging_Cloth_01_03SHJnt
+      position: {x: -0.105103955, y: 1.7763567e-16, z: -5.684342e-16}
+      rotation: {x: 0, y: -0, z: -0.023437891, w: 0.99972534}
+      scale: {x: 1, y: 1, z: 1}
+    - name: warrior_rigging_Sword_cover_01_01SHJnt
+      parentName: warrior_rigging_ROOTSHJnt
+      position: {x: -0.009952451, y: 0.106541395, z: 0.10863612}
+      rotation: {x: 0.7144487, y: -0.6975295, z: -0.008877827, w: -0.054192424}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.51
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 0
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

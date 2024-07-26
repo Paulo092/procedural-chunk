@@ -7,24 +7,43 @@ namespace TE
     public class PlayerAttacker : MonoBehaviour
     {
         AnimatorHandler animatorHandler;
+        InputHandler inputHandler;
+        public string lastAttack;
 
         private void Awake()
         {
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
+            inputHandler = GetComponent<InputHandler>();
+        }
+
+        public void HandleWeaponCombo(WeaponItem weapon)
+        {
+            if (inputHandler.comboFlag)
+            {
+                animatorHandler.anim.SetBool("canDoCombo", false);
+
+                if (lastAttack == weapon.OH_Normal_Attack1)
+                {
+                    animatorHandler.PlayTargetAnimation(weapon.OH_Normal_Attack2, true);
+                }
+            }
         }
 
         public void HandleNormalAttack(WeaponItem weapon)
         {
-            animatorHandler.PlayTargetAnimation(weapon.OH_Normal_Attack, true);
+            animatorHandler.PlayTargetAnimation(weapon.OH_Normal_Attack1, true);
+            lastAttack = weapon.OH_Normal_Attack1;
         }
         public void HandleLightAttack(WeaponItem weapon)
         {
             animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack, true);
+            lastAttack = weapon.OH_Light_Attack;
         }
 
         public void HandleHeavyAttack(WeaponItem weapon)
         {
             animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack, true);
+            lastAttack = weapon.OH_Heavy_Attack;
         }
     }
 }

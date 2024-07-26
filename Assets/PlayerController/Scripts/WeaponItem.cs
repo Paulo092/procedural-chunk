@@ -11,8 +11,13 @@ namespace TE
         public GameObject modelPrefab;
         public bool isUnarmed;
 
-        [Header("One Handed Attack Animations")]
-        public string OH_Normal_Attack;
+        [Header("Idle Animations")]
+        public string right_hand_idle;
+        public string left_hand_idle;
+
+        [Header("Attack Animations")]
+        public string OH_Normal_Attack1;
+        public string OH_Normal_Attack2;
         public string OH_Light_Attack;
         public string OH_Heavy_Attack;
     }

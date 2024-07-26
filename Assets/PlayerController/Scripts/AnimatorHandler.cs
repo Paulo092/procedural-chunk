@@ -104,7 +104,17 @@ namespace TE
             canRotate = false;
         }
 
-        /*private void OnAnimatorMove()
+        public void EnableCombo()
+        {
+            anim.SetBool("canDoCombo", true);
+        }
+
+        public void DisableCombo()
+        {
+            anim.SetBool("canDoCombo", false);
+        }
+
+        private void OnAnimatorMove()
         {
             if (playerManager.isInteracting == false)
                 return;
@@ -115,6 +125,6 @@ namespace TE
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
             playerLocomotion.rigidbody.velocity = velocity;
-        }*/
+        }
     }
 }
