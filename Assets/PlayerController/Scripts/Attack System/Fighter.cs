@@ -11,9 +11,12 @@ public class Fighter : MonoBehaviour
     float lastClickedTime = 0;
     float maxComboDelay = 1;
 
+    public Rigidbody rb;
+
     private void Start()
     {
         anim = GetComponentInChildren<Animator>();
+        rb = GetComponent<Rigidbody>();        
     }
     void Update()
     {
@@ -29,7 +32,7 @@ public class Fighter : MonoBehaviour
         if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f && anim.GetCurrentAnimatorStateInfo(0).IsName("hit3"))
         {
             anim.SetBool("hit3", false);
-            noOfClicks = 0;
+            noOfClicks = 0;            
         }
 
 
@@ -43,8 +46,7 @@ public class Fighter : MonoBehaviour
         {
             // Check for mouse input
             if (Input.GetMouseButtonDown(0))
-            {
-                Debug.Log("Clicou");
+            {                
                 OnClick();
 
             }
@@ -53,6 +55,8 @@ public class Fighter : MonoBehaviour
 
     void OnClick()
     {
+        anim.SetBool("Moving", false);
+
         //so it looks at how many clicks have been made and if one animation has finished playing starts another one.
         lastClickedTime = Time.time;
         noOfClicks++;
