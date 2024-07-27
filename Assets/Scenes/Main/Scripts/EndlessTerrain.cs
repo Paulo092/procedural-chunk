@@ -118,7 +118,7 @@ public class EndlessTerrain : MonoBehaviour
 		);
 		
 		
-		Debug.Log("Try to spawn enemy in chunk: [" + xChunk + ", " + yChunk + "]");
+		// Debug.Log("Try to spawn enemy in chunk: [" + xChunk + ", " + yChunk + "]");
 	}
 	
 	void UpdateVisibleChunks()

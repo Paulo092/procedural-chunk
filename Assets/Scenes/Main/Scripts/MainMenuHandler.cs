@@ -7,7 +7,6 @@ public class MainMenuHandler : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.M))
         {
-            Debug.Log("Entrei");
             SceneManager.LoadScene("Menu");
         }
     }
