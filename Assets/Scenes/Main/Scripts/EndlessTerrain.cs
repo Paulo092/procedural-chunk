@@ -51,11 +51,15 @@ public class EndlessTerrain : MonoBehaviour
 
 	private Vector2 _lastVisitedChunk;
 	
+	public static Random structureRand = new();
+	
 	#endregion
 
 	#region Manager
 	
 	private void Start() {
+		// structureRand = new Random();
+        
 		_chunkSize = chunkSize - 1;
 		_chunksVisibleInViewDst = Mathf.RoundToInt(MaxViewDst / _chunkSize);
 		universeData.SetupBiomes();
@@ -198,9 +202,13 @@ public class EndlessTerrain : MonoBehaviour
 		private int _seed;
 		
 		private List<GameObject> _instantiatedObjects = new List<GameObject>();
+		// private Random structureRand;
+		
 		
 		public TerrainChunk(Universe universeData, Material baseTerrainMaterial, int seed)
 		{
+			// structureRand = new Random();
+			
 			this._universeData = universeData;
 			this._seed = seed;
 			
@@ -458,7 +466,6 @@ public class EndlessTerrain : MonoBehaviour
         
 		private void StructurePlacingSetup(int resolution, float terrainHeight)
 		{
-			Random structureRand = new Random((int)(_relativePosition.x * _relativePosition.y * _seed));
 			float chanceToHaveAStructure = .1f;
 
 			Random rand = new Random();
@@ -473,7 +480,10 @@ public class EndlessTerrain : MonoBehaviour
 				yLocal
 			) * terrainHeight + 5f;
 
-			if ((structureRand.Next(1, 101) / 100f) < chanceToHaveAStructure)
+			int randomProbability = structureRand.Next(1, 101);
+			float random = (randomProbability / 100f);
+			
+			if (random < chanceToHaveAStructure)
 			{
 				Vector3 structureSpawnPosition = new Vector3(xToSpawnS, hToSpawnS, yToSpawnS);
 				GameObject structureToSpawn = _universeData.structureList[0].prefab;
