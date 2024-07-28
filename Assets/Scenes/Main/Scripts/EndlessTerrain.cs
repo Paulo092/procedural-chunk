@@ -232,7 +232,7 @@ public class EndlessTerrain : MonoBehaviour
 			terrain.materialTemplate = baseTerrainMaterial;
 			
 			_baseTerrain = terrain;
-			_baseTerrain.gameObject.layer = LayerMask.NameToLayer("Ground");
+			// _baseTerrain.gameObject.layer = LayerMask.NameToLayer("Ground");
 
 			_vegetationParentReference = new GameObject("Vegetation");
 			_vegetationParentReference.transform.parent = _meshObject.transform;
