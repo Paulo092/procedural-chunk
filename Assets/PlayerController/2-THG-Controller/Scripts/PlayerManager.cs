@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class PlayerManager : MonoBehaviour
     public int comboStep = 0;
     public float comboResetTime = 1.0f;
     private float lastComboTime;
+    public Queue<int> attackQueue = new Queue<int>();
 
     private Rigidbody rb;
     private bool isDodging = false;
@@ -56,8 +58,6 @@ public class PlayerManager : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-        // Esconder o cursor do mouse e bloqueá-lo no centro da tela
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -197,7 +197,11 @@ public class PlayerManager : MonoBehaviour
 
             if (isGrounded)
             {
-                Attack(comboStep);
+                attackQueue.Enqueue(comboStep);
+                if (attackQueue.Count == 1)
+                {
+                    Attack(attackQueue.Dequeue());
+                }
             }
         }
     }
@@ -219,7 +223,7 @@ public class PlayerManager : MonoBehaviour
 
     private void HandleDodge()
     {
-        if (Input.GetButtonDown("Dodge") && !isDodging && !isBlocking && animator.GetBool("IsMoving") && !animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+        if (Input.GetButtonDown("Dodge") && !isDodging && !isBlocking && animator.GetBool("IsMoving"))
         {
             StartCoroutine(Dodge());
         }
@@ -254,6 +258,7 @@ public class PlayerManager : MonoBehaviour
     {
         comboStep = Mathf.Clamp(comboStep, 1, 3);
         animator.SetTrigger("Attack" + comboStep);
+        StartCoroutine(ProcessAttackQueue());
 
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
         foreach (Collider enemy in hitEnemies)
@@ -269,6 +274,15 @@ public class PlayerManager : MonoBehaviour
             {
                 audioSource.PlayOneShot(hitSound);
             }
+        }
+    }
+
+    private IEnumerator ProcessAttackQueue()
+    {
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        if (attackQueue.Count > 0)
+        {
+            Attack(attackQueue.Dequeue());
         }
     }
 
@@ -308,16 +322,23 @@ public class PlayerManager : MonoBehaviour
 
     private void FindTarget()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, targetSwitchRadius, enemyLayers);
-        if (hitColliders.Length > 0)
-        {
-            targets = new Transform[hitColliders.Length];
-            for (int i = 0; i < hitColliders.Length; i++)
-            {
-                targets[i] = hitColliders[i].transform;
-            }
+        Collider[] colliders = Physics.OverlapSphere(transform.position, targetSwitchRadius, enemyLayers);
+        float closestDistance = Mathf.Infinity;
+        Transform closestTarget = null;
 
-            target = targets[0];
+        foreach (Collider collider in colliders)
+        {
+            float distance = Vector3.Distance(transform.position, collider.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestTarget = collider.transform;
+            }
+        }
+
+        if (closestTarget != null)
+        {
+            target = closestTarget;
         }
     }
 
@@ -328,14 +349,14 @@ public class PlayerManager : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (attackPoint != null)
-        {
-            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-        }
+        if (attackPoint == null)
+            return;
 
-        if (specialPoint != null)
-        {
-            Gizmos.DrawWireSphere(specialPoint.position, attackRange);
-        }
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+
+        if (specialPoint == null)
+            return;
+
+        Gizmos.DrawWireSphere(specialPoint.position, attackRange);
     }
 }

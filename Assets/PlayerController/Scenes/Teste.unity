@@ -2555,6 +2555,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3066926200718890887, guid: 1c0352ad8ab6b9249b5ebac17a011a29,
         type: 3}
+      propertyPath: runSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3066926200718890887, guid: 1c0352ad8ab6b9249b5ebac17a011a29,
+        type: 3}
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 1125272518}
