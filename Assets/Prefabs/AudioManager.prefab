@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8234963499708593458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 509362200534058558}
+  - component: {fileID: 3574983572200525370}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &509362200534058558
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8234963499708593458}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3574983572200525370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8234963499708593458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 530f2c7f032cffa4db30bd7d23b048f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: MainMenuMusic
+    clip: {fileID: 8300000, guid: 8a0682eaf1e72cc42a0b67b212a1e52c, type: 3}
+    volume: 1
+    pitch: 1.51
+    loop: 1
+    source: {fileID: 0}
+  - name: MainSceneBGM
+    clip: {fileID: 8300000, guid: ee8dc6295a3d8e742a673c02e423ace7, type: 3}
+    volume: 0.415
+    pitch: 0.55
+    loop: 1
+    source: {fileID: 0}
+  - name: TakeDamage
+    clip: {fileID: 8300000, guid: beb569cd57527f2488b3d70b6fd56882, type: 3}
+    volume: 0.651
+    pitch: 1.2
+    loop: 0
+    source: {fileID: 0}
+  - name: Run/Dash
+    clip: {fileID: 8300000, guid: e498ab8df98ed0a44bf8e7cacb90c83d, type: 3}
+    volume: 0.651
+    pitch: 1.2
+    loop: 0
+    source: {fileID: 0}

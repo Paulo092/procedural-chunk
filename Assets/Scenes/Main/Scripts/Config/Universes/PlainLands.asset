@@ -48,8 +48,8 @@ MonoBehaviour:
       texture: {fileID: 2800000, guid: df73a5b6a8127ff40a8c6840516304de, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
   - biomeName: Neve
-    temperature: {x: 0, y: 0.23910892}
-    humidity: {x: 0.14149661, y: 0.5787551}
+    temperature: {x: 0, y: 0.45251518}
+    humidity: {x: 0.14696869, y: 0.6936662}
     smoothness: 0
     treeDensity: 0.5
     grassDensity: 0
@@ -78,6 +78,9 @@ MonoBehaviour:
     - treePrefab: {fileID: 1268516079989756, guid: fcb7aed2d311dcf44a0ea46557988064,
         type: 3}
       pickRate: 1
+    - treePrefab: {fileID: 1753111941425576, guid: aa4666813a5d7d34ab87f5ee496b4376,
+        type: 3}
+      pickRate: 0.5
     grass: []
     biomeTextures:
     - layer: 3
@@ -96,8 +99,8 @@ MonoBehaviour:
       texture: {fileID: 2800000, guid: c8748b2da9e969c4ba1bc7c5fb221595, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
   - biomeName: DistortedLand
-    temperature: {x: 0, y: 0.74521065}
-    humidity: {x: 0.29565775, y: 0.9284801}
+    temperature: {x: 0, y: 0.52086043}
+    humidity: {x: 0.29565775, y: 0.7916812}
     smoothness: 0
     treeDensity: 0.5
     grassDensity: 0
@@ -111,7 +114,7 @@ MonoBehaviour:
       texture: {fileID: 2800000, guid: a6ee5260deb44d247ae90120ee36766b, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
   structureList:
-  - prefab: {fileID: 7769178140504453192, guid: 1c88119d1a3874e438131446524e31ee,
+  - prefab: {fileID: 1787310721803159463, guid: edbfa8ed63b54e242b8088e5d13c495c,
       type: 3}
     pickRate: 1
   enemies:

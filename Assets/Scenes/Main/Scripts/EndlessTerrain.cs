@@ -73,7 +73,7 @@ public class EndlessTerrain : MonoBehaviour
 		}
 		
 		_terrainPool = new LocalPool(initialPoolSize, maxPoolSize, this.gameObject, universeData, baseTerrainMaterial, seed);
-		InvokeRepeating("EnemySpawn", enemySpawnFrequency, enemySpawnFrequency);
+		// InvokeRepeating("EnemySpawn", enemySpawnFrequency, enemySpawnFrequency);
 	}
 
 	void Update()

@@ -7,6 +7,7 @@ public class MainMenuHandler : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.M))
         {
+            FindObjectOfType<AudioManager>().StopAll();
             SceneManager.LoadScene("Menu");
         }
     }

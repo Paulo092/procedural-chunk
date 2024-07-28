@@ -14,6 +14,7 @@ public class ButtonAction : MonoBehaviour
 
     public void StartGame(string SceneName)
     {
+        FindObjectOfType<AudioManager>().StopAll();
         SceneManager.LoadScene(SceneName);
     }
 
