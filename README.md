@@ -40,41 +40,41 @@
         <a href="https://github.com/Paulo092">
             <img src="https://avatars.githubusercontent.com/u/28546848?v=4" width="100px;" alt="Foto de Perfil"/><br>
               <b>Paulo Sergio</b>
-              <p>
-              <sub>Programador/</sub><br>
-              <sub>Game Designer</sub>
-              </p>
         </a>
+        <p>
+          <sub>Programador/</sub><br>
+          <sub>Game Designer</sub>
+        </p>
     </td>
     <td align="center">
         <a href="https://github.com/Wellived">
             <img src="https://avatars.githubusercontent.com/u/91618081?v=4" width="100px;" alt="Foto de Perfil"/><br>
             <b>Guilherme Carvalho</b>
-            <p>
-              <sub>Modelador/</sub><br>
-              <sub>Animador</sub>
-            </p>
         </a>
+        <p>
+          <sub>Modelador/</sub><br>
+          <sub>Animador</sub>
+        </p>
     </td>
     <td align="center">
         <a href="https://github.com/Thiagoemanuell">
             <img src="https://avatars.githubusercontent.com/u/23253518?v=4" width="100px;" alt="Foto de Perfil"/><br>
             <b>Thiago Emanuell</b>
-            <p>
-              <sub>Programador/</sub><br>
-              <sub>Level Design</sub>
-            </p>
         </a>
+        <p>
+          <sub>Programador/</sub><br>
+          <sub>Level Design</sub>
+        </p>
     </td>
     <td align="center">
         <a href="https://github.com/marcelocpadovan">
             <img src="https://avatars.githubusercontent.com/u/80044855?v=4" width="100px;" alt="Foto de Perfil"/><br>
             <b>Marcelo Padovan</b>
-            <p>
-              <sub>Gerente de projeto/</sub><br>
-              <sub>Sound/EFX</sub>
-            </p>
         </a>
+        <p>
+          <sub>Gerente de projeto/</sub><br>
+          <sub>Sound/EFX</sub>
+        </p>
     </td>
     </tr>
 </table>
