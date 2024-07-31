@@ -17,9 +17,12 @@ MonoBehaviour:
   - biomeName: Plains
     temperature: {x: 0, y: 0.5}
     humidity: {x: 0.5, y: 1}
+    biomeTextures:
+    - layer: 0
+      texture: {fileID: 2800000, guid: 3d7e23f397bd4e347bc2a33df00d0897, type: 3}
+      altitude: {x: 0.22027245, y: 0.49654657}
     smoothness: 0
     treeDensity: 1
-    grassDensity: 0
     biomeTrees:
     - treePrefab: {fileID: 4005493237873637530, guid: 315b0b2d2ce80d34f9b17f87175f96c4,
         type: 3}
@@ -27,32 +30,45 @@ MonoBehaviour:
     - treePrefab: {fileID: 6943846617489224956, guid: 262c20fd70368b8448f18654c706c24d,
         type: 3}
       pickRate: 0.5
+    grassDensity: 0
     grass: []
-    biomeTextures:
-    - layer: 0
-      texture: {fileID: 2800000, guid: 3d7e23f397bd4e347bc2a33df00d0897, type: 3}
-      altitude: {x: 0.22027245, y: 0.49654657}
+    structureDensity: 0.1
+    biomeStructures:
+    - structurePrefab: {fileID: 1878269134222116197, guid: 57f8e309ae49a744dafd62e3b8e67915,
+        type: 3}
+      pickRate: 1
+    gemStructurePrefab: {fileID: 0}
+    biomeGem: {fileID: 0}
+    gemProbability: 0
   - biomeName: Pines
     temperature: {x: 0, y: 0.2854406}
     humidity: {x: 0.234355, y: 0.59642386}
-    smoothness: 0
-    treeDensity: 0.1
-    grassDensity: 0
-    biomeTrees:
-    - treePrefab: {fileID: 512235484156817850, guid: 4f3dfdc00e2a2854aba60d7a7a74a129,
-        type: 3}
-      pickRate: 1
-    grass: []
     biomeTextures:
     - layer: 1
       texture: {fileID: 2800000, guid: df73a5b6a8127ff40a8c6840516304de, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
+    smoothness: 0
+    treeDensity: 0.1
+    biomeTrees:
+    - treePrefab: {fileID: 512235484156817850, guid: 4f3dfdc00e2a2854aba60d7a7a74a129,
+        type: 3}
+      pickRate: 1
+    grassDensity: 0
+    grass: []
+    structureDensity: 0
+    biomeStructures: []
+    gemStructurePrefab: {fileID: 0}
+    biomeGem: {fileID: 0}
+    gemProbability: 0
   - biomeName: Neve
     temperature: {x: 0, y: 0.45251518}
     humidity: {x: 0.14696869, y: 0.6936662}
+    biomeTextures:
+    - layer: 2
+      texture: {fileID: 2800000, guid: 168ed7b3c5d0c8f438a62bbfbb32514a, type: 3}
+      altitude: {x: 0.22027245, y: 0.49654657}
     smoothness: 0
     treeDensity: 0.5
-    grassDensity: 0
     biomeTrees:
     - treePrefab: {fileID: 4005493237873637530, guid: 315b0b2d2ce80d34f9b17f87175f96c4,
         type: 3}
@@ -63,17 +79,22 @@ MonoBehaviour:
     - treePrefab: {fileID: 6943846617489224956, guid: 262c20fd70368b8448f18654c706c24d,
         type: 3}
       pickRate: 0.1
+    grassDensity: 0
     grass: []
-    biomeTextures:
-    - layer: 2
-      texture: {fileID: 2800000, guid: 168ed7b3c5d0c8f438a62bbfbb32514a, type: 3}
-      altitude: {x: 0.22027245, y: 0.49654657}
+    structureDensity: 0
+    biomeStructures: []
+    gemStructurePrefab: {fileID: 0}
+    biomeGem: {fileID: 0}
+    gemProbability: 0
   - biomeName: Desert
     temperature: {x: 0.5000001, y: 1}
     humidity: {x: 0.5, y: 1}
+    biomeTextures:
+    - layer: 3
+      texture: {fileID: 2800000, guid: 20aa0f234461fbc46ae6fe91f504e2f6, type: 3}
+      altitude: {x: 0.22027245, y: 0.49654657}
     smoothness: 0
     treeDensity: 0.1
-    grassDensity: 0
     biomeTrees:
     - treePrefab: {fileID: 1268516079989756, guid: fcb7aed2d311dcf44a0ea46557988064,
         type: 3}
@@ -81,38 +102,55 @@ MonoBehaviour:
     - treePrefab: {fileID: 1753111941425576, guid: aa4666813a5d7d34ab87f5ee496b4376,
         type: 3}
       pickRate: 0.5
+    grassDensity: 0
     grass: []
-    biomeTextures:
-    - layer: 3
-      texture: {fileID: 2800000, guid: 20aa0f234461fbc46ae6fe91f504e2f6, type: 3}
-      altitude: {x: 0.22027245, y: 0.49654657}
+    structureDensity: 0.1
+    biomeStructures:
+    - structurePrefab: {fileID: 1878269134222116197, guid: 53d2a9f01b12dce46a7f9cb764aa7fff,
+        type: 3}
+      pickRate: 1
+    gemStructurePrefab: {fileID: 6318994814192270188, guid: 089605099b6559445b81da08893452a4,
+      type: 3}
+    biomeGem: {fileID: 8558291049864344142, guid: 25928c5118bba3a4fbd315a7dc273e4b,
+      type: 3}
+    gemProbability: 0
   - biomeName: MudValley
     temperature: {x: 0.36648124, y: 0.60500693}
     humidity: {x: 0.71696794, y: 1}
-    smoothness: 0
-    treeDensity: 0
-    grassDensity: 0
-    biomeTrees: []
-    grass: []
     biomeTextures:
     - layer: 4
       texture: {fileID: 2800000, guid: c8748b2da9e969c4ba1bc7c5fb221595, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
+    smoothness: 0
+    treeDensity: 0
+    biomeTrees: []
+    grassDensity: 0
+    grass: []
+    structureDensity: 0
+    biomeStructures: []
+    gemStructurePrefab: {fileID: 0}
+    biomeGem: {fileID: 0}
+    gemProbability: 0
   - biomeName: DistortedLand
     temperature: {x: 0, y: 0.52086043}
     humidity: {x: 0.29565775, y: 0.7916812}
-    smoothness: 0
-    treeDensity: 0.5
-    grassDensity: 0
-    biomeTrees:
-    - treePrefab: {fileID: 6943846617489224956, guid: 262c20fd70368b8448f18654c706c24d,
-        type: 3}
-      pickRate: 1
-    grass: []
     biomeTextures:
     - layer: 5
       texture: {fileID: 2800000, guid: a6ee5260deb44d247ae90120ee36766b, type: 3}
       altitude: {x: 0.22027245, y: 0.49654657}
+    smoothness: 0
+    treeDensity: 0.5
+    biomeTrees:
+    - treePrefab: {fileID: 6943846617489224956, guid: 262c20fd70368b8448f18654c706c24d,
+        type: 3}
+      pickRate: 1
+    grassDensity: 0
+    grass: []
+    structureDensity: 0
+    biomeStructures: []
+    gemStructurePrefab: {fileID: 0}
+    biomeGem: {fileID: 0}
+    gemProbability: 0
   structureList:
   - prefab: {fileID: 1787310721803159463, guid: edbfa8ed63b54e242b8088e5d13c495c,
       type: 3}

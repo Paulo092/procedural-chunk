@@ -366,6 +366,10 @@ public class EndlessTerrain : MonoBehaviour
 				];
 				
 				List<ObjectSpawnInfo> treesToSpawn = new();
+				List<ObjectSpawnInfo> structuresToSpawn = new();
+
+				Boolean hasSpawnedBiomeGemStructure = false;
+				ObjectSpawnInfo gemStructureToSpawn = null;
 				
 				for (int y = 0; y < width; y++)
 				{
@@ -437,19 +441,96 @@ public class EndlessTerrain : MonoBehaviour
 						}
 						
 						#endregion
+                        
+						#region Choose Structure Coordinates
+						
+						if (x != 0 && y != 0 && x % 100 == 0 && y % 100 == 0)
+						{
+							Random rand = new Random();
+							float prob = rand.Next(1, 101) / 100f;
+							bool canPlace = prob <= currentBiome.structureDensity;
+
+							if (!canPlace) continue;
+							
+							float xToSpawn = (_relativePosition.x * _chunkSize) + ((x) * ((float)_chunkSize / resolution));
+							float yToSpawn = (_relativePosition.y * _chunkSize) + ((y) * ((float)_chunkSize / resolution));
+
+							// Debug.Log(heightmapResolution);
+							
+							Biome.BiomeStructure chosenStructure = currentBiome.GetStructure();
+
+							if (chosenStructure != null)
+							{
+								float hToSpawn = GetHeightByCoordinate(
+									heightmapResolution,
+									x,
+									y
+								) * terrainHeight;
+								
+								structuresToSpawn.Add(new ObjectSpawnInfo(
+										chosenStructure.structurePrefab,
+										new Vector3(
+											xToSpawn,
+											hToSpawn,
+											yToSpawn
+										),
+										Quaternion.identity
+									)
+								);
+							}
+						}
+						
+						#endregion
+
+						// #region Try Spawn Biome Gem Structure
+						//
+						// if (!hasSpawnedBiomeGemStructure && x != 0 && y != 0 && x % 70 == 0 && y % 70 == 0)
+						// {
+						// 	Random rand = new Random();
+						// 	float prob = rand.Next(1, 101) / 100f;
+						// 	bool canPlace = prob <= currentBiome.gemProbability;
+						//
+						// 	if (!canPlace) continue;
+						// 	
+						// 	float xToSpawn = (_relativePosition.x * _chunkSize) + ((x) * ((float)_chunkSize / resolution));
+						// 	float yToSpawn = (_relativePosition.y * _chunkSize) + ((y) * ((float)_chunkSize / resolution));
+						// 	
+						// 	Biome.BiomeStructure chosenStructure = currentBiome.GetStructure();
+						//
+						// 	if (chosenStructure != null)
+						// 	{
+						// 		float hToSpawn = GetHeightByCoordinate(
+						// 			heightmapResolution,
+						// 			x,
+						// 			y
+						// 		) * terrainHeight;
+						// 		
+						// 		structuresToSpawn.Add(new ObjectSpawnInfo(
+						// 				chosenStructure.structurePrefab,
+						// 				new Vector3(
+						// 					xToSpawn,
+						// 					hToSpawn,
+						// 					yToSpawn
+						// 				),
+						// 				Quaternion.identity
+						// 			)
+						// 		);
+						// 	}
+						//
+						// 	hasSpawnedBiomeGemStructure = true;
+						// }
+						//
+						// #endregion
 					}
 				}
 				
-				return (alphaMap, treesToSpawn);
+				return (alphaMap, treesToSpawn, structuresToSpawn);
 			});
+
+			#region Spawn Trees GameObjects
 
 			foreach (var tree in result.treesToSpawn)
 			{
-				// tree.SpawnCoordinate.y = _baseTerrainData.GetHeight(
-				// 	tree.CoordinateInTerrain.x, 
-				// 	tree.CoordinateInTerrain.y
-				// );
-				
 				GameObject spawnedTree = Instantiate(
 					tree.Prefab,
 					tree.SpawnCoordinate,
@@ -460,6 +541,32 @@ public class EndlessTerrain : MonoBehaviour
 				
 				_instantiatedObjects.Add(spawnedTree);
 			}
+			
+			#endregion
+
+			#region Spawn Structures GameObjects
+			
+			foreach (var structure in result.structuresToSpawn)
+			{
+				GameObject spawnedStructure = Instantiate(
+					structure.Prefab,
+					structure.SpawnCoordinate,
+					structure.Rotation
+				);
+
+				spawnedStructure.transform.parent = _structureParentReference.transform;
+				
+				_instantiatedObjects.Add(spawnedStructure);
+			}
+			
+			#endregion
+
+			#region Try Spawn Biome Gem Structure
+
+			
+
+			#endregion
+			
 			
 			BaseTerrainData.SetAlphamaps(0, 0, result.alphaMap);
 		}

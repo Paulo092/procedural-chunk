@@ -6,6 +6,8 @@ TagManager:
   tags:
   - FxTemporaire
   - Enemy
+  - CinemachineTarget
+  - GemPlaceholder
   layers:
   - Default
   - TransparentFX
