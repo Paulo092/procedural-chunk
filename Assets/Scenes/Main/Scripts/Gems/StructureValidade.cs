@@ -7,7 +7,7 @@ public class StructureValidade : MonoBehaviour
     public Gem structureGem;
     void Update()
     {
-        foreach (var collectedGem in Gem.CollectedGems)
+        foreach (var collectedGem in GemBag.collectedGems)
         {
             if (structureGem.gemIdentifier == collectedGem.gemIdentifier)
             {

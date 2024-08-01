@@ -15,6 +15,6 @@ public class GemBagUI : MonoBehaviour
 
     public void UpdateGemText(GemBag gemBag)
     {
-        _gemText.text = "Gems: " + gemBag.NumberOfGems.ToString();
+        // _gemText.text = "Gems: " + gemBag.NumberOfGems.ToString();
     }
 }
