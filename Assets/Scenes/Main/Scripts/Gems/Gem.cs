@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,9 +14,16 @@ public class Gem : MonoBehaviour
     // public static List<Gem> CollectedGems = new();
     public static List<Gem> AllGems = new();
     public Boolean isNatural = true;
+
+    private Boolean isTriggering = false;
     
-    private void Start()
+    private void Awake()
     {
+        if (gemIdentifier == null && prefab != null)
+        {
+            gemIdentifier = prefab.name;
+        }
+        
         if (normalMaterial == null)
         {
             normalMaterial = this.GetComponent<Renderer>().material;
@@ -33,13 +41,36 @@ public class Gem : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!isNatural) return;
+        // Debug.Log("Something Touch a Gem");
         
-        GemBag gemBag = other.GetComponent<GemBag>();
-
-        if (gemBag != null)
+        if (other.CompareTag("Player") && !isTriggering)
         {
-            gemBag.CollectGem(this);
-            Destroy(this.gameObject);
+            // Debug.Log("Player Touch a Gem");
+
+            // isTriggering = true;
+
+            PlayerOrbit playerOrbit = other.GetComponent<PlayerOrbit>();
+            playerOrbit.AddGemInOrbit(this);
+            
+            GemHandler.GetInstance().CollectGem(this);
+            Destroy(this);
         }
+
+        // StartCoroutine(nameof(ResetTriggering));
+    }
+    
+    IEnumerator ResetTriggering()
+    {
+        yield return new WaitForEndOfFrame();
+        isTriggering = false;
+    }
+
+    public void CloneInto(Gem otherGem)
+    {
+        otherGem.gemIdentifier = this.gemIdentifier;
+        otherGem.prefab = this.prefab;
+        otherGem.normalMaterial = this.normalMaterial;
+        otherGem.notFoundedMaterial = this.notFoundedMaterial;
+        otherGem.isNatural = this.isNatural;
     }
 }

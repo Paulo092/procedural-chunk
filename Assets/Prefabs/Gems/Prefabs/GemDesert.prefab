@@ -68,6 +68,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GemDesert
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5d69811bac682994abfa33301fdb6950,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -103,6 +108,7 @@ MonoBehaviour:
   prefab: {fileID: 5139077725864263618}
   normalMaterial: {fileID: 2100000, guid: 3f3a20835cfd1be4d93f1e28af915d16, type: 2}
   notFoundedMaterial: {fileID: 2100000, guid: cfa6fb67e4a283e4f81762074434bc5f, type: 2}
+  isNatural: 1
 --- !u!135 &-1515771618892440941
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -116,7 +122,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0

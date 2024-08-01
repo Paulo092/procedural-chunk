@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,14 +6,29 @@ using UnityEngine;
 public class StructureValidade : MonoBehaviour
 {
     public Gem structureGem;
-    void Update()
+    public GemHandler.GemInfo globalGemEquivalent;
+    
+    private void Start()
     {
-        foreach (var collectedGem in GemBag.collectedGems)
+        foreach (var gemInfo in GemHandler.GetInstance().allGems)
         {
-            if (structureGem.gemIdentifier == collectedGem.gemIdentifier)
+            if (gemInfo.gem.gemIdentifier == structureGem.gemIdentifier)
             {
-                Destroy(this.gameObject);
+                globalGemEquivalent = gemInfo;
             }
         }
+    }
+
+    void Update()
+    {
+        if(globalGemEquivalent.isCollected) Destroy(this.gameObject);
+        
+        // foreach (var collectedGem in GemHandler.GetInstance().allGems)
+        // {
+        //     if (structureGem.gemIdentifier == collectedGem.gemIdentifier)
+        //     {
+        //         Destroy(this.gameObject);
+        //     }
+        // }
     }
 }

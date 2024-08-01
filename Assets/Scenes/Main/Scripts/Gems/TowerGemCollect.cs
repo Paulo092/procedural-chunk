@@ -6,10 +6,10 @@ using Random = System.Random;
 
 public class TowerGemCollect : MonoBehaviour
 {
-
     public GameObject orbitCenter;
     public Gem[] allGemsPrefabs;
-    private List<GameObject> allGemsSpawned = new();
+    // private List<GameObject> allGemsSpawned = new();
+    public List<TowerGemInfo> towerGemInventory = new();
 
     private void Start()
     {
@@ -18,60 +18,86 @@ public class TowerGemCollect : MonoBehaviour
 
     IEnumerator SpawnPlaceholderGem()
     {
-        Random rand = new Random();
         foreach (var gem in allGemsPrefabs)
         {
             GameObject followGem = Instantiate(gem.prefab, this.transform.position, UnityEngine.Quaternion.identity);
             followGem.transform.localScale = new Vector3(1f, 1f, 1f);
 
-            followGem.GetComponent<Gem>().isNatural = false;
+            // followGem.GetComponent<Gem>().isNatural = false;
             
-            PlayerGemOrbit orbit = followGem.AddComponent<PlayerGemOrbit>();
+            GemOrbit orbit = followGem.AddComponent<GemOrbit>();
             orbit.heightOffset = new Vector3(0f, 5f, 0f);
-            orbit.player = orbitCenter.transform;
+            orbit.target = orbitCenter.transform;
             orbit.orbitDistance = 15;
 
             if (gem.notFoundedMaterial != null)
             {
                 followGem.GetComponent<Renderer>().material = gem.notFoundedMaterial;
             }
+
+            TowerGemInfo gemInfo = new();
+            gemInfo.Prefab = followGem;
+            gemInfo.Gem = gem;
+            gemInfo.IsReturned = false;
             
-            allGemsSpawned.Add(followGem);
+            towerGemInventory.Add(gemInfo);
+            // allGemsSpawned.Add(followGem);
             
             yield return new WaitForSeconds((360f / 30f) / allGemsPrefabs.Length);
         }
     }
+    
+    // private IEnumerator VerifyGems(List<Gem> collectedGems)
+    // {
+    //     foreach (var collectedGem in collectedGems)
+    //     {
+    //         foreach (var gem in allGemsSpawned)
+    //         {
+    //             if (collectedGem.gemIdentifier == gem.GetComponent<Gem>().gemIdentifier)
+    //             {
+    //                 ActivateGem(gem);
+    //                 // Destroy(collectedGem.gameObject);
+    //                 yield return new WaitForSeconds(2f);
+    //             }
+    //         }
+    //     }
+    // }
 
-    private IEnumerator VerifyGems(List<Gem> collectedGems)
-    {
-        foreach (var collectedGem in collectedGems)
-        {
-            foreach (var gem in allGemsSpawned)
-            {
-                if (collectedGem.gemIdentifier == gem.GetComponent<Gem>().gemIdentifier)
-                {
-                    ActivateGem(gem);
-                    // Destroy(collectedGem.gameObject);
-                    yield return new WaitForSeconds(2f);
-                }
-            }
-        }
-    }
-
-    private void ActivateGem(GameObject gem)
+    private void ActivateGem(Gem gem)
     {
         gem.GetComponent<Renderer>().material = gem.GetComponent<Gem>().normalMaterial;
     }
     
     private void OnTriggerEnter(Collider other)
     {
-        Random rand = new Random();
-        GemBag gemBag = other.GetComponent<GemBag>();
+        StartCoroutine(nameof(UpdateGemStatus));
 
-        if (gemBag != null && GemBag.collectedGems.Count > 0)
+    }
+
+    private IEnumerator UpdateGemStatus()
+    {
+        GemHandler instance = GemHandler.GetInstance();
+
+        Debug.Log(">>> : " + instance.allGems.Length + " - " + instance.numberOfCollectedGems);
+        
+        if (instance.allGems.Length == instance.numberOfCollectedGems)
         {
-            Debug.Log("Deu certo");
-            StartCoroutine(nameof(VerifyGems), GemBag.collectedGems);
+            Debug.Log("Ganhou!");
+            yield return null;
         }
+        
+        foreach (var gem in GemHandler.GetInstance().allGems)
+        {
+            yield return new WaitForSeconds(2f);
+            Debug.Log("Gem " + gem.gem.gemIdentifier + " - isC: " + gem.isCollected);
+            gem.isReturned = true;
+        }
+    }
+    
+    public class TowerGemInfo
+    {
+        public Gem Gem;
+        public GameObject Prefab;
+        public Boolean IsReturned;
     }
 }

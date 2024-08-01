@@ -257,6 +257,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   structureGem: {fileID: 1127890969106036073}
+  globalGemEquivalent:
+    gem: {fileID: 0}
+    isCollected: 0
+    isReturned: 0
 --- !u!1 &1968160698268731421
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,6 +656,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GemDesert
+      objectReference: {fileID: 0}
+    - target: {fileID: 5139077725864263618, guid: d6072ab0e3723ca4fbb735060cbbd585,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5483831123458041208, guid: d6072ab0e3723ca4fbb735060cbbd585,
         type: 3}
