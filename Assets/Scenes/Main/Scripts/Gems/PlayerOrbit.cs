@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,28 +36,6 @@ public class PlayerOrbit : MonoBehaviour
                 return;
             }
     }
-    
-    // public void AddGemInOrbit(Gem gem)
-    // {
-    //     Debug.Log("><" + gem.prefab == null);
-    //     foreach (Gem gemInOrbit in gemsInOrbit)
-    //         if (gemInOrbit.gemIdentifier == gem.gemIdentifier)
-    //             return;
-    //
-    //     
-    //     GameObject orbitalGemGameObject = Instantiate(gem.prefab, this.transform.position, Quaternion.identity);
-    //     orbitalGemGameObject.transform.localScale = new Vector3(.1f, .1f, .1f);
-    //     
-    //     GemOrbit gemOrbit = orbitalGemGameObject.AddComponent<GemOrbit>();
-    //     gemOrbit.target = this.gameObject.transform;
-    //     gemOrbit.orbitDistance = 2;
-    //
-    //     Gem orbitalGem = orbitalGemGameObject.AddComponent<Gem>();
-    //     orbitalGem = gem;
-    //     orbitalGem.isNatural = false;
-    //
-    //     gemsInOrbit.Add(orbitalGem);
-    // }
     
     public void RemoveGemFronOrbit(Gem gem)
     {

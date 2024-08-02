@@ -1,7 +1,4 @@
-
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Gem : MonoBehaviour
@@ -10,12 +7,9 @@ public class Gem : MonoBehaviour
     public GameObject prefab;
     public Material normalMaterial;
     public Material notFoundedMaterial;
-    
-    // public static List<Gem> CollectedGems = new();
-    public static List<Gem> AllGems = new();
     public Boolean isNatural = true;
 
-    private Boolean isTriggering = false;
+    private Boolean _isTriggering;
     
     private void Awake()
     {
@@ -41,28 +35,15 @@ public class Gem : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!isNatural) return;
-        // Debug.Log("Something Touch a Gem");
         
-        if (other.CompareTag("Player") && !isTriggering)
+        if (other.CompareTag("Player") && !_isTriggering)
         {
-            // Debug.Log("Player Touch a Gem");
-
-            // isTriggering = true;
-
             PlayerOrbit playerOrbit = other.GetComponent<PlayerOrbit>();
             playerOrbit.AddGemInOrbit(this);
             
             GemHandler.GetInstance().CollectGem(this);
             Destroy(this);
         }
-
-        // StartCoroutine(nameof(ResetTriggering));
-    }
-    
-    IEnumerator ResetTriggering()
-    {
-        yield return new WaitForEndOfFrame();
-        isTriggering = false;
     }
 
     public void CloneInto(Gem otherGem)

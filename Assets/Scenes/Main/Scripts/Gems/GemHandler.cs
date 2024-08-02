@@ -4,22 +4,22 @@ using UnityEngine;
 public class GemHandler : MonoBehaviour
 {
     public GemInfo[] allGems;
-    public int numberOfCollectedGems = 0;
+    public int numberOfCollectedGems;
 
-    private static GemHandler Instance;
-    public static GemHandler GetInstance() => Instance;
+    private static GemHandler _instance;
+    public static GemHandler GetInstance() => _instance;
 
     private void Awake()
     {
-        if (Instance == null)
+        if (_instance == null)
         {
-            Instance = this;
+            _instance = this;
         }
     }
 
     public static GemInfo GetGemInfo(Gem gem)
     {
-        foreach (var currentGem in Instance.allGems)
+        foreach (var currentGem in _instance.allGems)
         {
             if (currentGem.gem.gemIdentifier == gem.gemIdentifier) return currentGem;
         }
