@@ -15,11 +15,18 @@ public class PlatformActionEditor : Editor
         switch (platformAction.actionType)
         {
             case PlatformAction.ActionType.MoveHorizontal:
+                platformAction.movementDirection = EditorGUILayout.Vector3Field("Movement Direction", platformAction.movementDirection);
+                platformAction.movementSpeed = EditorGUILayout.FloatField("Movement Speed", platformAction.movementSpeed);
+                platformAction.movementSpeedCurve = EditorGUILayout.CurveField("Movement Speed Curve", platformAction.movementSpeedCurve);
+                platformAction.pingPongDistance = EditorGUILayout.FloatField("Ping Pong Distance", platformAction.pingPongDistance);
+                platformAction.horizontalStartDelay = EditorGUILayout.FloatField("Horizontal Start Delay", platformAction.horizontalStartDelay);
+                break;
             case PlatformAction.ActionType.MoveVertical:
                 platformAction.movementDirection = EditorGUILayout.Vector3Field("Movement Direction", platformAction.movementDirection);
                 platformAction.movementSpeed = EditorGUILayout.FloatField("Movement Speed", platformAction.movementSpeed);
                 platformAction.movementSpeedCurve = EditorGUILayout.CurveField("Movement Speed Curve", platformAction.movementSpeedCurve);
                 platformAction.pingPongDistance = EditorGUILayout.FloatField("Ping Pong Distance", platformAction.pingPongDistance);
+                platformAction.verticalStartDelay = EditorGUILayout.FloatField("Vertical Start Delay", platformAction.verticalStartDelay);
                 break;
             case PlatformAction.ActionType.Rotate:
                 platformAction.rotationAxis = EditorGUILayout.Vector3Field("Rotation Axis", platformAction.rotationAxis);
