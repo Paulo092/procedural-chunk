@@ -62,16 +62,12 @@ public class PlayerOrbit : MonoBehaviour
     
     public void RemoveGemFronOrbit(Gem gem)
     {
-        foreach (var gemInOrbit in gemsInOrbit)
-        {
+        foreach (Gem gemInOrbit in orbitGems)
             if (gemInOrbit.gemIdentifier == gem.gemIdentifier)
             {
-                Destroy(gemInOrbit);
-                break;
+                gemInOrbit.gameObject.SetActive(false);
+                return;
             }
-        }
-        
-        gemsInOrbit.Remove(gem);
     }
     
 }

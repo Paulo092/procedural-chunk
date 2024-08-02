@@ -22,13 +22,5 @@ public class StructureValidade : MonoBehaviour
     void Update()
     {
         if(globalGemEquivalent.isCollected) Destroy(this.gameObject);
-        
-        // foreach (var collectedGem in GemHandler.GetInstance().allGems)
-        // {
-        //     if (structureGem.gemIdentifier == collectedGem.gemIdentifier)
-        //     {
-        //         Destroy(this.gameObject);
-        //     }
-        // }
     }
 }

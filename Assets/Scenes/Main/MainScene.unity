@@ -368,6 +368,7 @@ MonoBehaviour:
   - gem: {fileID: 6386691345801646442, guid: fb1ac75382fe88d4d98db5f08f81aaab, type: 3}
     isCollected: 0
     isReturned: 0
+  numberOfCollectedGems: 0
 --- !u!4 &360538380
 Transform:
   m_ObjectHideFlags: 0
@@ -1272,7 +1273,7 @@ Transform:
   m_GameObject: {fileID: 1512558954}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.14, z: 0}
+  m_LocalPosition: {x: 0, y: 6.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3730,6 +3731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orbitCenter: {fileID: 1512558954}
+  spawnedGems: []
   allGemsPrefabs:
   - {fileID: 6386691345801646442, guid: d6072ab0e3723ca4fbb735060cbbd585, type: 3}
   - {fileID: 6386691345801646442, guid: fb1ac75382fe88d4d98db5f08f81aaab, type: 3}
@@ -3882,7 +3884,6 @@ GameObject:
   - component: {fileID: 4416926081752069820}
   - component: {fileID: 5885216828053429319}
   - component: {fileID: 135756642157046475}
-  - component: {fileID: 6982812146311689848}
   - component: {fileID: 6982812146311689849}
   - component: {fileID: 4416926081752069819}
   - component: {fileID: 6982812146311689850}
@@ -4995,19 +4996,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6982812146311689848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4416926081752069815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4abd4ec895b5ccc47b49948caa59d3b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orbitGems: []
 --- !u!114 &6982812146311689849
 MonoBehaviour:
   m_ObjectHideFlags: 0
