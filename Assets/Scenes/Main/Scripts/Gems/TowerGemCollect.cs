@@ -86,7 +86,8 @@ public class TowerGemCollect : MonoBehaviour
         GemHandler instance = GemHandler.GetInstance();
         if (instance.allGems.Length == instance.numberOfCollectedGems)
         {
-            Debug.Log("Ganhou!");
+            MainGameManager.GetInstance().ShowWinScreen();
+            // Debug.Log("Ganhou!");
             yield return null;
         }
     }

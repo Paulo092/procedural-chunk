@@ -368,8 +368,8 @@ public class EndlessTerrain : MonoBehaviour
 				List<ObjectSpawnInfo> treesToSpawn = new();
 				List<ObjectSpawnInfo> structuresToSpawn = new();
 
-				Boolean hasSpawnedBiomeGemStructure = false;
-				ObjectSpawnInfo gemStructureToSpawn = null;
+				// Boolean hasSpawnedBiomeGemStructure = false;
+				// ObjectSpawnInfo gemStructureToSpawn = null;
 				
 				for (int y = 0; y < width; y++)
 				{
