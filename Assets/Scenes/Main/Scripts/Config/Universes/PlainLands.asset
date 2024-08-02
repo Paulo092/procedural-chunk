@@ -32,9 +32,9 @@ MonoBehaviour:
       pickRate: 0.5
     grassDensity: 0
     grass: []
-    structureDensity: 0.0011
+    structureDensity: 0.001
     biomeStructures:
-    - structurePrefab: {fileID: 8835509298660009260, guid: 0124168046828cc4e96b3cccf80a60e0,
+    - structurePrefab: {fileID: 3871722785738688123, guid: b381f02e626416f49a26d2baeeeb7d9e,
         type: 3}
       pickRate: 1
   - biomeName: Pines
@@ -52,8 +52,11 @@ MonoBehaviour:
       pickRate: 1
     grassDensity: 0
     grass: []
-    structureDensity: 0
-    biomeStructures: []
+    structureDensity: 0.001
+    biomeStructures:
+    - structurePrefab: {fileID: 5465762901999401146, guid: ca5f4c47f10467c43ad511b16a2baf7f,
+        type: 3}
+      pickRate: 1
   - biomeName: Neve
     temperature: {x: 0, y: 0.45251518}
     humidity: {x: 0.14696869, y: 0.6936662}
@@ -95,9 +98,9 @@ MonoBehaviour:
       pickRate: 0.5
     grassDensity: 0
     grass: []
-    structureDensity: 0.1
+    structureDensity: 0.0011
     biomeStructures:
-    - structurePrefab: {fileID: 1878269134222116197, guid: 53d2a9f01b12dce46a7f9cb764aa7fff,
+    - structurePrefab: {fileID: 4702810031094921953, guid: d900a6a963da15a4597de0af4fee0a98,
         type: 3}
       pickRate: 1
   - biomeName: MudValley

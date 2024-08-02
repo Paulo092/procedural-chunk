@@ -67,11 +67,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300000, guid: 3be870bd3141f9741b70abdfb4242cb6, type: 3}
+      objectReference: {fileID: 4300000, guid: 6579b708f10e00c448d8ddbc06ba95fe, type: 3}
     - target: {fileID: 919132149155446097, guid: 5d69811bac682994abfa33301fdb6950,
         type: 3}
       propertyPath: m_Name
-      value: GemPlains
+      value: GemPines
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -104,10 +104,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b247be6567b27834a8bf6a72d46e5a42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gemIdentifier: PlainsGem
+  gemIdentifier: PinesGem
   prefab: {fileID: 5139077725864263618}
-  normalMaterial: {fileID: 2100000, guid: 3f3a20835cfd1be4d93f1e28af915d16, type: 2}
-  notFoundedMaterial: {fileID: 2100000, guid: 2436f91ff4bbd5249bc6fdfd7d0b3c0b, type: 2}
+  normalMaterial: {fileID: 2100000, guid: a506a3c3eff55d54cb676ef2ff0f2fe1, type: 2}
+  notFoundedMaterial: {fileID: 2100000, guid: 02eef4702d3fdd547aec150323220a56, type: 2}
   isNatural: 1
 --- !u!135 &-1515771618892440941
 SphereCollider:

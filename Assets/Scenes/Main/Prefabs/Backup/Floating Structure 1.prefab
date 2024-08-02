@@ -50,6 +50,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   structureGem: {fileID: 4506155047156337383}
+  globalGemEquivalent:
+    gem: {fileID: 0}
+    isCollected: 0
+    isReturned: 0
 --- !u!1 &1262541300118283739
 GameObject:
   m_ObjectHideFlags: 0

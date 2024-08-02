@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlatformAction : MonoBehaviour
@@ -27,12 +28,17 @@ public class PlatformAction : MonoBehaviour
     public AnimationCurve fallSpeedCurve;
     public float pingPongDistance = 5f;
 
+    public float horizontalStartDelay = 0f;
+    public float verticalStartDelay = 0f;
+
     private Vector3 initialPosition;
     private Quaternion initialRotation;
     private Vector3 initialScale;
     private bool isFalling;
     private float fallTimer;
     private bool isPlayerOnPlatform;
+    private bool isHorizontalMovementStarted = false;
+    private bool isVerticalMovementStarted = false;
 
     private void Start()
     {
@@ -42,6 +48,15 @@ public class PlatformAction : MonoBehaviour
         isFalling = false;
         fallTimer = 0f;
         isPlayerOnPlatform = false;
+
+        if (actionType == ActionType.MoveHorizontal)
+        {
+            StartCoroutine(StartHorizontalMovementAfterDelay());
+        }
+        if (actionType == ActionType.MoveVertical)
+        {
+            StartCoroutine(StartVerticalMovementAfterDelay());
+        }
     }
 
     private void Update()
@@ -49,8 +64,16 @@ public class PlatformAction : MonoBehaviour
         switch (actionType)
         {
             case ActionType.MoveHorizontal:
+                if (isHorizontalMovementStarted)
+                {
+                    MovePlatformPingPong();
+                }
+                break;
             case ActionType.MoveVertical:
-                MovePlatformPingPong();
+                if (isVerticalMovementStarted)
+                {
+                    MovePlatformPingPong();
+                }
                 break;
             case ActionType.Rotate:
                 RotatePlatform();
@@ -62,6 +85,18 @@ public class PlatformAction : MonoBehaviour
                 HandleFallingPlatform();
                 break;
         }
+    }
+
+    private IEnumerator StartHorizontalMovementAfterDelay()
+    {
+        yield return new WaitForSeconds(horizontalStartDelay);
+        isHorizontalMovementStarted = true;
+    }
+
+    private IEnumerator StartVerticalMovementAfterDelay()
+    {
+        yield return new WaitForSeconds(verticalStartDelay);
+        isVerticalMovementStarted = true;
     }
 
     private float GetSpeed(float baseSpeed, AnimationCurve speedCurve)
@@ -89,7 +124,6 @@ public class PlatformAction : MonoBehaviour
     private void ScalePlatformPingPong()
     {
         float speed = GetSpeed(scaleSpeed, scaleSpeedCurve);
-        //float pingPong = Mathf.PingPong(Time.time * speed, 1);
         transform.localScale = Vector3.Lerp(initialScale, targetScale, speed);
     }
 
@@ -124,11 +158,8 @@ public class PlatformAction : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position, transform.localScale);
-
         switch (actionType)
         {
             case ActionType.MoveHorizontal:
