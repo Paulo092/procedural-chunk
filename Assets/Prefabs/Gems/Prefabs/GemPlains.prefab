@@ -62,7 +62,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 3f3a20835cfd1be4d93f1e28af915d16, type: 2}
+      objectReference: {fileID: 2100000, guid: 039084c31c5f1334c862888f73561278, type: 2}
     - target: {fileID: -5754084199372789682, guid: 5d69811bac682994abfa33301fdb6950,
         type: 3}
       propertyPath: m_Mesh
@@ -111,8 +111,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gemIdentifier: PlainsGem
   prefab: {fileID: 5139077725864263618}
-  normalMaterial: {fileID: 2100000, guid: 3f3a20835cfd1be4d93f1e28af915d16, type: 2}
-  notFoundedMaterial: {fileID: 2100000, guid: cfa6fb67e4a283e4f81762074434bc5f, type: 2}
+  normalMaterial: {fileID: 2100000, guid: 039084c31c5f1334c862888f73561278, type: 2}
+  notFoundedMaterial: {fileID: 2100000, guid: 2436f91ff4bbd5249bc6fdfd7d0b3c0b, type: 2}
   isNatural: 1
 --- !u!135 &-1515771618892440941
 SphereCollider:

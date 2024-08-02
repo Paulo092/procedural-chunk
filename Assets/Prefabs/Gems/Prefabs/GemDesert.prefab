@@ -107,7 +107,7 @@ MonoBehaviour:
   gemIdentifier: DesertGem
   prefab: {fileID: 5139077725864263618}
   normalMaterial: {fileID: 2100000, guid: 3f3a20835cfd1be4d93f1e28af915d16, type: 2}
-  notFoundedMaterial: {fileID: 2100000, guid: cfa6fb67e4a283e4f81762074434bc5f, type: 2}
+  notFoundedMaterial: {fileID: 2100000, guid: f8b9abfd974860749afcfbbba1c59f7c, type: 2}
   isNatural: 1
 --- !u!135 &-1515771618892440941
 SphereCollider:
