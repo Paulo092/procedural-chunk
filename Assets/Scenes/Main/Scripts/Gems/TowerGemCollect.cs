@@ -29,6 +29,8 @@ public class TowerGemCollect : MonoBehaviour
             Gem orbitalGem = orbitalGemGameObject.AddComponent<Gem>();
             gemInfo.gem.CloneInto(orbitalGem);
             orbitalGem.isNatural = false;
+            
+            Destroy(orbitalGemGameObject.GetComponent<Collider>());
 
             Renderer orbitalGemRender = orbitalGemGameObject.GetComponent<Renderer>();
             orbitalGemRender.material = gemInfo.gem.notFoundedMaterial;

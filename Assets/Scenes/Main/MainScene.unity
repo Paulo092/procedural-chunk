@@ -284,7 +284,7 @@ MonoBehaviour:
   universeData: {fileID: 11400000, guid: a0739a68b1951ed4f9e9065bed0044f4, type: 2}
   baseTerrainMaterial: {fileID: 2100000, guid: 63ec8a956a8d6eb4ba15abc592877876, type: 2}
   chunkSize: 100
-  randomSeed: 0
+  randomSeed: 1
   seed: 297610000
   enemySpawnRadiusInChunk: 3
   maxAmountOfEnemies: 100
@@ -985,7 +985,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 16.799988, y: -39.2424}
+  m_AnchoredPosition: {x: 16.799988, y: -74.04239}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &380496727
@@ -2999,7 +2999,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 78.399994, y: -51.1344}
+  m_AnchoredPosition: {x: 78.399994, y: -85.93439}
   m_SizeDelta: {x: 70.03, y: 26.216}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2024543095
@@ -3133,7 +3133,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -19.568298, y: -27.199997}
+  m_AnchoredPosition: {x: -19.568298, y: -62}
   m_SizeDelta: {x: 341.8197, y: 74.0849}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2069416219
