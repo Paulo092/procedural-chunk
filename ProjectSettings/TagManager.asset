@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - CinemachineTarget
   - GemPlaceholder
+  - Plataform
   layers:
   - Default
   - TransparentFX
