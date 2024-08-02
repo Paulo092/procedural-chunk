@@ -32,14 +32,11 @@ MonoBehaviour:
       pickRate: 0.5
     grassDensity: 0
     grass: []
-    structureDensity: 0.1
+    structureDensity: 0.0011
     biomeStructures:
-    - structurePrefab: {fileID: 1878269134222116197, guid: 57f8e309ae49a744dafd62e3b8e67915,
+    - structurePrefab: {fileID: 8835509298660009260, guid: 0124168046828cc4e96b3cccf80a60e0,
         type: 3}
       pickRate: 1
-    gemStructurePrefab: {fileID: 0}
-    biomeGem: {fileID: 0}
-    gemProbability: 0
   - biomeName: Pines
     temperature: {x: 0, y: 0.2854406}
     humidity: {x: 0.234355, y: 0.59642386}
@@ -57,9 +54,6 @@ MonoBehaviour:
     grass: []
     structureDensity: 0
     biomeStructures: []
-    gemStructurePrefab: {fileID: 0}
-    biomeGem: {fileID: 0}
-    gemProbability: 0
   - biomeName: Neve
     temperature: {x: 0, y: 0.45251518}
     humidity: {x: 0.14696869, y: 0.6936662}
@@ -83,9 +77,6 @@ MonoBehaviour:
     grass: []
     structureDensity: 0
     biomeStructures: []
-    gemStructurePrefab: {fileID: 0}
-    biomeGem: {fileID: 0}
-    gemProbability: 0
   - biomeName: Desert
     temperature: {x: 0.5000001, y: 1}
     humidity: {x: 0.5, y: 1}
@@ -109,11 +100,6 @@ MonoBehaviour:
     - structurePrefab: {fileID: 1878269134222116197, guid: 53d2a9f01b12dce46a7f9cb764aa7fff,
         type: 3}
       pickRate: 1
-    gemStructurePrefab: {fileID: 6318994814192270188, guid: 089605099b6559445b81da08893452a4,
-      type: 3}
-    biomeGem: {fileID: 8558291049864344142, guid: 25928c5118bba3a4fbd315a7dc273e4b,
-      type: 3}
-    gemProbability: 0
   - biomeName: MudValley
     temperature: {x: 0.36648124, y: 0.60500693}
     humidity: {x: 0.71696794, y: 1}
@@ -128,9 +114,6 @@ MonoBehaviour:
     grass: []
     structureDensity: 0
     biomeStructures: []
-    gemStructurePrefab: {fileID: 0}
-    biomeGem: {fileID: 0}
-    gemProbability: 0
   - biomeName: DistortedLand
     temperature: {x: 0, y: 0.52086043}
     humidity: {x: 0.29565775, y: 0.7916812}
@@ -148,9 +131,6 @@ MonoBehaviour:
     grass: []
     structureDensity: 0
     biomeStructures: []
-    gemStructurePrefab: {fileID: 0}
-    biomeGem: {fileID: 0}
-    gemProbability: 0
   structureList:
   - prefab: {fileID: 1787310721803159463, guid: edbfa8ed63b54e242b8088e5d13c495c,
       type: 3}

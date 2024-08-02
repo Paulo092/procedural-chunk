@@ -33,7 +33,7 @@ public class Biome
     public BiomeStructure[] biomeStructures;
     
     private int _treeProbabilityPrecision = 100;
-    private int _structureProbabilityPrecision = 100;
+    private int _structureProbabilityPrecision = 1000;
     private int[] _treeProbabilities;
     private int[] _structureProbabilities;
 
