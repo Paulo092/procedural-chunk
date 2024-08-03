@@ -12,8 +12,16 @@ public class MainGameManager : MonoBehaviour
     public Boolean hasWon;
     public GameObject winPanel;
 
+    public UIFade fadeUIElement;
+
     private void Awake()
     {
+        if (fadeUIElement != null)
+        {
+            fadeUIElement.gameObject.SetActive(true);
+            fadeUIElement.TriggerFadeOut(3f);
+        }
+        
         if (_instance == null)
             _instance = this;
         

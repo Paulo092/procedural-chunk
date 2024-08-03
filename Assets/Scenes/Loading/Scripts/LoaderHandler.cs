@@ -4,28 +4,43 @@ using UnityEngine.SceneManagement;
 
 public class LoaderHandler : MonoBehaviour
 {
-    public string sceneName;
-    public float initialWaitTime = 2f; // Tempo inicial antes de começar a carregar
+    public string mainSceneName; // Nome da cena principal
+    public GameObject loadingScreen; // Tela de carregamento
 
-    private void Start()
+    private AsyncOperation asyncLoad;
+
+    void Start()
     {
-        StartCoroutine(AsynchronousLoad(sceneName));
-    }   
-    
-    IEnumerator AsynchronousLoad (string scene)
+        StartCoroutine(LoadMainScene());
+    }
+
+    IEnumerator LoadMainScene()
     {
-        // Espera inicial para permitir a reprodução suave do vídeo
-        yield return new WaitForSeconds(initialWaitTime);
-        
-        // Define a prioridade da operação de carregamento
-        AsyncOperation ao = SceneManager.LoadSceneAsync(scene);
-        // ao.priority = 2;
-     
-        while (!ao.isDone)
+        // Inicia o carregamento assíncrono da cena principal
+        asyncLoad = SceneManager.LoadSceneAsync(mainSceneName);
+        // asyncLoad.allowSceneActivation = false; // Não ativa a cena imediatamente
+
+        // Enquanto a cena não estiver carregada
+        while (!asyncLoad.isDone)
         {
-            // Intervalo para reduzir a carga na CPU e permitir que o vídeo continue a ser reproduzido
-            // yield return new WaitForSeconds(0.1f);
+            // Verifique o progresso se necessário
+            // Debug.Log(asyncLoad.progress);
+
+            // Você pode colocar aqui alguma lógica de atualização para o progresso
             yield return null;
+        }
+
+        // Adiciona um método para ativar a cena principal quando você quiser
+        // Por exemplo, usando um botão ou outro evento para definir `allowSceneActivation` como true
+    }
+
+    public void OnLoadingComplete()
+    {
+        // Permite a ativação da cena
+        if (asyncLoad != null)
+        {
+            asyncLoad.allowSceneActivation = true;
+            loadingScreen.SetActive(false); // Desativa a tela de carregamento
         }
     }
 }
