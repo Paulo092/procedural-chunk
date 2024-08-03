@@ -132,16 +132,4 @@ MonoBehaviour:
   - prefab: {fileID: 1787310721803159463, guid: edbfa8ed63b54e242b8088e5d13c495c,
       type: 3}
     pickRate: 1
-  enemies:
-  - name: "Bol\xE3o"
-    prefab: {fileID: 1465472300660920438, guid: d6f2c2f4c1199c34fba39f0fdc1dad82,
-      type: 3}
-    pickRate: 0.1
-    isHorde: 0
-    hordeSize: 0
-  - name: "Bol\xE3o"
-    prefab: {fileID: 8851539636194568888, guid: 5f58abc14282c82498586dd11fab3d56,
-      type: 3}
-    pickRate: 1
-    isHorde: 0
-    hordeSize: 0
+  enemies: []

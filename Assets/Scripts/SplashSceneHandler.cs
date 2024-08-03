@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 
-public class SplashHandler : MonoBehaviour
+public class SplashSceneHandler : MonoBehaviour
 {
     public VideoPlayer videoPlayer; // Referência ao VideoPlayer
     public string sceneName; // Nome da cena a ser carregada
