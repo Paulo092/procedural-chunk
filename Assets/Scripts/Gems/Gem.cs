@@ -38,10 +38,14 @@ public class Gem : MonoBehaviour
         
         if (other.CompareTag("Player") && !_isTriggering)
         {
+            FindObjectOfType<AudioManager>().Play("SFX Collect");
             PlayerOrbit playerOrbit = other.GetComponent<PlayerOrbit>();
             playerOrbit.AddGemInOrbit(this);
             
-            GemHandler.GetInstance().CollectGem(this);
+            GemHandler gemHandler = GemHandler.GetInstance();
+            gemHandler.CollectGem(this);
+            MainGameManager.GetInstance().SetCollectedGemsText(gemHandler.numberOfCollectedGems, gemHandler.allGems.Length);
+
             Destroy(this);
         }
     }

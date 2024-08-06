@@ -43,6 +43,30 @@ public class GemHandler : MonoBehaviour
         return false;
     }
 
+    public int GetCollectedGemsAmount()
+    {
+        int counter = 0;
+        foreach (GemInfo gem in allGems)
+            if (gem.isCollected)
+                counter++;
+
+        return counter;
+    }
+    public int GetReturnedGemsAmount()
+    {
+        int counter = 0;
+        foreach (GemInfo gem in allGems)
+            if (gem.isReturned)
+                counter++;
+
+        return counter;
+    }
+
+    public int GetGemsTotalAmount()
+    {
+        return allGems.Length;
+    }
+
     [Serializable]
     public class GemInfo
     {

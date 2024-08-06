@@ -62,6 +62,8 @@ public class TowerGemCollect : MonoBehaviour
             if(!gem.isCollected || gem.isReturned) continue;
             
             yield return new WaitForSeconds(2f);
+            FindObjectOfType<AudioManager>().Play("SFX Return");
+
             gem.isReturned = true;
 
             if (playerOrbit != null)
@@ -81,6 +83,17 @@ public class TowerGemCollect : MonoBehaviour
                     break;
                 }
             }
+            
+            GemHandler gemHandlerInstance = GemHandler.GetInstance(); 
+            
+            MainGameManager.GetInstance().SetCollectedGemsText(
+                gemHandlerInstance.GetCollectedGemsAmount() - gemHandlerInstance.GetReturnedGemsAmount(),
+                gemHandlerInstance.GetGemsTotalAmount() - gemHandlerInstance.GetReturnedGemsAmount());
+
+            MainGameManager.GetInstance().SetReturnedGemsText(
+                gemHandlerInstance.GetReturnedGemsAmount(),
+                gemHandlerInstance.GetGemsTotalAmount()
+            );
         }
         
         GemHandler instance = GemHandler.GetInstance();
