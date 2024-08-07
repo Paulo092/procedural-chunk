@@ -1330,7 +1330,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3121444097530851267}
   m_Layer: 0
-  m_Name: PlainFloatingStructure 1
+  m_Name: Structure_GemPlains
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
