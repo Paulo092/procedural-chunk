@@ -32,7 +32,7 @@ MonoBehaviour:
       pickRate: 0.5
     grassDensity: 0
     grass: []
-    structureDensity: 0.03
+    structureDensity: 0.001
     biomeStructures:
     - structurePrefab: {fileID: 3871722785738688123, guid: b381f02e626416f49a26d2baeeeb7d9e,
         type: 3}
@@ -95,7 +95,7 @@ MonoBehaviour:
       pickRate: 0.5
     grassDensity: 0
     grass: []
-    structureDensity: 0.02
+    structureDensity: 0.01
     biomeStructures:
     - structurePrefab: {fileID: 4702810031094921953, guid: d900a6a963da15a4597de0af4fee0a98,
         type: 3}

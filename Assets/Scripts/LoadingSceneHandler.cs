@@ -10,7 +10,7 @@ public class LoadingSceneHandler : MonoBehaviour
     public TextMeshProUGUI loadingTextTMP;
     public GameObject loadingScreen; // Tela de carregamento
 
-    public string loadingText, readyText;
+    public string loadingText, readyText, waitText;
     
     private AsyncOperation asyncLoad;
 
@@ -24,7 +24,8 @@ public class LoadingSceneHandler : MonoBehaviour
     {
         // Verifica se o carregamento chegou a 0.9 e se qualquer tecla foi pressionada
         if (asyncLoad != null && asyncLoad.progress >= 0.9f && Input.anyKey)
-        {
+        {            
+            loadingTextTMP.text = waitText;
             asyncLoad.allowSceneActivation = true;
         }
     }

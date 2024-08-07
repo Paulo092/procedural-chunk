@@ -447,7 +447,8 @@ public class EndlessTerrain : MonoBehaviour
 						if (x != 0 && y != 0 && x % 100 == 0 && y % 100 == 0)
 						{
 							Random rand = new Random();
-							float prob = rand.Next(1, 10001) / 10000f;
+							// float prob = rand.Next(1, 10001) / 10000f;
+							float prob = rand.Next(0, 10001) / 10000f;
 							bool canPlace = prob <= currentBiome.structureDensity;
 
 							if (!canPlace) continue;

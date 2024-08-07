@@ -330,6 +330,7 @@ MonoBehaviour:
   loadingScreen: {fileID: 0}
   loadingText: Carregando...
   readyText: Aperte qualquer tecla para continuar.
+  waitText: Espere um instante
 --- !u!4 &947455001
 Transform:
   m_ObjectHideFlags: 0
