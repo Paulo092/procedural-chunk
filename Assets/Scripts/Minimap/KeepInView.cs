@@ -25,7 +25,8 @@ public class KeepInView : MonoBehaviour
                 playerPosition.z + unitaryVector.z * 180
             )
             : targetReference.transform.position;
-        
+
+        requiredPosition.y = target.transform.position.y;
         target.transform.position = requiredPosition;
     }
 }

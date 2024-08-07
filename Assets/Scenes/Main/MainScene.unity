@@ -1022,6 +1022,9 @@ MonoBehaviour:
   - gem: {fileID: 6386691345801646442, guid: d6072ab0e3723ca4fbb735060cbbd585, type: 3}
     isCollected: 0
     isReturned: 0
+  - gem: {fileID: 6386691345801646442, guid: fb1ac75382fe88d4d98db5f08f81aaab, type: 3}
+    isCollected: 0
+    isReturned: 0
   numberOfCollectedGems: 0
   collectSound: {fileID: 8300000, guid: cd3ac6520331a5e4e86475e9471eb2c3, type: 3}
   returnSound: {fileID: 8300000, guid: b7003432adeec1b4c97217644f9c1572, type: 3}

@@ -33,7 +33,10 @@ MonoBehaviour:
     grassDensity: 0
     grass: []
     structureDensity: 0.03
-    biomeStructures: []
+    biomeStructures:
+    - structurePrefab: {fileID: 3871722785738688123, guid: b381f02e626416f49a26d2baeeeb7d9e,
+        type: 3}
+      pickRate: 1
   - biomeName: Pines
     temperature: {x: 0, y: 0.2854406}
     humidity: {x: 0.234355, y: 0.59642386}
@@ -92,9 +95,9 @@ MonoBehaviour:
       pickRate: 0.5
     grassDensity: 0
     grass: []
-    structureDensity: 0.1
+    structureDensity: 0.02
     biomeStructures:
-    - structurePrefab: {fileID: 1878269134222116197, guid: 53d2a9f01b12dce46a7f9cb764aa7fff,
+    - structurePrefab: {fileID: 4702810031094921953, guid: d900a6a963da15a4597de0af4fee0a98,
         type: 3}
       pickRate: 1
   - biomeName: MudValley
