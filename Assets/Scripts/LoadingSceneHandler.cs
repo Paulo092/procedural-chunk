@@ -22,10 +22,8 @@ public class LoadingSceneHandler : MonoBehaviour
 
     private void Update()
     {
-        // Verifica se o carregamento chegou a 0.9 e se qualquer tecla foi pressionada
         if (asyncLoad != null && asyncLoad.progress >= 0.9f && Input.anyKey)
         {            
-            loadingTextTMP.text = waitText;
             asyncLoad.allowSceneActivation = true;
         }
     }
@@ -37,11 +35,9 @@ public class LoadingSceneHandler : MonoBehaviour
         
         while (!asyncLoad.isDone)
         {
-            // Calcula o progresso em uma escala de 0 a 100%
             float progress = Mathf.Clamp01(asyncLoad.progress / 0.9f) * 100;
             loadingTextTMP.text = $"{loadingText} {progress:F0}%";
 
-            // Verifica se o carregamento está completo (0.9) para exibir a mensagem de "pronto"
             if (asyncLoad.progress >= 0.9f)
             {
                 loadingTextTMP.text = readyText;
@@ -49,5 +45,7 @@ public class LoadingSceneHandler : MonoBehaviour
 
             yield return null;
         }
+        
+        yield return null;
     }
 }
