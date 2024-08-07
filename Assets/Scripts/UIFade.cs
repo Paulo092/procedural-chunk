@@ -49,11 +49,16 @@ public class UIFade : MonoBehaviour
 
         color.a = 0;
         _imageReference.color = color;
+        
+        _imageReference.gameObject.SetActive(false);
     }
 
     private IEnumerator FadeIn(float duration)
     {
+        _imageReference.gameObject.SetActive(true);
+        
         Color color = _imageReference.color;
+        color.a = 0;
         float elapsedTime = 0f;
 
         while (elapsedTime < fadeDuration)

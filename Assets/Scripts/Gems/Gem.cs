@@ -38,7 +38,7 @@ public class Gem : MonoBehaviour
         
         if (other.CompareTag("Player") && !_isTriggering)
         {
-            FindObjectOfType<AudioManager>().Play("SFX Collect");
+            // FindObjectOfType<AudioManager>().Play("SFX Collect");
             PlayerOrbit playerOrbit = other.GetComponent<PlayerOrbit>();
             playerOrbit.AddGemInOrbit(this);
             

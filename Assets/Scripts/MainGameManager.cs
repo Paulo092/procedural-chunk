@@ -45,6 +45,11 @@ public class MainGameManager : MonoBehaviour
         SetReturnedGemsText(0, gemHandler.allGems.Length);
     }
 
+    private void OnDestroy()
+    {
+        ContinueGame();
+    }
+
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
@@ -110,6 +115,7 @@ public class MainGameManager : MonoBehaviour
         ContinueGame();
         SetUIInteractable(false);
         winPanel.SetActive(false);
+        pausePanel.SetActive(false);
     }
 
     public void GoToScene(string sceneName)

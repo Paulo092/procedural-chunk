@@ -18,10 +18,11 @@ public class TowerGemCollect : MonoBehaviour
     {
         foreach (GemHandler.GemInfo gemInfo in GemHandler.GetInstance().allGems)
         {
-            GameObject orbitalGemGameObject = Instantiate(gemInfo.gem.prefab, this.transform.position, Quaternion.identity);
+            GameObject orbitalGemGameObject =
+                Instantiate(gemInfo.gem.prefab, this.transform.position, Quaternion.identity);
             orbitalGemGameObject.SetActive(false);
             orbitalGemGameObject.transform.localScale = new Vector3(3f, 3f, 3f);
-        
+
             GemOrbit gemOrbit = orbitalGemGameObject.AddComponent<GemOrbit>();
             gemOrbit.target = orbitCenter.transform;
             gemOrbit.orbitDistance = 20;
@@ -32,15 +33,15 @@ public class TowerGemCollect : MonoBehaviour
 
             Renderer orbitalGemRender = orbitalGemGameObject.GetComponent<Renderer>();
             orbitalGemRender.material = gemInfo.gem.notFoundedMaterial;
-            
+
             orbitalGemGameObject.SetActive(true);
-            
+
             spawnedGems.Add(orbitalGemGameObject);
-            
+
             yield return new WaitForSeconds((360f / 30f) / GemHandler.GetInstance().allGems.Length);
         }
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
         PlayerOrbit playerOrbit = other.GetComponent<PlayerOrbit>();
@@ -59,18 +60,21 @@ public class TowerGemCollect : MonoBehaviour
     {
         foreach (var gem in GemHandler.GetInstance().allGems)
         {
-            if(!gem.isCollected || gem.isReturned) continue;
-            
-            yield return new WaitForSeconds(2f);
-            FindObjectOfType<AudioManager>().Play("SFX Return");
+            if (!gem.isCollected || gem.isReturned) continue;
 
+            yield return new WaitForSeconds(2f);
+            // FindObjectOfType<AudioManager>().Play("SFX Return");
+            if (GemHandler.GetInstance().returnSound != null)
+                AudioSource.PlayClipAtPoint(GemHandler.GetInstance().returnSound, transform.TransformPoint(new Vector3(0, 0, 0)));
+
+            
             gem.isReturned = true;
 
             if (playerOrbit != null)
             {
                 playerOrbit.RemoveGemFronOrbit(gem.gem);
             }
-            
+
             foreach (GameObject spawnedGem in spawnedGems)
             {
                 Gem gemComponent = spawnedGem.GetComponent<Gem>();
@@ -79,13 +83,13 @@ public class TowerGemCollect : MonoBehaviour
                 {
                     Renderer rendererComponent = spawnedGem.GetComponent<Renderer>();
                     rendererComponent.material = gemComponent.normalMaterial;
-                    
+
                     break;
                 }
             }
-            
-            GemHandler gemHandlerInstance = GemHandler.GetInstance(); 
-            
+
+            GemHandler gemHandlerInstance = GemHandler.GetInstance();
+
             MainGameManager.GetInstance().SetCollectedGemsText(
                 gemHandlerInstance.GetCollectedGemsAmount() - gemHandlerInstance.GetReturnedGemsAmount(),
                 gemHandlerInstance.GetGemsTotalAmount() - gemHandlerInstance.GetReturnedGemsAmount());
@@ -95,7 +99,7 @@ public class TowerGemCollect : MonoBehaviour
                 gemHandlerInstance.GetGemsTotalAmount()
             );
         }
-        
+
         GemHandler instance = GemHandler.GetInstance();
         if (instance.allGems.Length == instance.numberOfCollectedGems)
         {
@@ -104,7 +108,7 @@ public class TowerGemCollect : MonoBehaviour
             yield return null;
         }
     }
-    
+
     public class TowerGemInfo
     {
         public Gem Gem;

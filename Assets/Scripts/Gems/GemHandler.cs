@@ -5,7 +5,8 @@ public class GemHandler : MonoBehaviour
 {
     public GemInfo[] allGems;
     public int numberOfCollectedGems;
-
+    public AudioClip collectSound, returnSound;
+    
     private static GemHandler _instance;
     public static GemHandler GetInstance() => _instance;
 
@@ -33,8 +34,13 @@ public class GemHandler : MonoBehaviour
 
         if (gemInfo != null)
         {
-            if(!gemInfo.isCollected)
+            if (!gemInfo.isCollected)
+            {
+                if (collectSound != null)
+                    AudioSource.PlayClipAtPoint(collectSound, gem.transform.TransformPoint(new Vector3(0, 0, 0)));
+                    
                 numberOfCollectedGems++;
+            }
             
             gemInfo.isCollected = true;
             return true;

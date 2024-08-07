@@ -32,7 +32,7 @@ MonoBehaviour:
       pickRate: 0.5
     grassDensity: 0
     grass: []
-    structureDensity: 0.0011
+    structureDensity: 0.03
     biomeStructures: []
   - biomeName: Pines
     temperature: {x: 0, y: 0.2854406}
