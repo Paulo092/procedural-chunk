@@ -52,8 +52,11 @@ MonoBehaviour:
       pickRate: 1
     grassDensity: 0
     grass: []
-    structureDensity: 0
-    biomeStructures: []
+    structureDensity: 0.001
+    biomeStructures:
+    - structurePrefab: {fileID: 6959075259520717369, guid: 3fec902415793fb488fe1f543e114302,
+        type: 3}
+      pickRate: 1
   - biomeName: Neve
     temperature: {x: 0, y: 0.45251518}
     humidity: {x: 0.14696869, y: 0.6936662}
