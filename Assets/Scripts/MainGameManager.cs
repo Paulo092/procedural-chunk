@@ -19,8 +19,8 @@ public class MainGameManager : MonoBehaviour
 
     public UIFade fadeUIElement;
 
-    [Space] 
-    public VisualEffectAsset explosionAsset;
+    [FormerlySerializedAs("explosionAsset")] [Space] 
+    public GameObject explosionVFX;
     
     [Space] 
     public string collectedText = "Gemas coletadas";
@@ -93,13 +93,9 @@ public class MainGameManager : MonoBehaviour
 
     public void SpawnExplosion(Vector3 position)
     {
-        if (explosionAsset != null)
+        if (explosionVFX != null)
         {
-            GameObject vfxContainer = Instantiate(new GameObject(), position, Quaternion.identity);
-            VisualEffect vfx = vfxContainer.AddComponent<VisualEffect>();
-
-            vfx.visualEffectAsset = explosionAsset;
-            vfx.Play();
+            Instantiate(explosionVFX, position, Quaternion.identity);
         }
         else
         {

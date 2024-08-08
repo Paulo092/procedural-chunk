@@ -299,7 +299,7 @@ MonoBehaviour:
   universeData: {fileID: 11400000, guid: a0739a68b1951ed4f9e9065bed0044f4, type: 2}
   baseTerrainMaterial: {fileID: 2100000, guid: 63ec8a956a8d6eb4ba15abc592877876, type: 2}
   chunkSize: 100
-  randomSeed: 0
+  randomSeed: 1
   seed: 297610000
   enemySpawnRadiusInChunk: 3
   maxAmountOfEnemies: 100
@@ -422,7 +422,6 @@ GameObject:
   m_Component:
   - component: {fileID: 92376784}
   - component: {fileID: 92376783}
-  - component: {fileID: 92376785}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -463,18 +462,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 419157144}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &92376785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 92376782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20a3195257726c44e91732966aac748c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &198544843
 GameObject:
   m_ObjectHideFlags: 0
@@ -2566,7 +2553,7 @@ MonoBehaviour:
   winPanel: {fileID: 1933985634}
   pausePanel: {fileID: 507879388}
   fadeUIElement: {fileID: 828585334}
-  explosionAsset: {fileID: 8926484042661614526, guid: e9710b2821f20994e841ff16a10f6b8e,
+  explosionVFX: {fileID: 8453054819754644279, guid: b5cf5e4005a045549b0f6e39bf797c2d,
     type: 3}
   collectedText: Gemas coletadas
   returnedText: Gemas retornadas
