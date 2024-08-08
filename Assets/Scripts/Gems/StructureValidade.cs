@@ -14,10 +14,19 @@ public class StructureValidade : MonoBehaviour
                 globalGemEquivalent = gemInfo;
             }
         }
+
+        if (globalGemEquivalent.isCollected)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     void Update()
     {
-        if(globalGemEquivalent.isCollected) Destroy(this.gameObject);
+        if (globalGemEquivalent.isCollected)
+        {
+            MainGameManager.GetInstance().SpawnExplosion(this.transform.position);
+            Destroy(this.gameObject);
+        }
     }
 }

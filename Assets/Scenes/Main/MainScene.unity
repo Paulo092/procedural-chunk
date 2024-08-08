@@ -299,7 +299,7 @@ MonoBehaviour:
   universeData: {fileID: 11400000, guid: a0739a68b1951ed4f9e9065bed0044f4, type: 2}
   baseTerrainMaterial: {fileID: 2100000, guid: 63ec8a956a8d6eb4ba15abc592877876, type: 2}
   chunkSize: 100
-  randomSeed: 1
+  randomSeed: 0
   seed: 297610000
   enemySpawnRadiusInChunk: 3
   maxAmountOfEnemies: 100
@@ -2566,6 +2566,8 @@ MonoBehaviour:
   winPanel: {fileID: 1933985634}
   pausePanel: {fileID: 507879388}
   fadeUIElement: {fileID: 828585334}
+  explosionAsset: {fileID: 8926484042661614526, guid: e9710b2821f20994e841ff16a10f6b8e,
+    type: 3}
   collectedText: Gemas coletadas
   returnedText: Gemas retornadas
   collectedTextMeshPro: {fileID: 918512764}

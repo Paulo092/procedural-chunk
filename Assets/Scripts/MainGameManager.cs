@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using UnityEngine.VFX;
 
 public class MainGameManager : MonoBehaviour
 {
@@ -17,6 +19,9 @@ public class MainGameManager : MonoBehaviour
 
     public UIFade fadeUIElement;
 
+    [Space] 
+    public VisualEffectAsset explosionAsset;
+    
     [Space] 
     public string collectedText = "Gemas coletadas";
     public string returnedText = "Gemas retornadas";
@@ -78,12 +83,30 @@ public class MainGameManager : MonoBehaviour
     {
         if (winPanel == null)
             Debug.LogWarning(
-                "MainGameHandler] Property 'winPanel' has been called but is null. Please assign it in the Inspector."
+                "[MainGameHandler] Property 'winPanel' has been called but is null. Please assign it in the Inspector."
             );
         
         PauseGame();
         SetUIInteractable(true);
         winPanel.SetActive(true);
+    }
+
+    public void SpawnExplosion(Vector3 position)
+    {
+        if (explosionAsset != null)
+        {
+            GameObject vfxContainer = Instantiate(new GameObject(), position, Quaternion.identity);
+            VisualEffect vfx = vfxContainer.AddComponent<VisualEffect>();
+
+            vfx.visualEffectAsset = explosionAsset;
+            vfx.Play();
+        }
+        else
+        {
+            Debug.LogWarning(
+                "[MainGameHandler] Property 'explosionAsset' has been called but is null. Please assign it in the Inspector."
+            );
+        }
     }
 
     private void PauseGame()
@@ -109,7 +132,7 @@ public class MainGameManager : MonoBehaviour
             Cursor.visible = false;
         }
     }
-
+    
     public void ContinuePlaying()
     {
         ContinueGame();
