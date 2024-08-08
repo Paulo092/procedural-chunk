@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class TowerGemCollect : MonoBehaviour
@@ -34,6 +35,8 @@ public class TowerGemCollect : MonoBehaviour
             Renderer orbitalGemRender = orbitalGemGameObject.GetComponent<Renderer>();
             orbitalGemRender.material = gemInfo.gem.notFoundedMaterial;
 
+            Destroy(orbitalGemGameObject.GetComponent<Collider>());
+            
             orbitalGemGameObject.SetActive(true);
 
             spawnedGems.Add(orbitalGemGameObject);
