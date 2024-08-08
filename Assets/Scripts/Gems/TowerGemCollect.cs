@@ -66,10 +66,8 @@ public class TowerGemCollect : MonoBehaviour
             if (!gem.isCollected || gem.isReturned) continue;
 
             yield return new WaitForSeconds(2f);
-            // FindObjectOfType<AudioManager>().Play("SFX Return");
             if (GemHandler.GetInstance().returnSound != null)
                 AudioSource.PlayClipAtPoint(GemHandler.GetInstance().returnSound, transform.TransformPoint(new Vector3(0, 0, 0)));
-
             
             gem.isReturned = true;
 

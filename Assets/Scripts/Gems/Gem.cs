@@ -44,7 +44,9 @@ public class Gem : MonoBehaviour
             
             GemHandler gemHandler = GemHandler.GetInstance();
             gemHandler.CollectGem(this);
-            MainGameManager.GetInstance().SetCollectedGemsText(gemHandler.numberOfCollectedGems, gemHandler.allGems.Length);
+            MainGameManager.GetInstance().SetCollectedGemsText(
+                gemHandler.GetCollectedGemsAmount() - gemHandler.GetReturnedGemsAmount(), 
+                gemHandler.GetGemsTotalAmount() - gemHandler.GetReturnedGemsAmount());
 
             Destroy(this);
         }
