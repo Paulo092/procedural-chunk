@@ -15,10 +15,11 @@ public class KeepInView : MonoBehaviour
     {
         Vector3 playerPosition = player.transform.position;
         Vector3 targetPosition = target.transform.position;
+        Vector3 referencePosition = targetReference.transform.position;
 
-        Vector3 unitaryVector = (targetPosition - playerPosition).normalized;
+        Vector3 unitaryVector = (referencePosition - playerPosition).normalized;
 
-        Vector3 requiredPosition = Vector3.Distance(playerPosition, targetReference.transform.position) > 180
+        Vector3 requiredPosition = Vector3.Distance(playerPosition, referencePosition) > 180
             ? new Vector3(
                 playerPosition.x + unitaryVector.x * 180,
                 targetPosition.y,
@@ -26,7 +27,7 @@ public class KeepInView : MonoBehaviour
             )
             : targetReference.transform.position;
 
-        requiredPosition.y = target.transform.position.y;
+        requiredPosition.y = targetPosition.y;
         target.transform.position = requiredPosition;
     }
 }
