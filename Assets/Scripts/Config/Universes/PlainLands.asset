@@ -75,8 +75,11 @@ MonoBehaviour:
       pickRate: 0.1
     grassDensity: 0
     grass: []
-    structureDensity: 0
-    biomeStructures: []
+    structureDensity: 0.001
+    biomeStructures:
+    - structurePrefab: {fileID: 3871722785738688123, guid: 6de0d598fcf40894484fe0d368f42825,
+        type: 3}
+      pickRate: 0
   - biomeName: Desert
     temperature: {x: 0.5000001, y: 1}
     humidity: {x: 0.5, y: 1}
@@ -129,8 +132,11 @@ MonoBehaviour:
       pickRate: 1
     grassDensity: 0
     grass: []
-    structureDensity: 0
-    biomeStructures: []
+    structureDensity: 0.005
+    biomeStructures:
+    - structurePrefab: {fileID: 293926525243207389, guid: e06fd1068354dff4a85890f6ec0415a3,
+        type: 3}
+      pickRate: 1
   structureList:
   - prefab: {fileID: 1787310721803159463, guid: edbfa8ed63b54e242b8088e5d13c495c,
       type: 3}
