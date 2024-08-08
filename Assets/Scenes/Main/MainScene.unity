@@ -299,7 +299,7 @@ MonoBehaviour:
   universeData: {fileID: 11400000, guid: a0739a68b1951ed4f9e9065bed0044f4, type: 2}
   baseTerrainMaterial: {fileID: 2100000, guid: 63ec8a956a8d6eb4ba15abc592877876, type: 2}
   chunkSize: 100
-  randomSeed: 0
+  randomSeed: 1
   seed: 297610000
   enemySpawnRadiusInChunk: 3
   maxAmountOfEnemies: 100
